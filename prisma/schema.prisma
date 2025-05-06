@@ -1,0 +1,195 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User and authentication models
+model User {
+  id                        String    @id @default(uuid())
+  email                     String    @unique
+  password                  String?
+  fullName                  String?
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  phone                     String?
+  companyName               String?
+  industry                  String?
+  companySize               String?
+  role                      String?
+  goals                     String[]  @default([])
+  referralSource            String?
+  onboardingStep            String    @default("not_started")
+  onboardingComplete        Boolean   @default(false)
+  stripeCustomerId          String?   @unique
+  subscriptionId            String?
+  subscriptionStatus        String?
+  subscriptionTier          String?
+  subscriptionCurrentPeriodEnd DateTime?
+  isAdmin                   Boolean   @default(false)
+  isEmailVerified           Boolean   @default(false)
+  lastLoginAt               DateTime?
+  
+  // Relationships
+  bookings                  Booking[]
+  conciergeRequests         ConciergeRequest[]
+  profile                   Profile?
+}
+
+model Profile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  title             String?
+  bio               String?
+  avatarUrl         String?
+  preferences       Json?    // Store travel preferences as JSON
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Travel-related models
+model Flight {
+  id                String   @id @default(uuid())
+  airline           String
+  flightNumber      String
+  departureAirport  String
+  arrivalAirport    String
+  departureTime     DateTime
+  arrivalTime       DateTime
+  price             Float
+  currency          String   @default("USD")
+  class             String   @default("ECONOMY") // ECONOMY, BUSINESS, FIRST
+  availableSeats    Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  bookings          BookingFlight[]
+}
+
+model Hotel {
+  id                String   @id @default(uuid())
+  name              String
+  description       String?
+  address           String
+  city              String
+  country           String
+  zipCode           String?
+  latitude          Float?
+  longitude         Float?
+  starRating        Float?   @default(0)
+  amenities         String[] @default([])
+  pricePerNight     Float
+  currency          String   @default("USD")
+  images            String[] @default([])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  rooms             Room[]
+  bookings          BookingHotel[]
+}
+
+model Room {
+  id                String   @id @default(uuid())
+  hotelId           String
+  type              String   // SINGLE, DOUBLE, SUITE, etc.
+  description       String?
+  price             Float
+  currency          String   @default("USD")
+  capacity          Int      @default(2)
+  amenities         String[] @default([])
+  available         Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  hotel             Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  bookings          BookingHotel[]
+}
+
+model Booking {
+  id                String   @id @default(uuid())
+  userId            String
+  status            String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED, COMPLETED
+  totalPrice        Float
+  currency          String   @default("USD")
+  paymentStatus     String   @default("UNPAID") // UNPAID, PAID, REFUNDED
+  paymentIntentId   String?
+  bookedAt          DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flightBookings    BookingFlight[]
+  hotelBookings     BookingHotel[]
+  conciergeRequests ConciergeRequest[]
+}
+
+model BookingFlight {
+  id                String   @id @default(uuid())
+  bookingId         String
+  flightId          String
+  passengerName     String
+  passengerEmail    String?
+  passengerPhone    String?
+  seatNumber        String?
+  specialRequests   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  booking           Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  flight            Flight   @relation(fields: [flightId], references: [id], onDelete: Cascade)
+
+  @@unique([bookingId, flightId])
+}
+
+model BookingHotel {
+  id                String   @id @default(uuid())
+  bookingId         String
+  hotelId           String
+  roomId            String
+  checkInDate       DateTime
+  checkOutDate      DateTime
+  guestCount        Int      @default(1)
+  specialRequests   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  booking           Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  hotel             Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  room              Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@unique([bookingId, hotelId, roomId])
+}
+
+model ConciergeRequest {
+  id                String   @id @default(uuid())
+  userId            String
+  bookingId         String?
+  requestType       String   // RESTAURANT, ACTIVITY, TRANSPORT, SPECIAL_OCCASION, OTHER
+  description       String
+  date              DateTime?
+  time              String?
+  location          String?
+  participants      Int      @default(1)
+  status            String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking           Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+}

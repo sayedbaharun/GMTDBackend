@@ -1,0 +1,60 @@
+
+# Get Me To Dubai – Onboarding Flow
+
+## 🔹 Step 1: Personal Details
+**Goal:** Capture essential identity and contact info for personalized service.
+
+| Field                 | Type                    | Notes |
+|----------------------|-------------------------|-------|
+| Salutation           | Dropdown (Mr, Ms, Dr)   | Optional |
+| First Name           | Text                    | Required |
+| Surname              | Text                    | Required |
+| Email Address        | Email                   | Required |
+| Mobile Number        | Phone (Intl format)     | Required |
+| Country of Residence | Dropdown / Autocomplete | Required |
+| Nationality          | Dropdown / Autocomplete | Optional (helps with visa support) |
+
+---
+
+## 🔹 Step 2: Preferences & Services
+**Goal:** Understand user’s travel intent and lifestyle preferences.
+
+| Field                 | Type         | Notes |
+|----------------------|--------------|-------|
+| Services Interested In | Multi-select (e.g. Flights, Hotels, Beach Clubs, Yacht Rentals, Supercars, Restaurant Bookings, Events, Visa Assistance, Concierge) | Required |
+| Experience Style       | Dropdown (Luxury, Relaxation, Adventure, Party, Family-friendly) | Optional but useful for AI recommendations |
+
+---
+
+## 🔹 Step 3: Preferences for Contact
+**Goal:** Optimize communication for conversions.
+
+| Field                   | Type             | Notes |
+|------------------------|------------------|-------|
+| Preferred Contact Method | Toggle (WhatsApp, Email, Phone Call) | Required |
+| Best Time to Contact     | Time Range Picker | Optional |
+| Consent Checkbox         | Checkbox         | “I agree to receive updates & offers” (GDPR-compliant) |
+
+---
+
+## 🔹 Step 4: Pick a Product / Package
+**Goal:** Direct the user toward a ready-made offer or personalized concierge.
+
+| Field                      | Type           | Notes |
+|---------------------------|----------------|-------|
+| Select a Travel Product   | Cards or List (e.g. "Luxury Weekend Getaway", "Custom Concierge Package", "Beach Club VIP Access") | Required |
+| Optional Add-ons          | Multi-select (Airport Pickup, VIP Host, Photographer, etc.) | Optional |
+| Promo Code (if applicable)| Text field      | Optional |
+
+---
+
+## 🔹 Step 5: Confirmation & Payment
+**Goal:** Finalize booking or collect deposit/commitment.
+
+| Field                | Type         | Notes |
+|---------------------|--------------|-------|
+| Summary of Selections | Display block | Confirmation page with user selections |
+| Total Price (if fixed) | Dynamic price display | Based on selected services |
+| Terms & Conditions    | Checkbox     | “I agree to the Terms of Service & Refund Policy” |
+| Payment Method        | Stripe Integration | Card / Apple Pay / Google Pay |
+| Submit & Book Button  | CTA button  | “Secure My Experience” or “Book Now” |

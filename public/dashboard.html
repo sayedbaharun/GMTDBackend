@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Get Me To Dubai</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <a href="/">Get Me To Dubai</a>
+        </div>
+        <button class="close-sidebar" id="close-sidebar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      
+      <div class="user-info">
+        <div class="user-avatar">
+          <img src="https://i.pravatar.cc/150?img=12" alt="User avatar">
+        </div>
+        <div class="user-details">
+          <h3 class="user-name">John Doe</h3>
+          <p class="user-email">john.doe@example.com</p>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-panel="dashboard">
+            <a href="#"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+          </li>
+          <li class="nav-item" data-panel="profile">
+            <a href="#"><i class="bi bi-person"></i> Profile</a>
+          </li>
+          <li class="nav-item" data-panel="bookings">
+            <a href="#"><i class="bi bi-calendar-check"></i> Booking History</a>
+          </li>
+          <li class="nav-item" data-panel="preferences">
+            <a href="#"><i class="bi bi-sliders"></i> Travel Preferences</a>
+          </li>
+          <li class="nav-item" data-panel="subscription">
+            <a href="#"><i class="bi bi-credit-card"></i> Subscription</a>
+          </li>
+          <li class="nav-item" data-panel="support">
+            <a href="#"><i class="bi bi-headset"></i> Support</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <button class="menu-toggle" id="menu-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="header-title">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="header-actions">
+          <div class="notification-bell">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge">3</span>
+          </div>
+          <div class="user-dropdown">
+            <button class="user-menu-toggle">
+              <img src="https://i.pravatar.cc/150?img=12" alt="User avatar" class="user-avatar-small">
+              <span>John Doe</span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" style="display: none;">
+              <a href="#" class="dropdown-item" data-panel="profile"><i class="bi bi-person"></i> Profile</a>
+              <a href="#" class="dropdown-item" data-panel="subscription"><i class="bi bi-gear"></i> Settings</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- Dashboard Overview Panel -->
+        <section class="dashboard-panel active" id="dashboard-panel">
+          <div class="dashboard-overview">
+            <div class="welcome-card">
+              <div class="welcome-content">
+                <h2>Welcome back, John!</h2>
+                <p>Your next Dubai experience is just a few clicks away.</p>
+                <button class="btn btn-primary">Book New Experience</button>
+              </div>
+              <div class="welcome-image">
+                <img src="/images/dubai-skyline.jpg" alt="Dubai Skyline" onerror="this.src='https://via.placeholder.com/300x200?text=Dubai+Skyline'">
+              </div>
+            </div>
+
+            <div class="stats-cards">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>3</h3>
+                  <p>Total Bookings</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-star"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>Premium</h3>
+                  <p>Current Plan</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>24 Days</h3>
+                  <p>Until Next Trip</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="upcoming-bookings">
+              <div class="section-header">
+                <h2>Upcoming Bookings</h2>
+                <a href="#" class="view-all" data-panel="bookings">View All</a>
+              </div>
+              <div class="booking-cards">
+                <div class="booking-card">
+                  <div class="booking-image">
+                    <img src="/images/burj-al-arab.jpg" alt="Burj Al Arab" onerror="this.src='https://via.placeholder.com/150x100?text=Burj+Al+Arab'">
+                  </div>
+                  <div class="booking-details">
+                    <h3>Luxury Dubai Weekend</h3>
+                    <div class="booking-dates">
+                      <i class="bi bi-calendar3"></i>
+                      <span>June 15 - June 18, 2025</span>
+                    </div>
+                    <div class="booking-status">
+                      <span class="status-badge confirmed">Confirmed</span>
+                    </div>
+                  </div>
+                  <div class="booking-actions">
+                    <button class="btn btn-sm btn-outline">Details</button>
+                  </div>
+                </div>
+                <div class="booking-card">
+                  <div class="booking-image">
+                    <img src="/images/desert-safari.jpg" alt="Desert Safari" onerror="this.src='https://via.placeholder.com/150x100?text=Desert+Safari'">
+                  </div>
+                  <div class="booking-details">
+                    <h3>Desert Safari Adventure</h3>
+                    <div class="booking-dates">
+                      <i class="bi bi-calendar3"></i>
+                      <span>July 10, 2025</span>
+                    </div>
+                    <div class="booking-status">
+                      <span class="status-badge pending">Pending</span>
+                    </div>
+                  </div>
+                  <div class="booking-actions">
+                    <button class="btn btn-sm btn-outline">Details</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-row">
+              <div class="activity-feed">
+                <div class="section-header">
+                  <h2>Recent Activity</h2>
+                </div>
+                <div class="activity-list">
+                  <div class="activity-item">
+                    <div class="activity-icon">
+                      <i class="bi bi-credit-card"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p>Subscription payment processed</p>
+                      <span class="activity-time">2 days ago</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon">
+                      <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p>New booking confirmed: Luxury Dubai Weekend</p>
+                      <span class="activity-time">5 days ago</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon">
+                      <i class="bi bi-chat-left-text"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p>Support ticket #12345 resolved</p>
+                      <span class="activity-time">1 week ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <div class="section-header">
+                  <h2>Quick Actions</h2>
+                </div>
+                <div class="action-buttons">
+                  <button class="action-button">
+                    <i class="bi bi-calendar-plus"></i>
+                    <span>New Booking</span>
+                  </button>
+                  <button class="action-button">
+                    <i class="bi bi-headset"></i>
+                    <span>Contact Support</span>
+                  </button>
+                  <button class="action-button">
+                    <i class="bi bi-credit-card"></i>
+                    <span>Manage Payment</span>
+                  </button>
+                  <button class="action-button">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>View Invoices</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Management Panel -->
+        <section class="dashboard-panel" id="profile-panel">
+          <div class="section-header">
+            <h2>Profile Management</h2>
+          </div>
+          <div class="profile-container">
+            <div class="profile-header">
+              <div class="profile-avatar">
+                <img src="https://i.pravatar.cc/150?img=12" alt="User avatar">
+                <button class="change-avatar-btn">
+                  <i class="bi bi-camera"></i>
+                </button>
+              </div>
+              <div class="profile-title">
+                <h2>John Doe</h2>
+                <p>Premium Member since January 2025</p>
+              </div>
+            </div>
+
+            <div class="profile-form card">
+              <form id="profile-form">
+                <div class="form-section">
+                  <h3>Personal Information</h3>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="firstName" class="form-label">First Name</label>
+                      <input type="text" id="firstName" name="firstName" class="form-input" value="John">
+                    </div>
+                    <div class="form-group">
+                      <label for="lastName" class="form-label">Last Name</label>
+                      <input type="text" id="lastName" name="lastName" class="form-input" value="Doe">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" value="john.doe@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" value="+1 (555) 123-4567">
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <h3>Address Information</h3>
+                  <div class="form-group">
+                    <label for="address" class="form-label">Street Address</label>
+                    <input type="text" id="address" name="address" class="form-input" value="123 Main Street">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="city" class="form-label">City</label>
+                      <input type="text" id="city" name="city" class="form-input" value="New York">
+                    </div>
+                    <div class="form-group">
+                      <label for="state" class="form-label">State/Province</label>
+                      <input type="text" id="state" name="state" class="form-input" value="NY">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="zipCode" class="form-label">Zip/Postal Code</label>
+                      <input type="text" id="zipCode" name="zipCode" class="form-input" value="10001">
+                    </div>
+                    <div class="form-group">
+                      <label for="country" class="form-label">Country</label>
+                      <select id="country" name="country" class="form-select">
+                        <option value="US" selected>United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AE">United Arab Emirates</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <h3>Password</h3>
+                  <div class="form-group">
+                    <label for="currentPassword" class="form-label">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" class="form-input" placeholder="Enter your current password">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="newPassword" class="form-label">New Password</label>
+                      <input type="password" id="newPassword" name="newPassword" class="form-input" placeholder="Enter new password">
+                    </div>
+                    <div class="form-group">
+                      <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                      <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm new password">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn btn-secondary">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Booking History Panel -->
+        <section class="dashboard-panel" id="bookings-panel">
+          <div class="section-header">
+            <h2>Booking History</h2>
+            <button class="btn btn-primary">New Booking</button>
+          </div>
+          
+          <div class="booking-filters">
+            <div class="search-filter">
+              <input type="text" placeholder="Search bookings..." class="form-input">
+            </div>
+            <div class="date-filter">
+              <select class="form-select">
+                <option value="all">All Time</option>
+                <option value="this-month">This Month</option>
+                <option value="last-month">Last Month</option>
+                <option value="this-year">This Year</option>
+              </select>
+            </div>
+            <div class="status-filter">
+              <select class="form-select">
+                <option value="all">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="bookings-list">
+            <div class="booking-item card">
+              <div class="booking-header">
+                <div class="booking-title">
+                  <h3>Luxury Dubai Weekend</h3>
+                  <span class="booking-id">Booking #DXB-12345</span>
+                </div>
+                <div class="booking-status">
+                  <span class="status-badge confirmed">Confirmed</span>
+                </div>
+              </div>
+              <div class="booking-details">
+                <div class="booking-info">
+                  <div class="info-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>June 15 - June 18, 2025</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-people"></i>
+                    <span>2 Adults</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Burj Al Arab, Dubai</span>
+                  </div>
+                </div>
+                <div class="booking-price">
+                  <span class="price-label">Total:</span>
+                  <span class="price-amount">$1,299</span>
+                </div>
+              </div>
+              <div class="booking-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-outline">Download Invoice</button>
+              </div>
+            </div>
+            
+            <div class="booking-item card">
+              <div class="booking-header">
+                <div class="booking-title">
+                  <h3>Desert Safari Adventure</h3>
+                  <span class="booking-id">Booking #DXB-12346</span>
+                </div>
+                <div class="booking-status">
+                  <span class="status-badge pending">Pending</span>
+                </div>
+              </div>
+              <div class="booking-details">
+                <div class="booking-info">
+                  <div class="info-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>July 10, 2025</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-people"></i>
+                    <span>4 Adults</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Arabian Desert, Dubai</span>
+                  </div>
+                </div>
+                <div class="booking-price">
+                  <span class="price-label">Total:</span>
+                  <span class="price-amount">$599</span>
+                </div>
+              </div>
+              <div class="booking-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-outline">Download Invoice</button>
+              </div>
+            </div>
+            
+            <div class="booking-item card">
+              <div class="booking-header">
+                <div class="booking-title">
+                  <h3>Palm Jumeirah Yacht Tour</h3>
+                  <span class="booking-id">Booking #DXB-12298</span>
+                </div>
+                <div class="booking-status">
+                  <span class="status-badge completed">Completed</span>
+                </div>
+              </div>
+              <div class="booking-details">
+                <div class="booking-info">
+                  <div class="info-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>March 22, 2025</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-people"></i>
+                    <span>6 Adults</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Dubai Marina, Palm Jumeirah</span>
+                  </div>
+                </div>
+                <div class="booking-price">
+                  <span class="price-label">Total:</span>
+                  <span class="price-amount">$899</span>
+                </div>
+              </div>
+              <div class="booking-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-outline">Download Invoice</button>
+                <button class="btn btn-accent">Leave Review</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pagination">
+            <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
+          </div>
+        </section>
+
+        <!-- Travel Preferences Panel -->
+        <section class="dashboard-panel" id="preferences-panel">
+          <div class="section-header">
+            <h2>Travel Preferences</h2>
+          </div>
+          
+          <div class="preferences-container">
+            <div class="card">
+              <form id="preferences-form">
+                <div class="form-section">
+                  <h3>General Preferences</h3>
+                  <div class="form-group">
+                    <label class="form-label">Preferred Travel Style</label>
+                    <div class="preference-buttons">
+                      <button type="button" class="preference-button active">Luxury</button>
+                      <button type="button" class="preference-button">Adventure</button>
+                      <button type="button" class="preference-button">Relaxation</button>
+                      <button type="button" class="preference-button">Cultural</button>
+                      <button type="button" class="preference-button">Family</button>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Budget Range per Trip</label>
+                    <select class="form-select">
+                      <option value="economy">Economy ($1,000 - $3,000)</option>
+                      <option value="standard">Standard ($3,000 - $5,000)</option>
+                      <option value="premium" selected>Premium ($5,000 - $10,000)</option>
+                      <option value="luxury">Luxury ($10,000+)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <h3>Accommodation Preferences</h3>
+                  <div class="form-group">
+                    <label class="form-label">Preferred Accommodation Type</label>
+                    <div class="checkbox-group">
+                      <input type="checkbox" id="hotel5star" name="accommodationType" value="hotel5star" checked>
+                      <label for="hotel5star" class="checkbox-label">5-Star Hotels</label>
+                    </div>
+                    <div class="checkbox-group">
+                      <input type="checkbox" id="resorts" name="accommodationType" value="resorts" checked>
+                      <label for="resorts" class="checkbox-label">Luxury Resorts</label>
+                    </div>
+                    <div class="checkbox-group">
+                      <input type="checkbox" id="villa" name="accommodationType" value="villa">
+                      <label for="villa" class="checkbox-label">Private Villas</label>
+                    </div>
+                    <div class="checkbox-group">
+                      <input type="checkbox" id="apartment" name="accommodationType" value="apartment">
+                      <label for="apartment" class="checkbox-label">Serviced Apartments</label>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="roomType" class="form-label">Preferred Room Type</label>
+                    <select id="roomType" name="roomType" class="form-select">
+                      <option value="standard">Standard Room</option>
+                      <option value="deluxe">Deluxe Room</option>
+                      <option value="suite" selected>Suite</option>
+                      <option value="presidential">Presidential Suite</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <h3>Activities & Experiences</h3>
+                  <div class="activities-grid">
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-shopping" name="activities" value="shopping" checked>
+                      <label for="activity-shopping">
+                        <i class="bi bi-bag"></i>
+                        <span>Luxury Shopping</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-dining" name="activities" value="dining" checked>
+                      <label for="activity-dining">
+                        <i class="bi bi-cup-hot"></i>
+                        <span>Fine Dining</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-beach" name="activities" value="beach" checked>
+                      <label for="activity-beach">
+                        <i class="bi bi-umbrella"></i>
+                        <span>Beach Clubs</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-desert" name="activities" value="desert">
+                      <label for="activity-desert">
+                        <i class="bi bi-brightness-high"></i>
+                        <span>Desert Safari</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-yacht" name="activities" value="yacht" checked>
+                      <label for="activity-yacht">
+                        <i class="bi bi-water"></i>
+                        <span>Yacht Cruises</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-nightlife" name="activities" value="nightlife">
+                      <label for="activity-nightlife">
+                        <i class="bi bi-moon-stars"></i>
+                        <span>Nightlife</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-attractions" name="activities" value="attractions">
+                      <label for="activity-attractions">
+                        <i class="bi bi-building"></i>
+                        <span>Attractions</span>
+                      </label>
+                    </div>
+                    <div class="activity-item">
+                      <input type="checkbox" id="activity-spa" name="activities" value="spa" checked>
+                      <label for="activity-spa">
+                        <i class="bi bi-droplet"></i>
+                        <span>Spa & Wellness</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <h3>Transportation Preferences</h3>
+                  <div class="form-group">
+                    <label class="form-label">Airport Transfer</label>
+                    <div class="radio-group">
+                      <input type="radio" id="transfer-standard" name="airportTransfer" value="standard">
+                      <label for="transfer-standard" class="radio-label">Standard</label>
+                    </div>
+                    <div class="radio-group">
+                      <input type="radio" id="transfer-business" name="airportTransfer" value="business" checked>
+                      <label for="transfer-business" class="radio-label">Business Class</label>
+                    </div>
+                    <div class="radio-group">
+                      <input type="radio" id="transfer-luxury" name="airportTransfer" value="luxury">
+                      <label for="transfer-luxury" class="radio-label">Luxury (Rolls Royce/Bentley)</label>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Daily Transportation</label>
+                    <div class="radio-group">
+                      <input type="radio" id="daily-standard" name="dailyTransportation" value="standard">
+                      <label for="daily-standard" class="radio-label">Standard</label>
+                    </div>
+                    <div class="radio-group">
+                      <input type="radio" id="daily-luxury" name="dailyTransportation" value="luxury" checked>
+                      <label for="daily-luxury" class="radio-label">Luxury Car</label>
+                    </div>
+                    <div class="radio-group">
+                      <input type="radio" id="daily-chauffeur" name="dailyTransportation" value="chauffeur">
+                      <label for="daily-chauffeur" class="radio-label">Chauffeur Service</label>
+                    </div>
+                    <div class="radio-group">
+                      <input type="radio" id="daily-supercar" name="dailyTransportation" value="supercar">
+                      <label for="daily-supercar" class="radio-label">Supercar Rental</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Save Preferences</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subscription Panel -->
+        <section class="dashboard-panel" id="subscription-panel">
+          <div class="section-header">
+            <h2>Subscription Management</h2>
+          </div>
+          
+          <div class="subscription-container">
+            <div class="current-plan card">
+              <div class="plan-badge premium">Premium Plan</div>
+              <div class="plan-header">
+                <h3>Your Current Plan</h3>
+                <div class="plan-price">
+                  <span class="amount">$499</span>
+                  <span class="period">/ month</span>
+                </div>
+              </div>
+              <div class="plan-details">
+                <div class="plan-info-item">
+                  <i class="bi bi-calendar"></i>
+                  <div>
+                    <span class="info-label">Billing Cycle</span>
+                    <span class="info-value">Monthly</span>
+                  </div>
+                </div>
+                <div class="plan-info-item">
+                  <i class="bi bi-credit-card"></i>
+                  <div>
+                    <span class="info-label">Payment Method</span>
+                    <span class="info-value">•••• •••• •••• 4242</span>
+                  </div>
+                </div>
+                <div class="plan-info-item">
+                  <i class="bi bi-calendar-check"></i>
+                  <div>
+                    <span class="info-label">Next Billing Date</span>
+                    <span class="info-value">June 15, 2025</span>
+                  </div>
+                </div>
+              </div>
+              <div class="plan-features">
+                <h4>Included Features</h4>
+                <ul>
+                  <li><i class="bi bi-check-circle"></i> Personalized itinerary planning</li>
+                  <li><i class="bi bi-check-circle"></i> Priority restaurant reservations</li>
+                  <li><i class="bi bi-check-circle"></i> Fast-track visa processing</li>
+                  <li><i class="bi bi-check-circle"></i> 24/7 concierge support</li>
+                  <li><i class="bi bi-check-circle"></i> Airport VIP meet & greet</li>
+                  <li><i class="bi bi-check-circle"></i> Exclusive event access</li>
+                </ul>
+              </div>
+              <div class="plan-actions">
+                <button class="btn btn-outline">Update Payment Method</button>
+                <button class="btn btn-secondary">Manage Subscription</button>
+              </div>
+            </div>
+            
+            <div class="subscription-options">
+              <h3>Available Plans</h3>
+              <div class="plans-grid">
+                <div class="plan-card">
+                  <div class="plan-header">
+                    <h4>Standard</h4>
+                    <div class="plan-price">
+                      <span class="amount">$199</span>
+                      <span class="period">/ month</span>
+                    </div>
+                  </div>
+                  <ul class="plan-features-list">
+                    <li>Basic itinerary planning</li>
+                    <li>Standard restaurant reservations</li>
+                    <li>Regular visa processing</li>
+                    <li>Business hours support</li>
+                    <li>Standard airport service</li>
+                  </ul>
+                  <button class="btn btn-outline">Downgrade</button>
+                </div>
+                <div class="plan-card current">
+                  <div class="plan-badge">Current</div>
+                  <div class="plan-header">
+                    <h4>Premium</h4>
+                    <div class="plan-price">
+                      <span class="amount">$499</span>
+                      <span class="period">/ month</span>
+                    </div>
+                  </div>
+                  <ul class="plan-features-list">
+                    <li>Personalized itinerary planning</li>
+                    <li>Priority restaurant reservations</li>
+                    <li>Fast-track visa processing</li>
+                    <li>24/7 concierge support</li>
+                    <li>Airport VIP meet & greet</li>
+                    <li>Exclusive event access</li>
+                  </ul>
+                </div>
+                <div class="plan-card">
+                  <div class="plan-header">
+                    <h4>Luxury</h4>
+                    <div class="plan-price">
+                      <span class="amount">$999</span>
+                      <span class="period">/ month</span>
+                    </div>
+                  </div>
+                  <ul class="plan-features-list">
+                    <li>All Premium features, plus:</li>
+                    <li>Private yacht excursion (monthly)</li>
+                    <li>Supercar rental (1 day/month)</li>
+                    <li>Helicopter tour of Dubai</li>
+                    <li>Dedicated personal butler</li>
+                    <li>VIP table at top nightclubs</li>
+                  </ul>
+                  <button class="btn btn-primary">Upgrade</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="billing-history card">
+              <div class="section-header">
+                <h3>Billing History</h3>
+                <button class="btn btn-sm btn-outline">Download All</button>
+              </div>
+              <div class="billing-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Invoice ID</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>May 15, 2025</td>
+                      <td>INV-12389</td>
+                      <td>$499.00</td>
+                      <td><span class="status-badge success">Paid</span></td>
+                      <td><button class="btn btn-sm btn-text">View</button></td>
+                    </tr>
+                    <tr>
+                      <td>April 15, 2025</td>
+                      <td>INV-12345</td>
+                      <td>$499.00</td>
+                      <td><span class="status-badge success">Paid</span></td>
+                      <td><button class="btn btn-sm btn-text">View</button></td>
+                    </tr>
+                    <tr>
+                      <td>March 15, 2025</td>
+                      <td>INV-12300</td>
+                      <td>$499.00</td>
+                      <td><span class="status-badge success">Paid</span></td>
+                      <td><button class="btn btn-sm btn-text">View</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Support Panel -->
+        <section class="dashboard-panel" id="support-panel">
+          <div class="section-header">
+            <h2>Customer Support</h2>
+            <button class="btn btn-primary">New Support Request</button>
+          </div>
+          
+          <div class="support-container">
+            <div class="support-tabs">
+              <button class="tab-button active" data-tab="tickets">Support Tickets</button>
+              <button class="tab-button" data-tab="chat">Live Chat</button>
+              <button class="tab-button" data-tab="faq">FAQ</button>
+            </div>
+            
+            <div class="tab-content active" id="tickets-tab">
+              <div class="support-tickets">
+                <div class="ticket-item card">
+                  <div class="ticket-header">
+                    <div class="ticket-title">
+                      <h3>Request for Airport Pickup Change</h3>
+                      <span class="ticket-id">Ticket #TK-5678</span>
+                    </div>
+                    <div class="ticket-status">
+                      <span class="status-badge pending">In Progress</span>
+                    </div>
+                  </div>
+                  <div class="ticket-details">
+                    <div class="ticket-info">
+                      <div class="info-item">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Created: May 3, 2025</span>
+                      </div>
+                      <div class="info-item">
+                        <i class="bi bi-person"></i>
+                        <span>Assigned to: Sarah Johnson</span>
+                      </div>
+                    </div>
+                    <div class="ticket-preview">
+                      I need to change my airport pickup time for my upcoming trip on June 15th...
+                    </div>
+                  </div>
+                  <div class="ticket-actions">
+                    <button class="btn btn-secondary">View Details</button>
+                  </div>
+                </div>
+                
+                <div class="ticket-item card">
+                  <div class="ticket-header">
+                    <div class="ticket-title">
+                      <h3>Question About Room Upgrade</h3>
+                      <span class="ticket-id">Ticket #TK-5645</span>
+                    </div>
+                    <div class="ticket-status">
+                      <span class="status-badge success">Resolved</span>
+                    </div>
+                  </div>
+                  <div class="ticket-details">
+                    <div class="ticket-info">
+                      <div class="info-item">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Created: April 28, 2025</span>
+                      </div>
+                      <div class="info-item">
+                        <i class="bi bi-person"></i>
+                        <span>Assigned to: Michael Lee</span>
+                      </div>
+                    </div>
+                    <div class="ticket-preview">
+                      I would like to know if it's possible to upgrade my room at Burj Al Arab...
+                    </div>
+                  </div>
+                  <div class="ticket-actions">
+                    <button class="btn btn-secondary">View Details</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="tab-content" id="chat-tab">
+              <div class="chat-container card">
+                <div class="chat-header">
+                  <h3>Live Support Chat</h3>
+                </div>
+                <div class="chat-messages">
+                  <div class="message-notice">
+                    <span>Connected with Sarah Johnson, Dubai Concierge</span>
+                  </div>
+                  <div class="message support">
+                    <div class="message-avatar">
+                      <img src="https://i.pravatar.cc/40?img=5" alt="Support Avatar">
+                    </div>
+                    <div class="message-content">
+                      <div class="message-sender">Sarah Johnson</div>
+                      <div class="message-text">Hello, John! How can I help you with your Dubai experience today?</div>
+                      <div class="message-time">10:32 AM</div>
+                    </div>
+                  </div>
+                  <div class="message user">
+                    <div class="message-content">
+                      <div class="message-text">Hi Sarah, I'm interested in adding a desert safari to my upcoming trip.</div>
+                      <div class="message-time">10:33 AM</div>
+                    </div>
+                  </div>
+                  <div class="message support">
+                    <div class="message-avatar">
+                      <img src="https://i.pravatar.cc/40?img=5" alt="Support Avatar">
+                    </div>
+                    <div class="message-content">
+                      <div class="message-sender">Sarah Johnson</div>
+                      <div class="message-text">I'd be happy to help you with that! We have several desert safari options available. Would you prefer a morning, afternoon, or evening safari experience?</div>
+                      <div class="message-time">10:35 AM</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-input">
+                  <input type="text" placeholder="Type your message here..." class="form-input">
+                  <button class="btn btn-primary"><i class="bi bi-send"></i></button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="tab-content" id="faq-tab">
+              <div class="faq-container card">
+                <div class="faq-search">
+                  <input type="text" placeholder="Search FAQ..." class="form-input">
+                </div>
+                <div class="faq-list">
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      <h3>What is included in the Premium Dubai Experience package?</h3>
+                      <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                      <p>The Premium Dubai Experience package includes:</p>
+                      <ul>
+                        <li>Personalized itinerary planning</li>
+                        <li>Priority restaurant reservations</li>
+                        <li>Fast-track visa processing</li>
+                        <li>24/7 concierge support</li>
+                        <li>Airport VIP meet & greet</li>
+                        <li>Exclusive event access</li>
+                      </ul>
+                      <p>This package is designed to provide a comprehensive luxury experience during your stay in Dubai.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      <h3>How can I modify or cancel a booking?</h3>
+                      <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                      <p>To modify or cancel a booking:</p>
+                      <ol>
+                        <li>Log in to your account</li>
+                        <li>Go to "Booking History" in your dashboard</li>
+                        <li>Find the booking you wish to modify</li>
+                        <li>Click "View Details"</li>
+                        <li>Select "Modify Booking" or "Cancel Booking"</li>
+                      </ol>
+                      <p>Please note that cancellation policies vary depending on the service. Most bookings can be canceled with a full refund up to 48 hours before the scheduled time.</p>
+                    </div>
+                  </div>
+                  
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      <h3>What is the difference between the Premium and Luxury subscription plans?</h3>
+                      <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                      <p>While both plans offer exceptional service, the Luxury plan includes several additional premium benefits:</p>
+                      <table class="comparison-table">
+                        <tr>
+                          <th>Feature</th>
+                          <th>Premium ($499/month)</th>
+                          <th>Luxury ($999/month)</th>
+                        </tr>
+                        <tr>
+                          <td>Concierge Support</td>
+                          <td>24/7</td>
+                          <td>24/7 with Dedicated Butler</td>
+                        </tr>
+                        <tr>
+                          <td>Transportation</td>
+                          <td>Luxury Car</td>
+                          <td>Supercar + Helicopter</td>
+                        </tr>
+                        <tr>
+                          <td>Yacht Access</td>
+                          <td>Additional Fee</td>
+                          <td>Monthly Excursion Included</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

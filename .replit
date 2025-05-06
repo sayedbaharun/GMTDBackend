@@ -1,0 +1,107 @@
+modules = ["nodejs-20", "postgresql-16"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["jq"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Seed Database"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Diagnostic Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Feedback Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Production"
+
+[[workflows.workflow]]
+name = "Seed Database"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node seed-db.js"
+
+[[workflows.workflow]]
+name = "Diagnostic Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node diagnostic-server.js"
+waitForPort = 8080
+
+[[workflows.workflow]]
+name = "Feedback Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=5050 node feedback-server.js"
+waitForPort = 5050
+
+[[workflows.workflow]]
+name = "Production"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "NODE_ENV=production node server.js"
+waitForPort = 5000
+
+[deployment]
+run = ["sh", "-c", "node index.js"]
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
+localPort = 4000
+externalPort = 3002
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 5050
+externalPort = 4200
+
+[[ports]]
+localPort = 6000
+externalPort = 6000
+
+[[ports]]
+localPort = 7000
+externalPort = 3003
+
+[[ports]]
+localPort = 8000
+externalPort = 80
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 9000
+externalPort = 9000

@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Get Me To Dubai</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <a href="/admin">Get Me To Dubai</a>
+        </div>
+        <div class="admin-badge">Admin</div>
+        <button class="close-sidebar" id="close-sidebar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      
+      <div class="user-info">
+        <div class="user-avatar">
+          <img src="https://i.pravatar.cc/150?img=8" alt="Admin avatar">
+        </div>
+        <div class="user-details">
+          <h3 class="user-name">Admin User</h3>
+          <p class="user-email">admin@getmetodubai.com</p>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <h4 class="nav-section-title">Management</h4>
+          <ul>
+            <li class="nav-item active" data-panel="dashboard">
+              <a href="#"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+            </li>
+            <li class="nav-item" data-panel="users">
+              <a href="#"><i class="bi bi-people"></i> User Management</a>
+            </li>
+            <li class="nav-item" data-panel="subscriptions">
+              <a href="#"><i class="bi bi-credit-card"></i> Subscriptions</a>
+            </li>
+            <li class="nav-item" data-panel="bookings">
+              <a href="#"><i class="bi bi-calendar-check"></i> Bookings</a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="nav-section">
+          <h4 class="nav-section-title">System</h4>
+          <ul>
+            <li class="nav-item" data-panel="monitoring">
+              <a href="#"><i class="bi bi-speedometer2"></i> Monitoring</a>
+            </li>
+            <li class="nav-item" data-panel="analytics">
+              <a href="#"><i class="bi bi-graph-up"></i> Analytics</a>
+            </li>
+            <li class="nav-item" data-panel="settings">
+              <a href="#"><i class="bi bi-gear"></i> Settings</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <button class="menu-toggle" id="menu-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="header-title">
+          <h1>Admin Dashboard</h1>
+        </div>
+        <div class="header-actions">
+          <div class="notification-bell">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge">5</span>
+          </div>
+          <div class="user-dropdown">
+            <button class="user-menu-toggle">
+              <img src="https://i.pravatar.cc/150?img=8" alt="User avatar" class="user-avatar-small">
+              <span>Admin User</span>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" style="display: none;">
+              <a href="#" class="dropdown-item"><i class="bi bi-person"></i> Profile</a>
+              <a href="#" class="dropdown-item"><i class="bi bi-gear"></i> Settings</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Admin Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- Dashboard Overview Panel -->
+        <section class="dashboard-panel active" id="dashboard-panel">
+          <div class="admin-overview">
+            <div class="stats-row">
+              <div class="stat-card">
+                <div class="stat-content">
+                  <h2>1,289</h2>
+                  <p>Total Users</p>
+                </div>
+                <div class="stat-chart">
+                  <div class="chart-placeholder">
+                    <i class="bi bi-people"></i>
+                    <span class="trend-badge up">+12.5%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-content">
+                  <h2>846</h2>
+                  <p>Active Subscriptions</p>
+                </div>
+                <div class="stat-chart">
+                  <div class="chart-placeholder">
+                    <i class="bi bi-credit-card"></i>
+                    <span class="trend-badge up">+8.2%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-content">
+                  <h2>428</h2>
+                  <p>Bookings This Month</p>
+                </div>
+                <div class="stat-chart">
+                  <div class="chart-placeholder">
+                    <i class="bi bi-calendar-check"></i>
+                    <span class="trend-badge up">+5.7%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-content">
+                  <h2>$412K</h2>
+                  <p>Monthly Revenue</p>
+                </div>
+                <div class="stat-chart">
+                  <div class="chart-placeholder">
+                    <i class="bi bi-currency-dollar"></i>
+                    <span class="trend-badge up">+15.3%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-card">
+                <div class="card-header">
+                  <h3>Revenue Overview</h3>
+                  <div class="card-actions">
+                    <select class="form-select-sm">
+                      <option>Last 7 days</option>
+                      <option selected>This Month</option>
+                      <option>Last Month</option>
+                      <option>This Year</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <!-- This would be a real chart in production -->
+                  <div class="placeholder-chart revenue-chart">
+                    <div class="chart-placeholder-text">Revenue Chart</div>
+                    <div class="chart-bars">
+                      <div class="chart-bar" style="height: 30%;"></div>
+                      <div class="chart-bar" style="height: 45%;"></div>
+                      <div class="chart-bar" style="height: 65%;"></div>
+                      <div class="chart-bar" style="height: 50%;"></div>
+                      <div class="chart-bar" style="height: 70%;"></div>
+                      <div class="chart-bar" style="height: 85%;"></div>
+                      <div class="chart-bar" style="height: 75%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="chart-card">
+                <div class="card-header">
+                  <h3>User Growth</h3>
+                  <div class="card-actions">
+                    <select class="form-select-sm">
+                      <option>Last 7 days</option>
+                      <option selected>This Month</option>
+                      <option>Last Month</option>
+                      <option>This Year</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="chart-container">
+                  <!-- This would be a real chart in production -->
+                  <div class="placeholder-chart users-chart">
+                    <div class="chart-placeholder-text">User Growth Chart</div>
+                    <div class="chart-line"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-row">
+              <div class="recent-activity card">
+                <div class="card-header">
+                  <h3>Recent Activity</h3>
+                  <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="activity-list">
+                  <div class="activity-item">
+                    <div class="activity-icon bg-primary">
+                      <i class="bi bi-person-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p><strong>New User Registration:</strong> John Smith joined the platform</p>
+                      <span class="activity-time">2 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-success">
+                      <i class="bi bi-credit-card"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p><strong>New Subscription:</strong> Emma Johnson upgraded to Luxury plan</p>
+                      <span class="activity-time">3 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-warning">
+                      <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p><strong>System Alert:</strong> High server load detected on API-02</p>
+                      <span class="activity-time">5 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-info">
+                      <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p><strong>New Booking:</strong> David Wilson booked Luxury Dubai Weekend</p>
+                      <span class="activity-time">Yesterday</span>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-danger">
+                      <i class="bi bi-x-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                      <p><strong>Subscription Cancellation:</strong> Michael Brown cancelled Premium plan</p>
+                      <span class="activity-time">Yesterday</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="top-packages card">
+                <div class="card-header">
+                  <h3>Top Packages</h3>
+                  <select class="form-select-sm">
+                    <option>Last 7 days</option>
+                    <option selected>This Month</option>
+                    <option>Last Month</option>
+                  </select>
+                </div>
+                <div class="packages-list">
+                  <div class="package-item">
+                    <div class="package-info">
+                      <h4>Luxury Dubai Weekend</h4>
+                      <p>3-day premium experience</p>
+                    </div>
+                    <div class="package-stats">
+                      <div class="package-progress">
+                        <div class="progress-bar" style="width: 85%"></div>
+                      </div>
+                      <div class="package-metrics">
+                        <span class="bookings">142 bookings</span>
+                        <span class="revenue">$184,600</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="package-item">
+                    <div class="package-info">
+                      <h4>Desert Safari Adventure</h4>
+                      <p>Full-day desert experience</p>
+                    </div>
+                    <div class="package-stats">
+                      <div class="package-progress">
+                        <div class="progress-bar" style="width: 62%"></div>
+                      </div>
+                      <div class="package-metrics">
+                        <span class="bookings">98 bookings</span>
+                        <span class="revenue">$58,700</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="package-item">
+                    <div class="package-info">
+                      <h4>Yacht Day Cruise</h4>
+                      <p>Premium yacht experience</p>
+                    </div>
+                    <div class="package-stats">
+                      <div class="package-progress">
+                        <div class="progress-bar" style="width: 45%"></div>
+                      </div>
+                      <div class="package-metrics">
+                        <span class="bookings">76 bookings</span>
+                        <span class="revenue">$68,400</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="package-item">
+                    <div class="package-info">
+                      <h4>Burj Khalifa VIP</h4>
+                      <p>Exclusive tower access</p>
+                    </div>
+                    <div class="package-stats">
+                      <div class="package-progress">
+                        <div class="progress-bar" style="width: 38%"></div>
+                      </div>
+                      <div class="package-metrics">
+                        <span class="bookings">65 bookings</span>
+                        <span class="revenue">$32,500</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Management Panel -->
+        <section class="dashboard-panel" id="users-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>User Management</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-primary"><i class="bi bi-plus"></i> Add New User</button>
+            </div>
+          </div>
+          
+          <div class="users-filters card">
+            <div class="filters-row">
+              <div class="search-filter">
+                <div class="search-input-group">
+                  <i class="bi bi-search"></i>
+                  <input type="text" placeholder="Search users..." class="form-input">
+                </div>
+              </div>
+              <div class="filter-group">
+                <select class="form-select">
+                  <option value="">Subscription Status</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <select class="form-select">
+                  <option value="">Plan Type</option>
+                  <option value="standard">Standard</option>
+                  <option value="premium">Premium</option>
+                  <option value="luxury">Luxury</option>
+                </select>
+                <select class="form-select">
+                  <option value="">Join Date</option>
+                  <option value="this-week">This Week</option>
+                  <option value="this-month">This Month</option>
+                  <option value="last-3-months">Last 3 Months</option>
+                  <option value="this-year">This Year</option>
+                </select>
+                <button class="btn btn-secondary">Filter</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="users-table-container card">
+            <table class="admin-table users-table">
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>User <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Email <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Subscription <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Join Date <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Last Login <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Status <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=12" alt="User" class="user-avatar-xs">
+                      <span>John Doe</span>
+                    </div>
+                  </td>
+                  <td>john.doe@example.com</td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td>May 15, 2025</td>
+                  <td>2 hours ago</td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=23" alt="User" class="user-avatar-xs">
+                      <span>Emma Johnson</span>
+                    </div>
+                  </td>
+                  <td>emma.j@example.com</td>
+                  <td><span class="badge luxury">Luxury</span></td>
+                  <td>April 28, 2025</td>
+                  <td>Yesterday</td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=33" alt="User" class="user-avatar-xs">
+                      <span>David Wilson</span>
+                    </div>
+                  </td>
+                  <td>david.w@example.com</td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td>April 15, 2025</td>
+                  <td>5 days ago</td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=44" alt="User" class="user-avatar-xs">
+                      <span>Sarah Thompson</span>
+                    </div>
+                  </td>
+                  <td>sarah.t@example.com</td>
+                  <td><span class="badge standard">Standard</span></td>
+                  <td>March 10, 2025</td>
+                  <td>2 weeks ago</td>
+                  <td><span class="status-badge warning">Pending</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=55" alt="User" class="user-avatar-xs">
+                      <span>Michael Brown</span>
+                    </div>
+                  </td>
+                  <td>michael.b@example.com</td>
+                  <td><span class="badge">None</span></td>
+                  <td>February 22, 2025</td>
+                  <td>1 month ago</td>
+                  <td><span class="status-badge danger">Cancelled</span></td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="table-footer">
+              <div class="items-per-page">
+                <span>Show</span>
+                <select class="form-select-sm">
+                  <option>10</option>
+                  <option selected>25</option>
+                  <option>50</option>
+                  <option>100</option>
+                </select>
+                <span>entries</span>
+              </div>
+              <div class="pagination">
+                <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subscriptions Management Panel -->
+        <section class="dashboard-panel" id="subscriptions-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>Subscription Management</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-secondary"><i class="bi bi-download"></i> Export</button>
+            </div>
+          </div>
+
+          <div class="subscription-stats-row">
+            <div class="stat-card dark">
+              <div class="stat-content">
+                <h2>846</h2>
+                <p>Total Active Subscriptions</p>
+              </div>
+            </div>
+            <div class="stat-card plan-card standard">
+              <div class="stat-content">
+                <h2>324</h2>
+                <p>Standard Plan</p>
+                <div class="plan-percentage">38.3%</div>
+              </div>
+            </div>
+            <div class="stat-card plan-card premium">
+              <div class="stat-content">
+                <h2>412</h2>
+                <p>Premium Plan</p>
+                <div class="plan-percentage">48.7%</div>
+              </div>
+            </div>
+            <div class="stat-card plan-card luxury">
+              <div class="stat-content">
+                <h2>110</h2>
+                <p>Luxury Plan</p>
+                <div class="plan-percentage">13.0%</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="subscriptions-filters card">
+            <div class="filters-row">
+              <div class="search-filter">
+                <div class="search-input-group">
+                  <i class="bi bi-search"></i>
+                  <input type="text" placeholder="Search subscriptions..." class="form-input">
+                </div>
+              </div>
+              <div class="filter-group">
+                <select class="form-select">
+                  <option value="">Status</option>
+                  <option value="active">Active</option>
+                  <option value="past_due">Past Due</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <select class="form-select">
+                  <option value="">Plan Type</option>
+                  <option value="standard">Standard</option>
+                  <option value="premium">Premium</option>
+                  <option value="luxury">Luxury</option>
+                </select>
+                <select class="form-select">
+                  <option value="">Billing Cycle</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="annual">Annual</option>
+                </select>
+                <button class="btn btn-secondary">Filter</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="subscriptions-table-container card">
+            <table class="admin-table subscriptions-table">
+              <thead>
+                <tr>
+                  <th>Customer <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Plan <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Status <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Start Date <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Next Billing <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Amount <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Billing Method <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=12" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>John Doe</div>
+                        <div class="cell-secondary">john.doe@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>Jan 15, 2025</td>
+                  <td>Jun 15, 2025</td>
+                  <td>$499/mo</td>
+                  <td>Visa •••• 4242</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=23" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Emma Johnson</div>
+                        <div class="cell-secondary">emma.j@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge luxury">Luxury</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>Feb 10, 2025</td>
+                  <td>Jun 10, 2025</td>
+                  <td>$999/mo</td>
+                  <td>Mastercard •••• 5678</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=33" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>David Wilson</div>
+                        <div class="cell-secondary">david.w@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td><span class="status-badge success">Active</span></td>
+                  <td>Mar 05, 2025</td>
+                  <td>Jun 05, 2025</td>
+                  <td>$499/mo</td>
+                  <td>Visa •••• 9876</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=44" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Sarah Thompson</div>
+                        <div class="cell-secondary">sarah.t@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge standard">Standard</span></td>
+                  <td><span class="status-badge warning">Past Due</span></td>
+                  <td>Apr 20, 2025</td>
+                  <td>May 20, 2025</td>
+                  <td>$199/mo</td>
+                  <td>Mastercard •••• 1234</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=55" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Michael Brown</div>
+                        <div class="cell-secondary">michael.b@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td><span class="status-badge danger">Cancelled</span></td>
+                  <td>Jan 10, 2025</td>
+                  <td>—</td>
+                  <td>$499/mo</td>
+                  <td>Visa •••• 5432</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="table-footer">
+              <div class="items-per-page">
+                <span>Show</span>
+                <select class="form-select-sm">
+                  <option>10</option>
+                  <option selected>25</option>
+                  <option>50</option>
+                  <option>100</option>
+                </select>
+                <span>entries</span>
+              </div>
+              <div class="pagination">
+                <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bookings Management Panel -->
+        <section class="dashboard-panel" id="bookings-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>Booking Management</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-secondary"><i class="bi bi-download"></i> Export</button>
+              <button class="btn btn-primary"><i class="bi bi-plus"></i> Create Booking</button>
+            </div>
+          </div>
+          
+          <div class="booking-stats-row">
+            <div class="stat-card">
+              <div class="stat-content">
+                <h2>428</h2>
+                <p>Total Bookings This Month</p>
+                <div class="trend up">
+                  <i class="bi bi-graph-up-arrow"></i>
+                  <span>+12.3% from last month</span>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-content">
+                <h2>324</h2>
+                <p>Confirmed</p>
+                <div class="stat-number-sm">75.7%</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-content">
+                <h2>65</h2>
+                <p>Pending</p>
+                <div class="stat-number-sm">15.2%</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-content">
+                <h2>39</h2>
+                <p>Cancelled</p>
+                <div class="stat-number-sm">9.1%</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bookings-filters card">
+            <div class="filters-row">
+              <div class="search-filter">
+                <div class="search-input-group">
+                  <i class="bi bi-search"></i>
+                  <input type="text" placeholder="Search bookings..." class="form-input">
+                </div>
+              </div>
+              <div class="filter-group">
+                <select class="form-select">
+                  <option value="">Status</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="pending">Pending</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <select class="form-select">
+                  <option value="">Package Type</option>
+                  <option value="weekend">Luxury Weekend</option>
+                  <option value="safari">Desert Safari</option>
+                  <option value="yacht">Yacht Day</option>
+                  <option value="custom">Custom Package</option>
+                </select>
+                <div class="date-range-picker">
+                  <input type="date" class="form-input" placeholder="From">
+                  <input type="date" class="form-input" placeholder="To">
+                </div>
+                <button class="btn btn-secondary">Filter</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bookings-table-container card">
+            <table class="admin-table bookings-table">
+              <thead>
+                <tr>
+                  <th>Booking ID <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Customer <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Package <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Date <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Status <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Amount <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Created <i class="bi bi-arrow-down-up"></i></th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>DXB-12345</td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=12" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>John Doe</div>
+                        <div class="cell-secondary">john.doe@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Luxury Dubai Weekend</td>
+                  <td>Jun 15 - Jun 18, 2025</td>
+                  <td><span class="status-badge confirmed">Confirmed</span></td>
+                  <td>$1,299</td>
+                  <td>May 10, 2025</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>DXB-12346</td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=23" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Emma Johnson</div>
+                        <div class="cell-secondary">emma.j@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Desert Safari Adventure</td>
+                  <td>Jul 10, 2025</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                  <td>$599</td>
+                  <td>May 08, 2025</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>DXB-12335</td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=33" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>David Wilson</div>
+                        <div class="cell-secondary">david.w@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Yacht Day Cruise</td>
+                  <td>Jun 25, 2025</td>
+                  <td><span class="status-badge confirmed">Confirmed</span></td>
+                  <td>$899</td>
+                  <td>May 05, 2025</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>DXB-12298</td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=44" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Sarah Thompson</div>
+                        <div class="cell-secondary">sarah.t@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Burj Khalifa VIP</td>
+                  <td>Jun 05, 2025</td>
+                  <td><span class="status-badge cancelled">Cancelled</span></td>
+                  <td>$499</td>
+                  <td>May 01, 2025</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>DXB-12285</td>
+                  <td>
+                    <div class="user-cell">
+                      <img src="https://i.pravatar.cc/36?img=55" alt="User" class="user-avatar-xs">
+                      <div>
+                        <div>Michael Brown</div>
+                        <div class="cell-secondary">michael.b@example.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Palm Jumeirah Tour</td>
+                  <td>May 20, 2025</td>
+                  <td><span class="status-badge completed">Completed</span></td>
+                  <td>$349</td>
+                  <td>Apr 25, 2025</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn-icon" title="Edit"><i class="bi bi-pencil"></i></button>
+                      <button class="btn-icon" title="View Details"><i class="bi bi-eye"></i></button>
+                      <button class="btn-icon" title="More Options"><i class="bi bi-three-dots-vertical"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="table-footer">
+              <div class="items-per-page">
+                <span>Show</span>
+                <select class="form-select-sm">
+                  <option>10</option>
+                  <option selected>25</option>
+                  <option>50</option>
+                  <option>100</option>
+                </select>
+                <span>entries</span>
+              </div>
+              <div class="pagination">
+                <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- System Monitoring Panel -->
+        <section class="dashboard-panel" id="monitoring-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>System Monitoring</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            </div>
+          </div>
+          
+          <div class="server-health-grid">
+            <div class="server-health-card card">
+              <div class="server-header">
+                <h3>API Server</h3>
+                <span class="status-badge success">Healthy</span>
+              </div>
+              <div class="server-metrics">
+                <div class="metric-item">
+                  <span class="metric-label">CPU Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 35%"></div>
+                  </div>
+                  <span class="metric-value">35%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Memory Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 42%"></div>
+                  </div>
+                  <span class="metric-value">42%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Disk Space</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 28%"></div>
+                  </div>
+                  <span class="metric-value">28%</span>
+                </div>
+              </div>
+              <div class="server-stats">
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Uptime</span>
+                    <span class="stat-value">99.98%</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Response Time</span>
+                    <span class="stat-value">124ms</span>
+                  </div>
+                </div>
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Requests</span>
+                    <span class="stat-value">2.3K/min</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Errors</span>
+                    <span class="stat-value">0.02%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="server-health-card card">
+              <div class="server-header">
+                <h3>Database Server</h3>
+                <span class="status-badge success">Healthy</span>
+              </div>
+              <div class="server-metrics">
+                <div class="metric-item">
+                  <span class="metric-label">CPU Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 48%"></div>
+                  </div>
+                  <span class="metric-value">48%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Memory Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 65%"></div>
+                  </div>
+                  <span class="metric-value">65%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Disk Space</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 53%"></div>
+                  </div>
+                  <span class="metric-value">53%</span>
+                </div>
+              </div>
+              <div class="server-stats">
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Uptime</span>
+                    <span class="stat-value">99.99%</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Query Time</span>
+                    <span class="stat-value">89ms</span>
+                  </div>
+                </div>
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Connections</span>
+                    <span class="stat-value">428</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Queries</span>
+                    <span class="stat-value">5.7K/min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="server-health-card card">
+              <div class="server-header">
+                <h3>Payment Gateway</h3>
+                <span class="status-badge success">Healthy</span>
+              </div>
+              <div class="server-metrics">
+                <div class="metric-item">
+                  <span class="metric-label">Success Rate</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 99.7%"></div>
+                  </div>
+                  <span class="metric-value">99.7%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Response Time</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 25%"></div>
+                  </div>
+                  <span class="metric-value">312ms</span>
+                </div>
+              </div>
+              <div class="server-stats">
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Transactions</span>
+                    <span class="stat-value">824 today</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Failures</span>
+                    <span class="stat-value">3 today</span>
+                  </div>
+                </div>
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Volume</span>
+                    <span class="stat-value">$58.3K</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Avg. Time</span>
+                    <span class="stat-value">1.2s</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="server-health-card card">
+              <div class="server-header">
+                <h3>Web Servers</h3>
+                <span class="status-badge warning">Warning</span>
+              </div>
+              <div class="server-metrics">
+                <div class="metric-item">
+                  <span class="metric-label">CPU Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar warning" style="width: 78%"></div>
+                  </div>
+                  <span class="metric-value">78%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Memory Usage</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar" style="width: 54%"></div>
+                  </div>
+                  <span class="metric-value">54%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Response Time</span>
+                  <div class="metric-progress">
+                    <div class="progress-bar warning" style="width: 65%"></div>
+                  </div>
+                  <span class="metric-value">456ms</span>
+                </div>
+              </div>
+              <div class="server-stats">
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Traffic</span>
+                    <span class="stat-value">12.8K/min</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Errors</span>
+                    <span class="stat-value">0.08%</span>
+                  </div>
+                </div>
+                <div class="stat-group">
+                  <div class="stat-item">
+                    <span class="stat-label">Server Count</span>
+                    <span class="stat-value">4/5 online</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Load Balance</span>
+                    <span class="stat-value">Uneven</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="system-logs card">
+            <div class="card-header">
+              <h3>System Logs</h3>
+              <div class="filter-group">
+                <select class="form-select-sm">
+                  <option value="all">All Logs</option>
+                  <option value="error">Errors Only</option>
+                  <option value="warning">Warnings & Errors</option>
+                  <option value="info">Info & Above</option>
+                </select>
+                <input type="text" class="form-input-sm" placeholder="Search logs...">
+              </div>
+            </div>
+            <div class="log-container">
+              <div class="log-entry error">
+                <div class="log-timestamp">2025-06-05 14:22:36</div>
+                <div class="log-level">ERROR</div>
+                <div class="log-source">web-server-03</div>
+                <div class="log-message">Connection timeout for /api/bookings/process after 30s</div>
+              </div>
+              <div class="log-entry warning">
+                <div class="log-timestamp">2025-06-05 14:20:15</div>
+                <div class="log-level">WARN</div>
+                <div class="log-source">db-server-01</div>
+                <div class="log-message">High query execution time: 3245ms for UserBookingHistory</div>
+              </div>
+              <div class="log-entry info">
+                <div class="log-timestamp">2025-06-05 14:19:42</div>
+                <div class="log-level">INFO</div>
+                <div class="log-source">api-server-02</div>
+                <div class="log-message">Auto-scaling triggered: adding 1 instance to api-server pool</div>
+              </div>
+              <div class="log-entry info">
+                <div class="log-timestamp">2025-06-05 14:18:33</div>
+                <div class="log-level">INFO</div>
+                <div class="log-source">payment-gateway</div>
+                <div class="log-message">Successfully processed 25 subscription payments</div>
+              </div>
+              <div class="log-entry warning">
+                <div class="log-timestamp">2025-06-05 14:15:27</div>
+                <div class="log-level">WARN</div>
+                <div class="log-source">web-server-02</div>
+                <div class="log-message">Memory usage approaching threshold: 78% (1.8GB/2.5GB)</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Analytics Panel -->
+        <section class="dashboard-panel" id="analytics-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>Analytics Dashboard</h2>
+            </div>
+            <div class="panel-actions">
+              <div class="date-range-picker">
+                <input type="date" class="form-input-sm" value="2025-05-01">
+                <span>to</span>
+                <input type="date" class="form-input-sm" value="2025-06-05">
+              </div>
+              <button class="btn btn-secondary">Apply</button>
+              <button class="btn btn-outline"><i class="bi bi-download"></i> Export</button>
+            </div>
+          </div>
+          
+          <div class="analytics-row">
+            <div class="analytics-card card">
+              <div class="card-header">
+                <h3>User Acquisition & Retention</h3>
+                <select class="form-select-sm">
+                  <option>Last 7 days</option>
+                  <option selected>This Month</option>
+                  <option>Last Month</option>
+                  <option>This Year</option>
+                </select>
+              </div>
+              <div class="analytics-chart">
+                <div class="placeholder-chart">
+                  <div class="chart-placeholder-text">User Acquisition Chart</div>
+                  <div class="chart-bars two-series">
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: 65%;"></div>
+                      <div class="chart-bar secondary" style="height: 45%;"></div>
+                    </div>
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: 78%;"></div>
+                      <div class="chart-bar secondary" style="height: 52%;"></div>
+                    </div>
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: 92%;"></div>
+                      <div class="chart-bar secondary" style="height: 63%;"></div>
+                    </div>
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: 86%;"></div>
+                      <div class="chart-bar secondary" style="height: 58%;"></div>
+                    </div>
+                    <div class="chart-bar-group">
+                      <div class="chart-bar" style="height: 95%;"></div>
+                      <div class="chart-bar secondary" style="height: 75%;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <div class="color-box primary"></div>
+                    <span>New Users</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="color-box secondary"></div>
+                    <span>Retained Users</span>
+                  </div>
+                </div>
+              </div>
+              <div class="analytics-metrics">
+                <div class="metric-card">
+                  <h4>New Users</h4>
+                  <div class="metric-value">352</div>
+                  <div class="metric-trend up">+12.8%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Retention Rate</h4>
+                  <div class="metric-value">86.5%</div>
+                  <div class="metric-trend up">+2.3%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Churn Rate</h4>
+                  <div class="metric-value">5.2%</div>
+                  <div class="metric-trend down">-1.4%</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="analytics-card card">
+              <div class="card-header">
+                <h3>Revenue Breakdown</h3>
+                <select class="form-select-sm">
+                  <option>Last 7 days</option>
+                  <option selected>This Month</option>
+                  <option>Last Month</option>
+                  <option>This Year</option>
+                </select>
+              </div>
+              <div class="analytics-chart">
+                <div class="placeholder-chart">
+                  <div class="chart-placeholder-text">Revenue Breakdown Chart</div>
+                  <div class="chart-pie">
+                    <div class="pie-segment segment-1" style="--segment-size: 48%;"></div>
+                    <div class="pie-segment segment-2" style="--segment-size: 32%;"></div>
+                    <div class="pie-segment segment-3" style="--segment-size: 20%;"></div>
+                  </div>
+                </div>
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <div class="color-box premium"></div>
+                    <span>Premium Plan</span>
+                    <span class="legend-value">48%</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="color-box luxury"></div>
+                    <span>Luxury Plan</span>
+                    <span class="legend-value">32%</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="color-box standard"></div>
+                    <span>Standard Plan</span>
+                    <span class="legend-value">20%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="analytics-metrics">
+                <div class="metric-card">
+                  <h4>Total Revenue</h4>
+                  <div class="metric-value">$412,847</div>
+                  <div class="metric-trend up">+15.3%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Avg. Revenue per User</h4>
+                  <div class="metric-value">$487</div>
+                  <div class="metric-trend up">+4.7%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Conversion Rate</h4>
+                  <div class="metric-value">9.8%</div>
+                  <div class="metric-trend up">+0.6%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analytics-row">
+            <div class="analytics-card card">
+              <div class="card-header">
+                <h3>Booking Trends</h3>
+                <select class="form-select-sm">
+                  <option>Last 7 days</option>
+                  <option selected>This Month</option>
+                  <option>Last Month</option>
+                  <option>This Year</option>
+                </select>
+              </div>
+              <div class="analytics-chart">
+                <div class="placeholder-chart">
+                  <div class="chart-placeholder-text">Booking Trends Chart</div>
+                  <div class="chart-area"></div>
+                </div>
+              </div>
+              <div class="analytics-metrics">
+                <div class="metric-card">
+                  <h4>Total Bookings</h4>
+                  <div class="metric-value">428</div>
+                  <div class="metric-trend up">+5.7%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Avg. Booking Value</h4>
+                  <div class="metric-value">$689</div>
+                  <div class="metric-trend up">+8.2%</div>
+                </div>
+                <div class="metric-card">
+                  <h4>Repeat Bookings</h4>
+                  <div class="metric-value">32%</div>
+                  <div class="metric-trend up">+3.5%</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="analytics-card card">
+              <div class="card-header">
+                <h3>Geographic Distribution</h3>
+                <select class="form-select-sm">
+                  <option>Users</option>
+                  <option selected>Bookings</option>
+                  <option>Revenue</option>
+                </select>
+              </div>
+              <div class="analytics-chart map-chart">
+                <div class="placeholder-chart">
+                  <div class="chart-placeholder-text">Geographic Map Chart</div>
+                  <div class="chart-map-placeholder"></div>
+                </div>
+              </div>
+              <div class="geo-metrics">
+                <div class="geo-metrics-table">
+                  <div class="geo-metrics-header">
+                    <div>Country</div>
+                    <div>Bookings</div>
+                    <div>Share</div>
+                    <div>Growth</div>
+                  </div>
+                  <div class="geo-metrics-row">
+                    <div>United Kingdom</div>
+                    <div>112</div>
+                    <div>26.2%</div>
+                    <div class="trend up">+8.4%</div>
+                  </div>
+                  <div class="geo-metrics-row">
+                    <div>United States</div>
+                    <div>87</div>
+                    <div>20.3%</div>
+                    <div class="trend up">+12.7%</div>
+                  </div>
+                  <div class="geo-metrics-row">
+                    <div>Saudi Arabia</div>
+                    <div>65</div>
+                    <div>15.2%</div>
+                    <div class="trend up">+5.3%</div>
+                  </div>
+                  <div class="geo-metrics-row">
+                    <div>Russia</div>
+                    <div>42</div>
+                    <div>9.8%</div>
+                    <div class="trend down">-2.1%</div>
+                  </div>
+                  <div class="geo-metrics-row">
+                    <div>India</div>
+                    <div>38</div>
+                    <div>8.9%</div>
+                    <div class="trend up">+14.5%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Panel -->
+        <section class="dashboard-panel" id="settings-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>System Settings</h2>
+            </div>
+          </div>
+          
+          <div class="settings-container">
+            <div class="settings-sidebar card">
+              <div class="settings-nav">
+                <button class="settings-nav-item active" data-settings="general">
+                  <i class="bi bi-gear"></i>
+                  <span>General</span>
+                </button>
+                <button class="settings-nav-item" data-settings="users">
+                  <i class="bi bi-people"></i>
+                  <span>User Settings</span>
+                </button>
+                <button class="settings-nav-item" data-settings="subscriptions">
+                  <i class="bi bi-credit-card"></i>
+                  <span>Subscriptions</span>
+                </button>
+                <button class="settings-nav-item" data-settings="notifications">
+                  <i class="bi bi-bell"></i>
+                  <span>Notifications</span>
+                </button>
+                <button class="settings-nav-item" data-settings="security">
+                  <i class="bi bi-shield-lock"></i>
+                  <span>Security</span>
+                </button>
+                <button class="settings-nav-item" data-settings="api">
+                  <i class="bi bi-code-slash"></i>
+                  <span>API Settings</span>
+                </button>
+                <button class="settings-nav-item" data-settings="integrations">
+                  <i class="bi bi-boxes"></i>
+                  <span>Integrations</span>
+                </button>
+                <button class="settings-nav-item" data-settings="logs">
+                  <i class="bi bi-journal-text"></i>
+                  <span>Logs & Audits</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="settings-content card">
+              <div class="settings-panel active" id="general-settings">
+                <h3>General Settings</h3>
+                <form id="general-settings-form">
+                  <div class="form-section">
+                    <div class="form-group">
+                      <label for="company_name" class="form-label">Company Name</label>
+                      <input type="text" id="company_name" name="company_name" class="form-input" value="Get Me To Dubai">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="contact_email" class="form-label">Contact Email</label>
+                        <input type="email" id="contact_email" name="contact_email" class="form-input" value="info@getmetodubai.com">
+                      </div>
+                      <div class="form-group">
+                        <label for="contact_phone" class="form-label">Contact Phone</label>
+                        <input type="tel" id="contact_phone" name="contact_phone" class="form-input" value="+971 50 123 4567">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="timezone" class="form-label">Default Timezone</label>
+                      <select id="timezone" name="timezone" class="form-select">
+                        <option value="GMT+4">Dubai (GMT+4)</option>
+                        <option value="GMT+0">London (GMT+0)</option>
+                        <option value="GMT-5">New York (GMT-5)</option>
+                        <option value="GMT+5:30">Mumbai (GMT+5:30)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="date_format" class="form-label">Date Format</label>
+                      <select id="date_format" name="date_format" class="form-select">
+                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                        <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
+                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-section">
+                    <h4>System Maintenance</h4>
+                    <div class="form-group">
+                      <label for="maintenance_mode" class="form-label">Maintenance Mode</label>
+                      <div class="toggle-switch">
+                        <input type="checkbox" id="maintenance_mode" name="maintenance_mode">
+                        <label for="maintenance_mode"></label>
+                      </div>
+                      <p class="input-hint">When enabled, the system will display a maintenance page to all non-admin users.</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="maintenance_message" class="form-label">Maintenance Message</label>
+                      <textarea id="maintenance_message" name="maintenance_message" class="form-input" rows="3">We're performing scheduled maintenance to improve your experience. Please check back in a few hours.</textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="scheduled_maintenance" class="form-label">Schedule Maintenance</label>
+                      <div class="form-row">
+                        <input type="date" id="maintenance_date" name="maintenance_date" class="form-input" placeholder="Date">
+                        <input type="time" id="maintenance_time" name="maintenance_time" class="form-input" placeholder="Time">
+                        <input type="number" id="maintenance_duration" name="maintenance_duration" class="form-input" placeholder="Duration (hours)" min="1" max="24">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

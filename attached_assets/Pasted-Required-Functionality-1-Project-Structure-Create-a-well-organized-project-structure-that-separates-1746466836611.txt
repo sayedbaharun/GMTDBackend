@@ -1,0 +1,106 @@
+Required Functionality
+1. Project Structure
+Create a well-organized project structure that separates:
+
+API routes
+Controllers
+Services
+Middleware
+Type definitions
+Utility functions
+
+2. User Authentication
+Implement secure authentication using Supabase Auth with the following features:
+
+User registration with email/password
+User login with session management
+Password reset functionality
+Session validation middleware for protected routes
+
+3. Multi-Step Onboarding Flow
+Create API endpoints to support a multi-step onboarding process:
+
+Step 1: Collect basic user information (name, email, phone, company)
+Step 2: Collect additional details if needed
+Step 3: Process payment and complete onboarding
+All steps should be protected by authentication middleware
+After successful payment, update the user's profile with onboarding_complete: true
+
+4. Stripe Integration
+Implement comprehensive Stripe integration:
+
+Create Stripe customers when users register
+Handle subscription creation and management
+Process webhook events from Stripe:
+
+customer.subscription.created
+customer.subscription.updated
+customer.subscription.deleted
+invoice.payment_succeeded
+invoice.payment_failed
+
+
+Create a Stripe Customer Portal session for users to manage their subscriptions
+
+5. Required API Endpoints
+Implement the following REST API endpoints:
+Authentication
+
+POST /api/auth/register - Register a new user
+POST /api/auth/login - Login an existing user
+POST /api/auth/logout - Logout the current user
+POST /api/auth/reset-password - Request a password reset
+
+User Profile
+
+GET /api/user/profile - Get the current user's profile
+PUT /api/user/profile - Update the current user's profile
+
+Onboarding
+
+POST /api/onboarding/user-info - Save basic user information
+POST /api/onboarding/complete - Mark onboarding as complete
+
+Subscriptions
+
+POST /api/subscriptions/create - Create a new subscription
+GET /api/subscriptions/status - Get current subscription status
+POST /api/subscriptions/portal - Create a Stripe Customer Portal session
+
+Webhooks
+
+POST /api/webhooks/stripe - Handle Stripe webhook events
+
+6. Error Handling and Validation
+
+Implement comprehensive error handling throughout the application
+Use middleware for request validation
+Provide meaningful error messages and appropriate HTTP status codes
+Log errors for debugging purposes
+
+7. Security Features
+
+Implement CORS protection
+Add rate limiting to prevent abuse
+Ensure proper Stripe webhook signature verification
+Use Supabase Row Level Security policies as defined in the schema
+
+8. Testing
+
+Provide instructions for testing the API endpoints
+Include example requests for each endpoint
+Document how to use Stripe test mode
+
+9. Documentation
+
+Create comprehensive API documentation
+Document the project structure
+Provide setup instructions for local development
+
+Deliverables
+
+Complete Express/TypeScript backend codebase
+Instructions for setting up and running the application
+API documentation
+
+Make sure all code follows TypeScript best practices with proper typing, error handling, and follows a clean, maintainable structure. The application should work with the provided environment variables without modification.RetryClaude can make mistakes. Please double-check responses. 3.7 Sonnet

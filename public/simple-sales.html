@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dubai Travel Experience - Sales Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3 {
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .package-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .package-card {
+      flex: 1;
+      min-width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .package-title {
+      font-size: 24px;
+      margin-top: 0;
+    }
+    
+    .package-price {
+      font-size: 32px;
+      font-weight: bold;
+      color: #3b82f6;
+      margin: 10px 0;
+    }
+    
+    .package-features {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .package-features li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .package-features li:last-child {
+      border-bottom: none;
+    }
+    
+    .cta-button {
+      display: block;
+      width: 100%;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    .cta-button:hover {
+      background-color: #2563eb;
+    }
+    
+    .testimonials {
+      margin-top: 50px;
+    }
+    
+    .testimonial {
+      background-color: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .testimonial-quote {
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    
+    .testimonial-author {
+      font-weight: bold;
+    }
+    
+    .faq {
+      margin-top: 50px;
+    }
+    
+    .faq-item {
+      margin-bottom: 20px;
+    }
+    
+    .faq-question {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .faq-answer {
+      color: #666;
+    }
+    
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      color: #666;
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dubai Travel Experiences</h1>
+    <p>Choose the perfect Dubai package for your next adventure</p>
+    
+    <div class="package-container">
+      <!-- Standard Package -->
+      <div class="package-card">
+        <h2 class="package-title">Standard Experience</h2>
+        <div class="package-price">$499</div>
+        <p>per person</p>
+        <ul class="package-features">
+          <li>City tour of major Dubai landmarks</li>
+          <li>Desert safari experience</li>
+          <li>Dubai Mall shopping</li>
+          <li>Burj Khalifa observation deck</li>
+          <li>4-star hotel (3 nights)</li>
+        </ul>
+        <button class="cta-button">Book Standard Package</button>
+      </div>
+      
+      <!-- Premium Package -->
+      <div class="package-card">
+        <h2 class="package-title">Premium Experience</h2>
+        <div class="package-price">$899</div>
+        <p>per person</p>
+        <ul class="package-features">
+          <li>Private city tour with guide</li>
+          <li>Premium desert safari with dinner</li>
+          <li>VIP shopping experience</li>
+          <li>Burj Khalifa At The Top SKY</li>
+          <li>5-star hotel (5 nights)</li>
+          <li>Private airport transfers</li>
+        </ul>
+        <button class="cta-button">Book Premium Package</button>
+      </div>
+      
+      <!-- Luxury Package -->
+      <div class="package-card">
+        <h2 class="package-title">Luxury Experience</h2>
+        <div class="package-price">$1,499</div>
+        <p>per person</p>
+        <ul class="package-features">
+          <li>Helicopter tour of Dubai</li>
+          <li>Luxury yacht cruise</li>
+          <li>Private shopping concierge</li>
+          <li>Michelin star dining experiences</li>
+          <li>Luxury 5-star hotel suite (7 nights)</li>
+          <li>Dedicated concierge service</li>
+        </ul>
+        <button class="cta-button">Book Luxury Package</button>
+      </div>
+    </div>
+    
+    <div class="testimonials">
+      <h2>What Our Customers Say</h2>
+      
+      <div class="testimonial">
+        <p class="testimonial-quote">"Our Dubai trip was absolutely amazing! The premium package offered everything we needed and more. The private tours made all the difference."</p>
+        <p class="testimonial-author">- Sarah Johnson, London</p>
+      </div>
+      
+      <div class="testimonial">
+        <p class="testimonial-quote">"The luxury experience was worth every penny. From the helicopter tour to the yacht cruise, everything was perfectly organized."</p>
+        <p class="testimonial-author">- Michael Chen, New York</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <h2>Frequently Asked Questions</h2>
+      
+      <div class="faq-item">
+        <p class="faq-question">What's the best time to visit Dubai?</p>
+        <p class="faq-answer">The best time to visit Dubai is between November and March when the weather is pleasant and ideal for outdoor activities.</p>
+      </div>
+      
+      <div class="faq-item">
+        <p class="faq-question">Are meals included in the packages?</p>
+        <p class="faq-answer">All packages include breakfast at your hotel. The Premium and Luxury packages include additional meals during tours and experiences.</p>
+      </div>
+      
+      <div class="faq-item">
+        <p class="faq-question">Can I customize my package?</p>
+        <p class="faq-answer">Yes! We offer customization options for all packages. Contact our travel specialists to create your perfect Dubai experience.</p>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>© 2023 Dubai Travel Experience. All rights reserved.</p>
+      <p>Contact us: info@dubaitravel.com | +1-800-DUBAI-TRAVEL</p>
+    </div>
+  </div>
+</body>
+</html>

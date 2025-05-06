@@ -1,0 +1,62 @@
+import { ArrowRight } from "lucide-react"
+
+const steps = [
+  {
+    number: "01",
+    title: "Create Account",
+    description: "Sign up in seconds and select your preferred membership plan.",
+  },
+  {
+    number: "02",
+    title: "Chat with AI",
+    description: "Tell our AI about your travel dates, budget, and the experiences you're looking for.",
+  },
+  {
+    number: "03",
+    title: "Review Options",
+    description: "Receive personalized suggestions for accommodations, dining, and activities.",
+  },
+  {
+    number: "04",
+    title: "Start Booking",
+    description: "Approve your itinerary with one click and let our AI handle all the reservations.",
+  },
+]
+
+const Onboarding = () => {
+  return (
+    <section className="section-padding bg-navy">
+      <div className="container mx-auto container-padding">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+            Your Journey Starts in <span className="gradient-text">60 Seconds</span>
+          </h2>
+          <p className="text-ivory/80 max-w-2xl mx-auto">
+            Getting started with GetMeToDub.ai is simple. Our AI concierge handles all the details so you can focus on
+            enjoying your Dubai experience.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step, index) => (
+            <div key={index} className="relative">
+              <div className="bg-navy/50 border border-platinum/20 rounded-lg p-6 h-full card-hover">
+                <div className="text-4xl font-heading font-bold text-gold/30 mb-4">{step.number}</div>
+                <h3 className="text-xl font-heading font-bold text-gold mb-3">{step.title}</h3>
+                <p className="text-ivory/80">{step.description}</p>
+              </div>
+
+              {index < steps.length - 1 && (
+                <div className="hidden lg:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 z-10">
+                  <ArrowRight className="text-gold h-6 w-6" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Onboarding

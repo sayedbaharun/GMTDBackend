@@ -1,0 +1,11 @@
+import * as express from 'express';
+import { AuthenticatedRequest } from '../types/express';
+export declare const getAllHotels: (req: express.Request, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const getHotelById: (req: express.Request, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const getRoomById: (req: express.Request, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const createHotel: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const createRoom: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const updateHotel: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const updateRoom: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const deleteHotel: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;
+export declare const deleteRoom: (req: AuthenticatedRequest, res: express.Response) => Promise<express.Response<any, Record<string, any>>>;

@@ -11,9 +11,16 @@ import {
 const prisma = new PrismaClient();
 
 // Initialize Stripe with the secret key
-const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: '2025-04-30.basil' as any,
-});
+// Only initialize if secret key is provided
+const stripe = config.stripe.secretKey 
+  ? new Stripe(config.stripe.secretKey, {
+      apiVersion: '2025-04-30.basil' as any,
+    })
+  : null;
+
+if (!stripe) {
+  logger.warn('Stripe not configured - STRIPE_SECRET_KEY environment variable is missing');
+}
 
 /**
  * Service for handling Stripe operations

@@ -249,7 +249,7 @@ router.get('/my-bookings', authenticateMobile, async (req: MobileAuthRequest, re
  * Get booking details
  * GET /api/bookings/:bookingId
  */
-router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res) => {
+router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res): Promise<void> => {
   try {
     const userId = req.userId!;
     const { bookingId } = req.params;
@@ -279,10 +279,11 @@ router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res
     });
 
     if (!booking) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: 'Booking not found'
       });
+      return;
     }
 
     res.json({
@@ -303,7 +304,7 @@ router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res
  * Update booking status
  * PUT /api/bookings/:bookingId/status
  */
-router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthRequest, res) => {
+router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthRequest, res): Promise<void> => {
   try {
     const userId = req.userId!;
     const { bookingId } = req.params;
@@ -312,10 +313,11 @@ router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthReque
     // Validate status
     const validStatuses = ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'];
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Invalid status'
       });
+      return;
     }
 
     // Update booking

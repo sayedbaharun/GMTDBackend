@@ -8,11 +8,16 @@ const logger_1 = require("../utils/logger");
 // 1. Core Authentication Middleware (Validates Auth0 Access Token)
 // This middleware checks for a valid JWT Access Token and populates req.auth.
 // It should be configured with your Auth0 domain and API identifier (audience).
-exports.validateAccessToken = (0, express_oauth2_jwt_bearer_1.auth)({
-    issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
-    audience: process.env.AUTH0_AUDIENCE,
-    // tokenSigningAlg: 'RS256' // Algorithm is usually RS256 for Auth0
-});
+exports.validateAccessToken = process.env.AUTH0_DOMAIN && process.env.AUTH0_AUDIENCE
+    ? (0, express_oauth2_jwt_bearer_1.auth)({
+        issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
+        audience: process.env.AUTH0_AUDIENCE,
+        // tokenSigningAlg: 'RS256' // Algorithm is usually RS256 for Auth0
+    })
+    : (req, res, next) => {
+        logger_1.logger.warn('Auth0 not configured - bypassing authentication');
+        next();
+    };
 // 2. User Synchronization Middleware (Gets/Creates local user from DB)
 // Runs *after* validateAccessToken.
 // Takes Auth0 user ID (sub) from req.auth.payload and ensures user exists in local DB.

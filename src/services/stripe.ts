@@ -184,6 +184,12 @@ export const stripeService = {
     name?: string
   ): Promise<ServiceResponse<Stripe.Customer>> => {
     try {
+      if (!stripe) {
+        return {
+          success: false,
+          error: 'Stripe not configured'
+        };
+      }
       // Create the customer in Stripe
       const customer = await stripe.customers.create({
         email,
@@ -252,6 +258,12 @@ export const stripeService = {
       }
       
       // Create the subscription
+      if (!stripe) {
+        return {
+          success: false,
+          error: 'Stripe not configured'
+        };
+      }
       const subscription = await stripe.subscriptions.create({
         customer: customerId as string,
         items: [
@@ -293,6 +305,9 @@ export const stripeService = {
         
         if (paymentIntentId) {
           // Retrieve the payment intent to get the client secret
+          if (!stripe) {
+            throw new Error('Stripe not configured');
+          }
           const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
           clientSecret = paymentIntent.client_secret;
           
@@ -354,6 +369,12 @@ export const stripeService = {
       }
       
       // Retrieve the subscription from Stripe
+      if (!stripe) {
+        return {
+          success: false,
+          error: 'Stripe not configured'
+        };
+      }
       const subscription = await stripe.subscriptions.retrieve(
         user.subscriptionId,
         {
@@ -417,6 +438,12 @@ export const stripeService = {
     returnUrl: string
   ): Promise<ServiceResponse<{ url: string }>> => {
     try {
+      if (!stripe) {
+        return {
+          success: false,
+          error: 'Stripe not configured'
+        };
+      }
       const session = await stripe.billingPortal.sessions.create({
         customer: customerId,
         return_url: returnUrl
@@ -714,6 +741,12 @@ export const stripeService = {
         };
       }
       
+      if (!stripe) {
+        return {
+          success: false,
+          error: 'Stripe not configured'
+        };
+      }
       const session = await stripe.checkout.sessions.create(sessionConfig);
       
       logger.info(`Checkout session created: ${session.id} for customer ${customerId}, plan: ${planName}`);

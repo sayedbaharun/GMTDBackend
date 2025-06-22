@@ -11,9 +11,15 @@ const logger_1 = require("../utils/logger");
 const types_1 = require("../types");
 const prisma = new client_1.PrismaClient();
 // Initialize Stripe with the secret key
-const stripe = new stripe_1.default(config_1.config.stripe.secretKey, {
-    apiVersion: '2025-04-30.basil',
-});
+// Only initialize if secret key is provided
+const stripe = config_1.config.stripe.secretKey
+    ? new stripe_1.default(config_1.config.stripe.secretKey, {
+        apiVersion: '2025-04-30.basil',
+    })
+    : null;
+if (!stripe) {
+    logger_1.logger.warn('Stripe not configured - STRIPE_SECRET_KEY environment variable is missing');
+}
 /**
  * Service for handling Stripe operations
  */
@@ -150,6 +156,12 @@ exports.stripeService = {
      */
     createCustomer: async (userId, email, name) => {
         try {
+            if (!stripe) {
+                return {
+                    success: false,
+                    error: 'Stripe not configured'
+                };
+            }
             // Create the customer in Stripe
             const customer = await stripe.customers.create({
                 email,
@@ -205,6 +217,12 @@ exports.stripeService = {
                 // The caller (onboarding controller) should handle updating the user record with the new customerId
             }
             // Create the subscription
+            if (!stripe) {
+                return {
+                    success: false,
+                    error: 'Stripe not configured'
+                };
+            }
             const subscription = await stripe.subscriptions.create({
                 customer: customerId,
                 items: [
@@ -243,6 +261,9 @@ exports.stripeService = {
                     : (invoice.payment_intent?.id || null);
                 if (paymentIntentId) {
                     // Retrieve the payment intent to get the client secret
+                    if (!stripe) {
+                        throw new Error('Stripe not configured');
+                    }
                     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
                     clientSecret = paymentIntent.client_secret;
                     if (clientSecret) {
@@ -300,6 +321,12 @@ exports.stripeService = {
                 };
             }
             // Retrieve the subscription from Stripe
+            if (!stripe) {
+                return {
+                    success: false,
+                    error: 'Stripe not configured'
+                };
+            }
             const subscription = await stripe.subscriptions.retrieve(user.subscriptionId, {
                 expand: ['items.data.price.product']
             });
@@ -352,6 +379,12 @@ exports.stripeService = {
      */
     createCustomerPortalSession: async (customerId, returnUrl) => {
         try {
+            if (!stripe) {
+                return {
+                    success: false,
+                    error: 'Stripe not configured'
+                };
+            }
             const session = await stripe.billingPortal.sessions.create({
                 customer: customerId,
                 return_url: returnUrl
@@ -596,6 +629,12 @@ exports.stripeService = {
                         plan_name: planName,
                         is_lifetime: 'true'
                     }
+                };
+            }
+            if (!stripe) {
+                return {
+                    success: false,
+                    error: 'Stripe not configured'
                 };
             }
             const session = await stripe.checkout.sessions.create(sessionConfig);

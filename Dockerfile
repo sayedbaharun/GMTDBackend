@@ -41,6 +41,10 @@ RUN npm ci --only=production && \
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Copy server startup files
+COPY server.js ./
+COPY start.js ./
+
 # Copy other necessary files
 COPY migrations ./migrations
 

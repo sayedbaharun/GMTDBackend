@@ -21,7 +21,7 @@ export const createPaymentIntent = async (req: AuthenticatedRequest, res: expres
       });
     }
 
-    const { amount, currency = 'usd', description, metadata } = req.body;
+    const { amount, currency = 'usd', description, metadata = {} } = req.body;
 
     if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
       return res.status(400).json({
@@ -30,13 +30,12 @@ export const createPaymentIntent = async (req: AuthenticatedRequest, res: expres
       });
     }
 
-    const userId = req.user?.id;
+    // User may or may not be authenticated with authenticateOptional middleware
+    const paymentMetadata = { ...metadata };
     
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'User not authenticated'
-      });
+    // Add userId to metadata if user is authenticated
+    if (req.user?.id) {
+      paymentMetadata.userId = req.user.id;
     }
 
     // Create a payment intent
@@ -44,10 +43,7 @@ export const createPaymentIntent = async (req: AuthenticatedRequest, res: expres
       amount: Math.round(parseFloat(amount) * 100), // Convert to cents
       currency: currency.toLowerCase(),
       description,
-      metadata: {
-        userId,
-        ...metadata
-      }
+      metadata: paymentMetadata
     });
 
     return res.status(200).json({

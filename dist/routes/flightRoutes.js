@@ -49,8 +49,8 @@ const updateFlightSchema = zod_1.z.object({
 router.get('/', (0, routeHandler_1.asyncHandler)(flightController_1.getAllFlights));
 router.get('/:id', (0, routeHandler_1.asyncHandler)(flightController_1.getFlightById));
 // Admin routes (protected)
-router.post('/', auth_1.authenticate, (0, validate_1.validate)(flightSchema), (0, routeHandler_1.authHandler)(flightController_1.createFlight));
-router.put('/:id', auth_1.authenticate, (0, validate_1.validate)(updateFlightSchema), (0, routeHandler_1.authHandler)(flightController_1.updateFlight));
-router.delete('/:id', auth_1.authenticate, (0, routeHandler_1.authHandler)(flightController_1.deleteFlight));
+router.post('/', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(flightSchema), (0, routeHandler_1.asyncHandler)(flightController_1.createFlight));
+router.put('/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(updateFlightSchema), (0, routeHandler_1.asyncHandler)(flightController_1.updateFlight));
+router.delete('/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, routeHandler_1.asyncHandler)(flightController_1.deleteFlight));
 exports.default = router;
 //# sourceMappingURL=flightRoutes.js.map

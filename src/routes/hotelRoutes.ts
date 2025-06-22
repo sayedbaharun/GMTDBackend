@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler, authHandler } from '../utils/routeHandler';
+import { asyncHandler } from '../utils/routeHandler';
 import {
   getAllHotels,
   getHotelById,
@@ -11,7 +11,7 @@ import {
   deleteHotel,
   deleteRoom
 } from '../controllers/hotelController';
-import { authenticate } from '../middleware/auth';
+import { authenticateAndSyncUser, isAdmin } from '../middleware/auth';
 import { validate } from '../validations/validate';
 import { z } from 'zod';
 import { AuthenticatedRequest } from '../types/express';
@@ -88,11 +88,11 @@ router.get('/:id', asyncHandler(getHotelById));
 router.get('/rooms/:id', asyncHandler(getRoomById));
 
 // Admin routes (protected)
-router.post('/', authenticate, validate(hotelSchema), authHandler(createHotel));
-router.post('/:hotelId/rooms', authenticate, validate(roomSchema), authHandler(createRoom));
-router.put('/:id', authenticate, validate(updateHotelSchema), authHandler(updateHotel));
-router.put('/rooms/:id', authenticate, validate(updateRoomSchema), authHandler(updateRoom));
-router.delete('/:id', authenticate, authHandler(deleteHotel));
-router.delete('/rooms/:id', authenticate, authHandler(deleteRoom));
+router.post('/', authenticateAndSyncUser, isAdmin, validate(hotelSchema), asyncHandler(createHotel));
+router.post('/:hotelId/rooms', authenticateAndSyncUser, isAdmin, validate(roomSchema), asyncHandler(createRoom));
+router.put('/:id', authenticateAndSyncUser, isAdmin, validate(updateHotelSchema), asyncHandler(updateHotel));
+router.put('/rooms/:id', authenticateAndSyncUser, isAdmin, validate(updateRoomSchema), asyncHandler(updateRoom));
+router.delete('/:id', authenticateAndSyncUser, isAdmin, asyncHandler(deleteHotel));
+router.delete('/rooms/:id', authenticateAndSyncUser, isAdmin, asyncHandler(deleteRoom));
 
 export default router;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler, authHandler } from '../utils/routeHandler';
+import { asyncHandler } from '../utils/routeHandler';
 import {
   getAllFlights,
   getFlightById,
@@ -7,7 +7,7 @@ import {
   updateFlight,
   deleteFlight
 } from '../controllers/flightController';
-import { authenticate } from '../middleware/auth';
+import { authenticateAndSyncUser, isAdmin } from '../middleware/auth';
 import { validate } from '../validations/validate';
 import { z } from 'zod';
 import { AuthenticatedRequest } from '../types/express';
@@ -59,8 +59,8 @@ router.get('/', asyncHandler(getAllFlights));
 router.get('/:id', asyncHandler(getFlightById));
 
 // Admin routes (protected)
-router.post('/', authenticate, validate(flightSchema), authHandler(createFlight));
-router.put('/:id', authenticate, validate(updateFlightSchema), authHandler(updateFlight));
-router.delete('/:id', authenticate, authHandler(deleteFlight));
+router.post('/', authenticateAndSyncUser, isAdmin, validate(flightSchema), asyncHandler(createFlight));
+router.put('/:id', authenticateAndSyncUser, isAdmin, validate(updateFlightSchema), asyncHandler(updateFlight));
+router.delete('/:id', authenticateAndSyncUser, isAdmin, asyncHandler(deleteFlight));
 
 export default router;

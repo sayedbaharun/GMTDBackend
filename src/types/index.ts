@@ -71,18 +71,9 @@ export interface UserProfile {
   onboardingStep?: string;
   onboardingComplete?: boolean;
   stripeCustomerId?: string;
-  stripe_customer_id?: string; // For backward compatibility with Supabase
   subscriptionId?: string;
-  subscription_id?: string; // For backward compatibility with Supabase
   subscriptionStatus?: string;
-  subscription_status?: string; // For backward compatibility with Supabase
-  onboarding_step?: string; // For backward compatibility with Supabase
-  onboarding_complete?: boolean; // For backward compatibility with Supabase
-  phone_number?: string; // For backward compatibility with Supabase
-  company_name?: string; // For backward compatibility with Supabase
-  company_size?: string; // For backward compatibility with Supabase
-  referral_source?: string; // For backward compatibility with Supabase
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface UserInfoPayload {
@@ -116,4 +107,65 @@ export enum StripeWebhookEvents {
   SUBSCRIPTION_DELETED = 'customer.subscription.deleted',
   INVOICE_PAYMENT_SUCCEEDED = 'invoice.payment_succeeded',
   INVOICE_PAYMENT_FAILED = 'invoice.payment_failed'
+}
+
+// Travel Request types
+export interface TravelRequest {
+  id: string;
+  userId: string;
+  conversationId?: string;
+  messageId?: string;
+  status: TravelRequestStatus;
+  requestType: TravelRequestType;
+  description: string;
+  requirementsSummary?: string;
+  searchParams?: Record<string, any>;
+  adminId?: string;
+  priority: TravelRequestPriority;
+  deadline?: Date;
+  presentedOptions?: TravelOption[];
+  selectedOptionId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  relatedBookingId?: string;
+}
+
+export enum TravelRequestStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  OPTIONS_PRESENTED = 'OPTIONS_PRESENTED',
+  BOOKED = 'BOOKED',
+  CANCELLED = 'CANCELLED'
+}
+
+export enum TravelRequestType {
+  FLIGHT = 'FLIGHT',
+  HOTEL = 'HOTEL',
+  CAR_RENTAL = 'CAR_RENTAL',
+  YACHT = 'YACHT',
+  RESTAURANT = 'RESTAURANT',
+  TRANSPORTATION = 'TRANSPORTATION',
+  PACKAGE = 'PACKAGE',
+  OTHER = 'OTHER'
+}
+
+export enum TravelRequestPriority {
+  LOW = 'LOW',
+  NORMAL = 'NORMAL',
+  HIGH = 'HIGH',
+  URGENT = 'URGENT'
+}
+
+export interface TravelOption {
+  id: string;
+  type: TravelRequestType;
+  provider: string;
+  title: string;
+  description: string;
+  price: number;
+  currency: string;
+  details: Record<string, any>;
+  availableUntil?: Date;
+  thumbnailUrl?: string;
+  externalId?: string;
 }

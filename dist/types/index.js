@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StripeWebhookEvents = exports.ApiError = exports.ConciergeRequestStatus = exports.ConciergeRequestType = exports.PaymentStatus = exports.BookingStatus = exports.OnboardingStep = void 0;
+exports.TravelRequestPriority = exports.TravelRequestType = exports.TravelRequestStatus = exports.StripeWebhookEvents = exports.ApiError = exports.ConciergeRequestStatus = exports.ConciergeRequestType = exports.PaymentStatus = exports.BookingStatus = exports.OnboardingStep = void 0;
 var OnboardingStep;
 (function (OnboardingStep) {
     OnboardingStep["NOT_STARTED"] = "not_started";
@@ -53,4 +53,30 @@ var StripeWebhookEvents;
     StripeWebhookEvents["INVOICE_PAYMENT_SUCCEEDED"] = "invoice.payment_succeeded";
     StripeWebhookEvents["INVOICE_PAYMENT_FAILED"] = "invoice.payment_failed";
 })(StripeWebhookEvents || (exports.StripeWebhookEvents = StripeWebhookEvents = {}));
+var TravelRequestStatus;
+(function (TravelRequestStatus) {
+    TravelRequestStatus["PENDING"] = "PENDING";
+    TravelRequestStatus["PROCESSING"] = "PROCESSING";
+    TravelRequestStatus["OPTIONS_PRESENTED"] = "OPTIONS_PRESENTED";
+    TravelRequestStatus["BOOKED"] = "BOOKED";
+    TravelRequestStatus["CANCELLED"] = "CANCELLED";
+})(TravelRequestStatus || (exports.TravelRequestStatus = TravelRequestStatus = {}));
+var TravelRequestType;
+(function (TravelRequestType) {
+    TravelRequestType["FLIGHT"] = "FLIGHT";
+    TravelRequestType["HOTEL"] = "HOTEL";
+    TravelRequestType["CAR_RENTAL"] = "CAR_RENTAL";
+    TravelRequestType["YACHT"] = "YACHT";
+    TravelRequestType["RESTAURANT"] = "RESTAURANT";
+    TravelRequestType["TRANSPORTATION"] = "TRANSPORTATION";
+    TravelRequestType["PACKAGE"] = "PACKAGE";
+    TravelRequestType["OTHER"] = "OTHER";
+})(TravelRequestType || (exports.TravelRequestType = TravelRequestType = {}));
+var TravelRequestPriority;
+(function (TravelRequestPriority) {
+    TravelRequestPriority["LOW"] = "LOW";
+    TravelRequestPriority["NORMAL"] = "NORMAL";
+    TravelRequestPriority["HIGH"] = "HIGH";
+    TravelRequestPriority["URGENT"] = "URGENT";
+})(TravelRequestPriority || (exports.TravelRequestPriority = TravelRequestPriority = {}));
 //# sourceMappingURL=index.js.map

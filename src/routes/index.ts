@@ -1,5 +1,4 @@
-import * as express from 'express';
-const Router = express.Router;
+import { Router } from 'express';
 
 import authRoutes from './auth';
 import userRoutes from './user';
@@ -7,29 +6,57 @@ import onboardingRoutes from './onboarding';
 import subscriptionRoutes from './subscriptions';
 import webhookRoutes from './webhooks';
 import paymentsRoutes from './payments';
+import bookingsRoutes from './bookings';
 import healthRoutes from './health';
 import testRoutes from './test';
 import adminRoutes from './admin';
+import adminAuthRoutes from './admin/auth';
+import adminDashboardRoutes from './admin/dashboard';
+import adminBookingsRoutes from './admin/bookings';
+import adminPanelRoutes from './admin-panel';
 import flightRoutes from './flightRoutes';
 import hotelRoutes from './hotelRoutes';
-import travelRoutes from './travelRoutes';
-import { authenticate } from '../middleware/auth';
+import { travelRoutes } from './travelRoutes';
+import travelRequestRoutes from './travelRequests';
+import messageRoutes from './messages';
+import servicesRoutes from './services';
+import chatRoutes from './chatRoutes';
+import adminChatRoutes from './adminChat';
+import flightBookingRoutes from './flightBookingRoutes';
+import hotelBookingRoutes from './hotelBookingRoutes';
+import smartChatRoutes from './smartChatRoutes';
+import mobileAuthRoutes from './mobile-auth';
+import searchRoutes from './search';
 
 const router = Router();
 
-// Register all route modules
+// Apply all route modules
 router.use('/auth', authRoutes);
-router.use(authenticate);
-router.use('/user', userRoutes);
+router.use('/users', userRoutes);
 router.use('/onboarding', onboardingRoutes);
 router.use('/subscriptions', subscriptionRoutes);
 router.use('/webhooks', webhookRoutes);
 router.use('/payments', paymentsRoutes);
+router.use('/bookings', bookingsRoutes);
 router.use('/health', healthRoutes);
 router.use('/test', testRoutes);
 router.use('/admin', adminRoutes);
+router.use('/admin/auth', adminAuthRoutes);
+router.use('/admin/dashboard', adminDashboardRoutes);
+router.use('/admin/bookings', adminBookingsRoutes);
+router.use('/admin-data', adminPanelRoutes);
 router.use('/flights', flightRoutes);
 router.use('/hotels', hotelRoutes);
 router.use('/travel', travelRoutes);
+router.use('/travel-requests', travelRequestRoutes);
+router.use('/messages', messageRoutes);
+router.use('/services', servicesRoutes);
+router.use('/chat', chatRoutes);
+router.use('/admin/chat', adminChatRoutes);
+router.use('/smart-chat', smartChatRoutes);
+router.use('/flight-booking', flightBookingRoutes);
+router.use('/hotel-booking', hotelBookingRoutes);
+router.use('/mobile-auth', mobileAuthRoutes);
+router.use('/search', searchRoutes);
 
 export default router;

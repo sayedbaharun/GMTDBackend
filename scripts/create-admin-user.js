@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
 
 // Force reload of Prisma client after schema changes
 Object.keys(require.cache).forEach(key => {
@@ -14,21 +13,18 @@ async function createAdminUser() {
   try {
     console.log('Creating admin user...');
     
-    // Hash admin password
-    const hashedPassword = await bcrypt.hash('admin123', 10);
-    
     // Create admin user with isAdmin flag set to true
     const adminUser = await prisma.user.upsert({
       where: {
-        email: 'admin@example.com'
+        email: 'admin@getmetodubai.com'
       },
       update: {
         isAdmin: true
       },
       create: {
-        email: 'admin@example.com',
-        password: hashedPassword,
+        email: 'admin@getmetodubai.com',
         fullName: 'System Admin',
+        auth0Id: 'auth0|admin-temp-id', // Temporary auth0Id for local admin
         isAdmin: true,
         isEmailVerified: true,
         onboardingStep: 'completed',

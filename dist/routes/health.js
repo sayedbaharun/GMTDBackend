@@ -41,7 +41,29 @@ const router = Router();
 /**
  * Health Routes
  * GET /api/health - Check system health status
+ * GET /api/health/ready - Readiness probe (Kubernetes)
+ * GET /api/health/live - Liveness probe (Kubernetes)
+ * GET /api/health/connectivity - Test mobile app connectivity
  */
 router.get('/', (0, errorHandler_1.createRouteHandler)(health_1.getHealthStatus));
+router.get('/ready', (0, errorHandler_1.createRouteHandler)(health_1.getReadinessStatus));
+router.get('/live', (0, errorHandler_1.createRouteHandler)(health_1.getLivenessStatus));
+// Specific endpoint for mobile app connectivity testing
+router.get('/connectivity', (req, res) => {
+    res.json({
+        success: true,
+        message: 'Backend connectivity successful',
+        timestamp: new Date().toISOString(),
+        server: 'GetMeToDubai Backend',
+        version: process.env.npm_package_version || '1.0.0',
+        endpoints: {
+            bookings: '/api/bookings',
+            payments: '/api/payments/process',
+            health: '/api/health',
+            chat: '/api/chat',
+            travel: '/api/travel'
+        }
+    });
+});
 exports.default = router;
 //# sourceMappingURL=health.js.map

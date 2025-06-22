@@ -1,21 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.travelRoutes = void 0;
 const express_1 = require("express");
 const routeHandler_1 = require("../utils/routeHandler");
 const auth_1 = require("../middleware/auth");
 const travelController_1 = require("../controllers/travelController");
 const router = (0, express_1.Router)();
+exports.travelRoutes = router;
 /**
  * Travel Routes
  * GET /api/travel/flights - Search for flights
+ * GET /api/travel/hotels - Search for hotels
+ * GET /api/travel/hotels/:hotelId/offers - Get hotel offers by hotel ID
  * GET /api/travel/locations - Search for airports or cities
+ * GET /api/travel/points-of-interest - Search for points of interest
  * GET /api/travel/test-connection - Test Amadeus API connection
  */
 // Test the Amadeus API connection
 router.get('/test-connection', (0, routeHandler_1.asyncHandler)(travelController_1.testAmadeusConnection));
-// Search for flights - Allow public access with optional authentication
+// Search for flights (public endpoint - no auth required for browsing)
 router.get('/flights', auth_1.authenticateOptional, (0, routeHandler_1.asyncHandler)(travelController_1.searchFlights));
+// Search for hotels (public endpoint - no auth required for browsing)
+router.get('/hotels', auth_1.authenticateOptional, (0, routeHandler_1.asyncHandler)(travelController_1.searchHotels));
+// Get hotel offers by hotel ID
+router.get('/hotels/:hotelId/offers', auth_1.authenticateOptional, (0, routeHandler_1.asyncHandler)(travelController_1.getHotelOffers));
 // Search for airports or cities
-router.get('/locations', (0, routeHandler_1.asyncHandler)(travelController_1.searchLocations));
-exports.default = router;
+router.get('/locations', auth_1.authenticateOptional, (0, routeHandler_1.asyncHandler)(travelController_1.searchLocations));
+// Search for points of interest
+router.get('/points-of-interest', auth_1.authenticateOptional, (0, routeHandler_1.asyncHandler)(travelController_1.searchPointsOfInterest));
 //# sourceMappingURL=travelRoutes.js.map

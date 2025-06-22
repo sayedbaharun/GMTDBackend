@@ -1,5 +1,18 @@
 import * as express from 'express';
 const Router = express.Router;
+// For direct validation test:
+import { body, validationResult, Result } from 'express-validator'; 
+import { Request, Response, NextFunction } from 'express'; // Explicit Express types
+
+const router = Router();
+
+// DEBUG: Log when this router is initialized/used
+console.log('--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---'); 
+
+router.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(`--> Request received by Onboarding Router: ${req.method} ${req.path}`);
+  next();
+});
 
 import { 
   getOnboardingStatus,
@@ -8,11 +21,11 @@ import {
   processPayment,
   completeOnboarding 
 } from '../controllers/onboarding';
-import { authenticate } from '../middleware/auth';
-import { onboardingValidation, validate } from '../middleware/validation';
+import { authenticateAndSyncUser } from '../middleware/auth';
+// Import the validate function, but we won't use onboardingValidation.userInfo for this route
+import { validate } from '../middleware/validation'; 
 import { createRouteHandler } from '../utils/errorHandler';
-
-const router = Router();
+import { AuthenticatedRequest } from '../types'; // For the controller call
 
 /**
  * Onboarding Routes - Multi-Step Process
@@ -24,33 +37,54 @@ const router = Router();
  */
 
 // All onboarding routes require authentication
-router.use(authenticate);
+router.use(authenticateAndSyncUser);
 
 // Get current onboarding status
 router.get(
   '/status',
-  validate(onboardingValidation.getOnboardingStatus),
   createRouteHandler(getOnboardingStatus)
 );
 
-// Step 1: Save basic user information
+// INLINED VALIDATION RULES FOR /user-info TEST
+const userInfoInlinedValidationRules = [
+  body('fullName').notEmpty().withMessage('Full name is required'),
+  body('email').isEmail().withMessage('Valid email is required'),
+  body('phone').optional().isString().withMessage('Phone must be a string if provided'), 
+  body('companyName').notEmpty().withMessage('Company name is required'),
+];
+
+// Step 1: Save basic user information - USING validate() MIDDLEWARE WITH LOCAL RULES
 router.post(
   '/user-info',
-  validate(onboardingValidation.userInfo),
+  validate(userInfoInlinedValidationRules),
   createRouteHandler(saveUserInfo)
 );
+
+// INLINED VALIDATION RULES FOR /additional-details
+const additionalDetailsInlinedValidationRules = [
+  body('industry').notEmpty().withMessage('Industry is required'),
+  body('companySize').notEmpty().withMessage('Company size is required'), // Ensure frontend sends companySize
+  body('role').notEmpty().withMessage('Role is required'),
+  body('goals').isArray({ min: 1 }).withMessage('At least one goal is required'),
+  body('referralSource').optional().isString(), // Changed from just .optional()
+];
 
 // Step 2: Save additional details
 router.post(
   '/additional-details',
-  validate(onboardingValidation.additionalDetails),
+  validate(additionalDetailsInlinedValidationRules), // Using INLINED RULES
   createRouteHandler(saveAdditionalDetails)
 );
+
+// INLINED VALIDATION RULES FOR /payment
+const paymentProcessInlinedValidationRules = [
+  body('priceId').notEmpty().withMessage('Price ID is required for subscription'),
+];
 
 // Step 3: Process payment
 router.post(
   '/payment',
-  validate(onboardingValidation.paymentProcess),
+  validate(paymentProcessInlinedValidationRules), // Using INLINED RULES
   createRouteHandler(processPayment)
 );
 

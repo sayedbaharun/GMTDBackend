@@ -81,7 +81,7 @@ export declare const flightSearchSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     departureAirport: string;
     arrivalAirport: string;
-    class: "ECONOMY" | "BUSINESS" | "FIRST";
+    class: "BUSINESS" | "ECONOMY" | "FIRST";
     departureDate: string;
     passengers: number;
     returnDate?: string | undefined;
@@ -89,7 +89,7 @@ export declare const flightSearchSchema: z.ZodObject<{
     departureAirport: string;
     arrivalAirport: string;
     departureDate: string;
-    class?: "ECONOMY" | "BUSINESS" | "FIRST" | undefined;
+    class?: "BUSINESS" | "ECONOMY" | "FIRST" | undefined;
     returnDate?: string | undefined;
     passengers?: number | undefined;
 }>;
@@ -181,20 +181,20 @@ export declare const conciergeRequestSchema: z.ZodObject<{
     description: string;
     requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
     participants: number;
+    bookingId?: string | undefined;
+    notes?: string | undefined;
     date?: string | undefined;
     time?: string | undefined;
-    bookingId?: string | undefined;
     location?: string | undefined;
-    notes?: string | undefined;
 }, {
     description: string;
     requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
-    date?: string | undefined;
-    time?: string | undefined;
     bookingId?: string | undefined;
-    location?: string | undefined;
-    participants?: number | undefined;
     notes?: string | undefined;
+    date?: string | undefined;
+    participants?: number | undefined;
+    time?: string | undefined;
+    location?: string | undefined;
 }>;
 export declare const createPaymentIntentSchema: z.ZodObject<{
     amount: z.ZodNumber;
@@ -204,13 +204,13 @@ export declare const createPaymentIntentSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     amount: number;
     currency: string;
-    description?: string | undefined;
     metadata?: Record<string, string> | undefined;
+    description?: string | undefined;
 }, {
     amount: number;
+    metadata?: Record<string, string> | undefined;
     currency?: string | undefined;
     description?: string | undefined;
-    metadata?: Record<string, string> | undefined;
 }>;
 export declare const createBookingSchema: z.ZodObject<{
     flightBookings: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -270,49 +270,32 @@ export declare const createBookingSchema: z.ZodObject<{
         description: string;
         requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
         participants: number;
+        bookingId?: string | undefined;
+        notes?: string | undefined;
         date?: string | undefined;
         time?: string | undefined;
-        bookingId?: string | undefined;
         location?: string | undefined;
-        notes?: string | undefined;
     }, {
         description: string;
         requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
-        date?: string | undefined;
-        time?: string | undefined;
         bookingId?: string | undefined;
-        location?: string | undefined;
-        participants?: number | undefined;
         notes?: string | undefined;
+        date?: string | undefined;
+        participants?: number | undefined;
+        time?: string | undefined;
+        location?: string | undefined;
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
-    flightBookings?: {
-        flightId: string;
-        passengerName: string;
-        passengerEmail: string;
-        passengerPhone?: string | undefined;
-        seatNumber?: string | undefined;
-        specialRequests?: string | undefined;
-    }[] | undefined;
-    hotelBookings?: {
-        hotelId: string;
-        roomId: string;
-        checkInDate: string;
-        checkOutDate: string;
-        guestCount: number;
-        specialRequests?: string | undefined;
-    }[] | undefined;
     conciergeRequests?: {
         description: string;
         requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
         participants: number;
+        bookingId?: string | undefined;
+        notes?: string | undefined;
         date?: string | undefined;
         time?: string | undefined;
-        bookingId?: string | undefined;
         location?: string | undefined;
-        notes?: string | undefined;
     }[] | undefined;
-}, {
     flightBookings?: {
         flightId: string;
         passengerName: string;
@@ -329,14 +312,31 @@ export declare const createBookingSchema: z.ZodObject<{
         guestCount: number;
         specialRequests?: string | undefined;
     }[] | undefined;
+}, {
     conciergeRequests?: {
         description: string;
         requestType: "RESTAURANT" | "ACTIVITY" | "TRANSPORT" | "SPECIAL_OCCASION" | "OTHER";
-        date?: string | undefined;
-        time?: string | undefined;
         bookingId?: string | undefined;
-        location?: string | undefined;
-        participants?: number | undefined;
         notes?: string | undefined;
+        date?: string | undefined;
+        participants?: number | undefined;
+        time?: string | undefined;
+        location?: string | undefined;
+    }[] | undefined;
+    flightBookings?: {
+        flightId: string;
+        passengerName: string;
+        passengerEmail: string;
+        passengerPhone?: string | undefined;
+        seatNumber?: string | undefined;
+        specialRequests?: string | undefined;
+    }[] | undefined;
+    hotelBookings?: {
+        hotelId: string;
+        roomId: string;
+        checkInDate: string;
+        checkOutDate: string;
+        guestCount: number;
+        specialRequests?: string | undefined;
     }[] | undefined;
 }>;

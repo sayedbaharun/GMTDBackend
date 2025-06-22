@@ -39,26 +39,27 @@ const auth_1 = require("../middleware/auth");
 const adminController = __importStar(require("../controllers/admin"));
 const rateLimiter_1 = require("../middleware/rateLimiter");
 const errorHandler_1 = require("../utils/errorHandler");
+// import { validate } from '../middleware/validation'; // Import if you add validation schemas for admin updates
 const router = Router();
 /**
- * Admin Routes - All protected by authentication middleware
- * All routes require authentication and admin privileges
+ * Admin Routes - All protected by authentication and admin role middleware
  */
-// Apply authentication middleware to all admin routes
-router.use(auth_1.authenticate);
-router.use(rateLimiter_1.rateLimiter);
+// Authentication middleware for admin routes
+router.use(auth_1.authenticateAndSyncUser); // Ensures user is logged in
+router.use(auth_1.isAdmin); // Ensures user is an admin
+router.use(rateLimiter_1.rateLimiter); // Apply rate limiting to all admin routes
 // User management endpoints
 router.get('/users', (0, errorHandler_1.asyncHandler)(adminController.getAllUsers));
 router.get('/users/:userId', (0, errorHandler_1.asyncHandler)(adminController.getUserById));
-router.put('/users/:userId', (0, errorHandler_1.asyncHandler)(adminController.updateUser));
+router.put('/users/:userId', (0, errorHandler_1.asyncHandler)(adminController.updateUser)); // Consider adding validate() middleware here if you have a Zod schema for admin user updates
 router.delete('/users/:userId', (0, errorHandler_1.asyncHandler)(adminController.deleteUser));
-// Subscription management endpoints
-router.get('/subscriptions', (0, errorHandler_1.asyncHandler)(adminController.getAllSubscriptions));
-// Booking management endpoints
-router.get('/bookings', (0, errorHandler_1.asyncHandler)(adminController.getAllBookings));
-// Dashboard statistics
+// Dashboard and statistics
 router.get('/dashboard', (0, errorHandler_1.asyncHandler)(adminController.getDashboardStats));
-// System monitoring and logs
-router.get('/system-logs', (0, errorHandler_1.asyncHandler)(adminController.getSystemLogs));
+router.get('/stats', (0, errorHandler_1.asyncHandler)(adminController.getAdminStats)); // Frontend expects /stats
+router.get('/activity', (0, errorHandler_1.asyncHandler)(adminController.getRecentActivity)); // Frontend expects /activity
+router.get('/subscriptions', (0, errorHandler_1.asyncHandler)(adminController.getAllSubscriptions));
+router.get('/bookings', (0, errorHandler_1.asyncHandler)(adminController.getAllBookings));
+// System Logs (currently mocked in controller)
+router.get('/logs', (0, errorHandler_1.asyncHandler)(adminController.getSystemLogs));
 exports.default = router;
 //# sourceMappingURL=admin.js.map

@@ -47,7 +47,7 @@ const router = Router();
  * POST /api/subscriptions/portal - Create a Stripe Customer Portal session
  */
 // All subscription routes require authentication
-router.use(auth_1.authenticate);
+router.use(auth_1.authenticateAndSyncUser);
 // Create a new subscription
 router.post('/create', (0, validation_1.validate)(validation_1.subscriptionValidation.create), (0, errorHandler_1.createRouteHandler)(subscriptions_1.createSubscription));
 // Get current subscription status

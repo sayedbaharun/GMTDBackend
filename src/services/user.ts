@@ -1,182 +1,92 @@
-import { supabaseAdmin } from './supabase';
-import { logger } from '../utils/logger';
-import { ServiceResponse, UserProfile } from '../types';
+import { PrismaClient } from '@prisma/client';
 
-/**
- * Service for handling user profile operations
- */
+const prisma = new PrismaClient();
+
+interface UserProfileData {
+  fullName?: string;
+  phone?: string;
+  companyName?: string;
+  industry?: string;
+  companySize?: string;
+  role?: string;
+  goals?: string[];
+  [key: string]: any;
+}
+
+interface ServiceResult<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  statusCode?: number;
+}
+
 export const userService = {
   /**
-   * Get a user profile by ID
-   * @param userId - User ID
+   * Update user profile
    */
-  getUserProfile: async (
-    userId: string
-  ): Promise<ServiceResponse<UserProfile>> => {
+  async updateUserProfile(userId: string, profileData: UserProfileData): Promise<ServiceResult> {
     try {
-      const { data, error } = await supabaseAdmin
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      
-      if (error) {
-        logger.error('Get user profile error:', error);
-        return {
-          success: false,
-          error: error.message,
-          statusCode: 404
-        };
-      }
-      
+      // Filter out undefined and null values
+      const cleanData = Object.entries(profileData).reduce((acc, [key, value]) => {
+        if (value !== undefined && value !== null) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as Record<string, any>);
+
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          ...cleanData,
+          updatedAt: new Date(),
+        },
+      });
+
       return {
         success: true,
-        data
+        data: updatedUser,
       };
     } catch (error: any) {
-      logger.error('Get user profile service error:', error);
+      console.error('User service updateUserProfile error:', error);
       return {
         success: false,
-        error: error.message,
-        statusCode: 500
+        error: error.message || 'Failed to update user profile',
+        statusCode: 500,
       };
     }
   },
-  
+
   /**
-   * Update a user profile
-   * @param userId - User ID
-   * @param profileData - Profile data to update
+   * Get user by ID
    */
-  updateUserProfile: async (
-    userId: string,
-    profileData: Partial<UserProfile>
-  ): Promise<ServiceResponse<UserProfile>> => {
+  async getUserById(userId: string): Promise<ServiceResult> {
     try {
-      // Add updated_at timestamp
-      const dataToUpdate = {
-        ...profileData,
-        updated_at: new Date().toISOString()
-      };
-      
-      const { data, error } = await supabaseAdmin
-        .from('profiles')
-        .update(dataToUpdate)
-        .eq('id', userId)
-        .select('*')
-        .single();
-      
-      if (error) {
-        logger.error('Update user profile error:', error);
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          profile: true,
+        },
+      });
+
+      if (!user) {
         return {
           success: false,
-          error: error.message,
-          statusCode: 400
+          error: 'User not found',
+          statusCode: 404,
         };
       }
-      
+
       return {
         success: true,
-        data
+        data: user,
       };
     } catch (error: any) {
-      logger.error('Update user profile service error:', error);
+      console.error('User service getUserById error:', error);
       return {
         success: false,
-        error: error.message,
-        statusCode: 500
+        error: error.message || 'Failed to get user',
+        statusCode: 500,
       };
     }
   },
-  
-  /**
-   * Update user profile with Stripe information
-   * @param userId - User ID
-   * @param stripeCustomerId - Stripe customer ID
-   * @param subscriptionData - Subscription data to update
-   */
-  updateUserStripeInfo: async (
-    userId: string,
-    stripeCustomerId: string,
-    subscriptionData: {
-      subscription_id?: string;
-      subscription_status?: string;
-      subscription_current_period_start?: string;
-      subscription_current_period_end?: string;
-      last_payment_date?: string;
-    }
-  ): Promise<ServiceResponse<UserProfile>> => {
-    try {
-      const dataToUpdate = {
-        stripe_customer_id: stripeCustomerId,
-        ...subscriptionData,
-        updated_at: new Date().toISOString()
-      };
-      
-      const { data, error } = await supabaseAdmin
-        .from('profiles')
-        .update(dataToUpdate)
-        .eq('id', userId)
-        .select('*')
-        .single();
-      
-      if (error) {
-        logger.error('Update user stripe info error:', error);
-        return {
-          success: false,
-          error: error.message,
-          statusCode: 400
-        };
-      }
-      
-      return {
-        success: true,
-        data
-      };
-    } catch (error: any) {
-      logger.error('Update user stripe info service error:', error);
-      return {
-        success: false,
-        error: error.message,
-        statusCode: 500
-      };
-    }
-  },
-  
-  /**
-   * Find a user by Stripe customer ID
-   * @param stripeCustomerId - Stripe customer ID
-   */
-  findUserByStripeCustomerId: async (
-    stripeCustomerId: string
-  ): Promise<ServiceResponse<UserProfile>> => {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from('profiles')
-        .select('*')
-        .eq('stripe_customer_id', stripeCustomerId)
-        .single();
-      
-      if (error) {
-        logger.error('Find user by Stripe customer ID error:', error);
-        return {
-          success: false,
-          error: error.message,
-          statusCode: 404
-        };
-      }
-      
-      return {
-        success: true,
-        data
-      };
-    } catch (error: any) {
-      logger.error('Find user by Stripe customer ID service error:', error);
-      return {
-        success: false,
-        error: error.message,
-        statusCode: 500
-      };
-    }
-  }
-};
+}; 

@@ -1,0 +1,63 @@
+### Test Messaging System
+@baseUrl = http://localhost:3000/api
+
+### Get all conversations
+GET {{baseUrl}}/messages/conversations
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Get unread message count
+GET {{baseUrl}}/messages/unread
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Create a new conversation
+POST {{baseUrl}}/messages/conversations
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "title": "Test Conversation",
+  "type": "SUPPORT"
+}
+
+### Create a new booking-related conversation
+POST {{baseUrl}}/messages/conversations
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "title": "Booking Help Request",
+  "type": "BOOKING_RELATED",
+  "relatedBookingId": "YOUR_BOOKING_ID_HERE"
+}
+
+### Get a specific conversation by ID
+GET {{baseUrl}}/messages/conversations/CONVERSATION_ID_HERE
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Send a message to a conversation
+POST {{baseUrl}}/messages/conversations/CONVERSATION_ID_HERE/messages
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "content": "Hello, I need help with my booking!",
+  "contentType": "TEXT"
+}
+
+### Mark conversation as read
+PUT {{baseUrl}}/messages/conversations/CONVERSATION_ID_HERE/read
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Close a conversation (admin only)
+PUT {{baseUrl}}/messages/conversations/CONVERSATION_ID_HERE/close
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Reopen a conversation (admin only)
+PUT {{baseUrl}}/messages/conversations/CONVERSATION_ID_HERE/reopen
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE 

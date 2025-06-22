@@ -9,21 +9,27 @@ const express_validator_1 = require("express-validator");
  */
 const validate = (validations) => {
     return async (req, res, next) => {
+        console.log('--- Running Validation Middleware ---'); // DEBUG
+        console.log('Request Body:', req.body); // DEBUG: Log incoming body
         try {
             // Execute all validations
             await Promise.all(validations.map(validation => validation.run(req)));
             // Check for validation errors
             const errors = (0, express_validator_1.validationResult)(req);
+            console.log('Validation Errors:', JSON.stringify(errors.array(), null, 2)); // DEBUG: Log validation errors
             if (errors.isEmpty()) {
+                console.log('Validation Passed.'); // DEBUG
                 next();
                 return;
             }
+            console.log('Validation Failed. Sending 400.'); // DEBUG
             // Send validation errors and don't call next()
             res.status(400).json({
                 errors: errors.array()
             });
         }
         catch (error) {
+            console.error('Error within validation middleware:', error); // DEBUG
             next(error);
         }
     };
@@ -47,16 +53,16 @@ exports.authValidation = {
 exports.userProfileValidation = {
     update: [
         (0, express_validator_1.body)('fullName').optional().notEmpty().withMessage('Full name cannot be empty'),
-        (0, express_validator_1.body)('phone_number').optional().isMobilePhone('any').withMessage('Valid phone number is required'),
-        (0, express_validator_1.body)('company_name').optional().notEmpty().withMessage('Company name cannot be empty'),
+        (0, express_validator_1.body)('phone').optional().isMobilePhone('any').withMessage('Valid phone number is required'),
+        (0, express_validator_1.body)('companyName').optional().notEmpty().withMessage('Company name cannot be empty'),
     ],
 };
 exports.onboardingValidation = {
     userInfo: [
         (0, express_validator_1.body)('fullName').notEmpty().withMessage('Full name is required'),
         (0, express_validator_1.body)('email').isEmail().withMessage('Valid email is required'),
-        (0, express_validator_1.body)('phone_number').isMobilePhone('any').withMessage('Valid phone number is required'),
-        (0, express_validator_1.body)('company_name').notEmpty().withMessage('Company name is required'),
+        (0, express_validator_1.body)('phone').isMobilePhone('any').withMessage('Valid phone number is required'),
+        (0, express_validator_1.body)('companyName').notEmpty().withMessage('Company name is required'),
     ],
     additionalDetails: [
         (0, express_validator_1.body)('industry').notEmpty().withMessage('Industry is required'),

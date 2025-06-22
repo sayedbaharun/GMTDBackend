@@ -2,29 +2,40 @@ import * as express from 'express';
 const Router = express.Router;
 
 import { getProfile, updateProfile } from '../controllers/user';
-import { authenticate } from '../middleware/auth';
+import { 
+  getDashboardOverview,
+  getBookingHistory,
+  getActivityTimeline,
+  getTravelPreferences,
+  updateTravelPreferences
+} from '../controllers/userDashboard';
+import { authenticateAndSyncUser } from '../middleware/auth';
 import { userProfileValidation, validate } from '../middleware/validation';
 import { createRouteHandler } from '../utils/errorHandler';
 
 const router = Router();
 
 /**
- * User Profile Routes
- * GET /api/user/profile - Get the current user's profile
- * PUT /api/user/profile - Update the current user's profile
+ * User Routes
+ * Profile and Dashboard endpoints
  */
 
-// All user routes require authentication
-router.use(authenticate);
+// Authentication middleware for all user routes
+router.use(authenticateAndSyncUser);
 
-// Get current user profile
+// Profile routes
 router.get('/profile', createRouteHandler(getProfile));
-
-// Update current user profile
 router.put(
   '/profile',
   validate(userProfileValidation.update),
   createRouteHandler(updateProfile)
 );
+
+// Dashboard routes
+router.get('/dashboard', createRouteHandler(getDashboardOverview));
+router.get('/dashboard/bookings', createRouteHandler(getBookingHistory));
+router.get('/dashboard/timeline', createRouteHandler(getActivityTimeline));
+router.get('/dashboard/preferences', createRouteHandler(getTravelPreferences));
+router.put('/dashboard/preferences', createRouteHandler(updateTravelPreferences));
 
 export default router;

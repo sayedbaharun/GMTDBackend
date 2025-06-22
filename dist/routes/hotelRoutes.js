@@ -72,11 +72,11 @@ router.get('/', (0, routeHandler_1.asyncHandler)(hotelController_1.getAllHotels)
 router.get('/:id', (0, routeHandler_1.asyncHandler)(hotelController_1.getHotelById));
 router.get('/rooms/:id', (0, routeHandler_1.asyncHandler)(hotelController_1.getRoomById));
 // Admin routes (protected)
-router.post('/', auth_1.authenticate, (0, validate_1.validate)(hotelSchema), (0, routeHandler_1.authHandler)(hotelController_1.createHotel));
-router.post('/:hotelId/rooms', auth_1.authenticate, (0, validate_1.validate)(roomSchema), (0, routeHandler_1.authHandler)(hotelController_1.createRoom));
-router.put('/:id', auth_1.authenticate, (0, validate_1.validate)(updateHotelSchema), (0, routeHandler_1.authHandler)(hotelController_1.updateHotel));
-router.put('/rooms/:id', auth_1.authenticate, (0, validate_1.validate)(updateRoomSchema), (0, routeHandler_1.authHandler)(hotelController_1.updateRoom));
-router.delete('/:id', auth_1.authenticate, (0, routeHandler_1.authHandler)(hotelController_1.deleteHotel));
-router.delete('/rooms/:id', auth_1.authenticate, (0, routeHandler_1.authHandler)(hotelController_1.deleteRoom));
+router.post('/', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(hotelSchema), (0, routeHandler_1.asyncHandler)(hotelController_1.createHotel));
+router.post('/:hotelId/rooms', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(roomSchema), (0, routeHandler_1.asyncHandler)(hotelController_1.createRoom));
+router.put('/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(updateHotelSchema), (0, routeHandler_1.asyncHandler)(hotelController_1.updateHotel));
+router.put('/rooms/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, validate_1.validate)(updateRoomSchema), (0, routeHandler_1.asyncHandler)(hotelController_1.updateRoom));
+router.delete('/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, routeHandler_1.asyncHandler)(hotelController_1.deleteHotel));
+router.delete('/rooms/:id', auth_1.authenticateAndSyncUser, auth_1.isAdmin, (0, routeHandler_1.asyncHandler)(hotelController_1.deleteRoom));
 exports.default = router;
 //# sourceMappingURL=hotelRoutes.js.map

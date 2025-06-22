@@ -21,29 +21,25 @@ const createPaymentIntent = async (req, res) => {
                 message: 'Stripe is not configured'
             });
         }
-        const { amount, currency = 'usd', description, metadata } = req.body;
+        const { amount, currency = 'usd', description, metadata = {} } = req.body;
         if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
             return res.status(400).json({
                 success: false,
                 message: 'Valid amount is required'
             });
         }
-        const userId = req.user?.id;
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'User not authenticated'
-            });
+        // User may or may not be authenticated with authenticateOptional middleware
+        const paymentMetadata = { ...metadata };
+        // Add userId to metadata if user is authenticated
+        if (req.user?.id) {
+            paymentMetadata.userId = req.user.id;
         }
         // Create a payment intent
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(parseFloat(amount) * 100), // Convert to cents
             currency: currency.toLowerCase(),
             description,
-            metadata: {
-                userId,
-                ...metadata
-            }
+            metadata: paymentMetadata
         });
         return res.status(200).json({
             success: true,

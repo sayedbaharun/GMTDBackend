@@ -44,14 +44,13 @@ app.get('/admin', (req, res) => {
   <h1>Express TypeScript API - Admin Dashboard</h1>
   <div class="card">
     <p class="success">✓ Server is running!</p>
-    <p>This Express server includes integration with Supabase for auth/database and Stripe for payments.</p>
+    <p>This Express server includes integration with Auth0 for auth/database and Stripe for payments.</p>
   </div>
   
   <h2>System Endpoints</h2>
   <ul>
     <li><span class="endpoint">GET /health</span> - Health check endpoint</li>
     <li><span class="endpoint">GET /api/test/stripe</span> - Test Stripe integration</li>
-    <li><span class="endpoint">GET /api/test/supabase</span> - Test Supabase integration</li>
   </ul>
   
   <h2>Onboarding Flow</h2>
@@ -113,7 +112,8 @@ app.get('/api/info', (req, res) => {
     name: 'Express TypeScript API',
     version: '1.0.0',
     features: [
-      'Supabase Authentication',
+      'Auth0 Authentication',
+      'Pusher Real-time',
       'Multi-step Onboarding',
       'Stripe Integration',
       'TypeScript Support'

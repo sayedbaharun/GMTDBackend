@@ -1,29 +1,30 @@
+import { User } from '@prisma/client';
 import { ServiceResponse } from '../types';
+interface Auth0UserProfile {
+    sub: string;
+    email?: string;
+    name?: string;
+    email_verified?: boolean;
+}
 /**
- * Service for handling authentication operations
+ * Service for handling user synchronization with Auth0
  */
 export declare const authService: {
     /**
-     * Register a new user with Supabase Auth
-     * @param email - User email
-     * @param password - User password
-     * @param fullName - User's full name
+     * Finds an existing user or creates a new one based on Auth0 profile.
+     * Also creates a Stripe customer for new users.
+     * @param auth0Profile - The user profile object from Auth0 (typically from a validated ID token).
      */
-    registerUser: (email: string, password: string, fullName: string) => Promise<ServiceResponse<any>>;
+    getOrCreateUserFromAuth0: (auth0Profile: Auth0UserProfile) => Promise<ServiceResponse<User>>;
     /**
-     * Login a user with Supabase Auth
-     * @param email - User email
-     * @param password - User password
+     * Retrieves a user from the local database by their Auth0 ID.
+     * @param auth0Id - The Auth0 user ID (sub).
      */
-    loginUser: (email: string, password: string) => Promise<ServiceResponse<any>>;
+    getUserByAuth0Id: (auth0Id: string) => Promise<ServiceResponse<User | null>>;
     /**
-     * Logout a user with Supabase Auth
-     * @param token - JWT token from the Authorization header
+     * Retrieves a user from the local database by their internal database ID.
+     * @param userId - The internal database user ID.
      */
-    logoutUser: (token: string) => Promise<ServiceResponse<null>>;
-    /**
-     * Request a password reset for a user
-     * @param email - User email
-     */
-    resetPassword: (email: string) => Promise<ServiceResponse<null>>;
+    getUserById: (userId: string) => Promise<ServiceResponse<User | null>>;
 };
+export {};

@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
-import { ServiceResponse, UserProfile, SubscriptionStatus } from '../types';
+import { User as PrismaUser } from '@prisma/client';
+import { ServiceResponse, SubscriptionStatus } from '../types';
 /**
  * Service for handling Stripe operations
  */
@@ -39,10 +40,10 @@ export declare const stripeService: {
     createCustomer: (userId: string, email: string, name?: string) => Promise<ServiceResponse<Stripe.Customer>>;
     /**
      * Create a subscription for a user
-     * @param user - User profile
+     * @param user - Prisma User object
      * @param priceId - Stripe price ID
      */
-    createSubscription: (user: UserProfile, priceId: string) => Promise<ServiceResponse<{
+    createSubscription: (user: PrismaUser, priceId: string) => Promise<ServiceResponse<{
         clientSecret: string;
         subscriptionId: string;
     }>>;
@@ -50,7 +51,7 @@ export declare const stripeService: {
      * Get the subscription status for a user
      * @param user - User profile
      */
-    getSubscriptionStatus: (user: UserProfile) => Promise<ServiceResponse<SubscriptionStatus>>;
+    getSubscriptionStatus: (user: PrismaUser) => Promise<ServiceResponse<SubscriptionStatus>>;
     /**
      * Create a Stripe Customer Portal session
      * @param customerId - Stripe customer ID
@@ -89,4 +90,16 @@ export declare const stripeService: {
      * @param invoice - Stripe invoice
      */
     handleInvoicePaymentFailed: (invoice: Stripe.Invoice) => Promise<void>;
+    /**
+     * Create a Stripe Checkout Session for membership purchases
+     * @param options - Checkout session configuration
+     */
+    createCheckoutSession: (options: {
+        customerId: string;
+        priceId: string;
+        planName: string;
+        successUrl: string;
+        cancelUrl: string;
+        metadata?: Record<string, string>;
+    }) => Promise<ServiceResponse<Stripe.Checkout.Session>>;
 };

@@ -6,7 +6,7 @@ import {
   getSubscriptionStatus, 
   createCustomerPortal 
 } from '../controllers/subscriptions';
-import { authenticate, requireOnboardingComplete } from '../middleware/auth';
+import { authenticateAndSyncUser, requireOnboardingComplete } from '../middleware/auth';
 import { subscriptionValidation, validate } from '../middleware/validation';
 import { createRouteHandler } from '../utils/errorHandler';
 
@@ -20,7 +20,7 @@ const router = Router();
  */
 
 // All subscription routes require authentication
-router.use(authenticate);
+router.use(authenticateAndSyncUser);
 
 // Create a new subscription
 router.post(

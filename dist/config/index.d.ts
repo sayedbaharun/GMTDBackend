@@ -1,8 +1,4 @@
 export declare const config: {
-    supabase: {
-        url: string;
-        serviceRoleKey: string;
-    };
     stripe: {
         secretKey: string;
         publishableKey: string;
@@ -10,6 +6,8 @@ export declare const config: {
         priceId: string;
     };
     appUrl: string;
+    enableDatabase: boolean;
+    demoMode: boolean;
     featureFlags: {
         useMockData: boolean;
         testMode: boolean;
@@ -20,3 +18,4 @@ export declare const config: {
         max: number;
     };
 };
+export declare const startupValidation: () => void;

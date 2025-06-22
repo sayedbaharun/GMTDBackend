@@ -54,18 +54,9 @@ export interface UserProfile {
     onboardingStep?: string;
     onboardingComplete?: boolean;
     stripeCustomerId?: string;
-    stripe_customer_id?: string;
     subscriptionId?: string;
-    subscription_id?: string;
     subscriptionStatus?: string;
-    subscription_status?: string;
-    onboarding_step?: string;
-    onboarding_complete?: boolean;
-    phone_number?: string;
-    company_name?: string;
-    company_size?: string;
-    referral_source?: string;
-    updated_at?: string;
+    updatedAt?: string;
 }
 export interface UserInfoPayload {
     fullName: string;
@@ -95,4 +86,59 @@ export declare enum StripeWebhookEvents {
     SUBSCRIPTION_DELETED = "customer.subscription.deleted",
     INVOICE_PAYMENT_SUCCEEDED = "invoice.payment_succeeded",
     INVOICE_PAYMENT_FAILED = "invoice.payment_failed"
+}
+export interface TravelRequest {
+    id: string;
+    userId: string;
+    conversationId?: string;
+    messageId?: string;
+    status: TravelRequestStatus;
+    requestType: TravelRequestType;
+    description: string;
+    requirementsSummary?: string;
+    searchParams?: Record<string, any>;
+    adminId?: string;
+    priority: TravelRequestPriority;
+    deadline?: Date;
+    presentedOptions?: TravelOption[];
+    selectedOptionId?: string;
+    createdAt: Date;
+    updatedAt: Date;
+    relatedBookingId?: string;
+}
+export declare enum TravelRequestStatus {
+    PENDING = "PENDING",
+    PROCESSING = "PROCESSING",
+    OPTIONS_PRESENTED = "OPTIONS_PRESENTED",
+    BOOKED = "BOOKED",
+    CANCELLED = "CANCELLED"
+}
+export declare enum TravelRequestType {
+    FLIGHT = "FLIGHT",
+    HOTEL = "HOTEL",
+    CAR_RENTAL = "CAR_RENTAL",
+    YACHT = "YACHT",
+    RESTAURANT = "RESTAURANT",
+    TRANSPORTATION = "TRANSPORTATION",
+    PACKAGE = "PACKAGE",
+    OTHER = "OTHER"
+}
+export declare enum TravelRequestPriority {
+    LOW = "LOW",
+    NORMAL = "NORMAL",
+    HIGH = "HIGH",
+    URGENT = "URGENT"
+}
+export interface TravelOption {
+    id: string;
+    type: TravelRequestType;
+    provider: string;
+    title: string;
+    description: string;
+    price: number;
+    currency: string;
+    details: Record<string, any>;
+    availableUntil?: Date;
+    thumbnailUrl?: string;
+    externalId?: string;
 }

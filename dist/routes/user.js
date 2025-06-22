@@ -36,20 +36,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
 const Router = express.Router;
 const user_1 = require("../controllers/user");
+const userDashboard_1 = require("../controllers/userDashboard");
 const auth_1 = require("../middleware/auth");
 const validation_1 = require("../middleware/validation");
 const errorHandler_1 = require("../utils/errorHandler");
 const router = Router();
 /**
- * User Profile Routes
- * GET /api/user/profile - Get the current user's profile
- * PUT /api/user/profile - Update the current user's profile
+ * User Routes
+ * Profile and Dashboard endpoints
  */
-// All user routes require authentication
-router.use(auth_1.authenticate);
-// Get current user profile
+// Authentication middleware for all user routes
+router.use(auth_1.authenticateAndSyncUser);
+// Profile routes
 router.get('/profile', (0, errorHandler_1.createRouteHandler)(user_1.getProfile));
-// Update current user profile
 router.put('/profile', (0, validation_1.validate)(validation_1.userProfileValidation.update), (0, errorHandler_1.createRouteHandler)(user_1.updateProfile));
+// Dashboard routes
+router.get('/dashboard', (0, errorHandler_1.createRouteHandler)(userDashboard_1.getDashboardOverview));
+router.get('/dashboard/bookings', (0, errorHandler_1.createRouteHandler)(userDashboard_1.getBookingHistory));
+router.get('/dashboard/timeline', (0, errorHandler_1.createRouteHandler)(userDashboard_1.getActivityTimeline));
+router.get('/dashboard/preferences', (0, errorHandler_1.createRouteHandler)(userDashboard_1.getTravelPreferences));
+router.put('/dashboard/preferences', (0, errorHandler_1.createRouteHandler)(userDashboard_1.updateTravelPreferences));
 exports.default = router;
 //# sourceMappingURL=user.js.map

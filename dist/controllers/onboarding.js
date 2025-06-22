@@ -1,62 +1,60 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.completeOnboarding = exports.processPayment = exports.saveAdditionalDetails = exports.saveUserInfo = exports.getOnboardingStatus = void 0;
+const client_1 = require("@prisma/client");
 const types_1 = require("../types");
-const user_1 = require("../services/user");
 const stripe_1 = require("../services/stripe");
 const logger_1 = require("../utils/logger");
+const prisma = new client_1.PrismaClient();
 /**
  * Get current onboarding status
  * @route GET /api/onboarding/status
  */
 const getOnboardingStatus = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Authentication required'
-            });
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
         let nextStep = types_1.OnboardingStep.NOT_STARTED;
-        // Determine the current step and next step based on user profile
-        if (req.user.onboardingComplete) {
+        if (user.onboardingComplete) {
             nextStep = types_1.OnboardingStep.COMPLETED;
         }
-        else if (req.user.subscriptionId && req.user.subscriptionStatus === 'active') {
+        else if (user.subscriptionId && user.subscriptionStatus === 'active') {
             nextStep = types_1.OnboardingStep.COMPLETED;
         }
-        else if (req.user.industry && req.user.role && req.user.goals) {
+        else if (user.industry && user.role && user.goals && user.goals.length > 0) {
             nextStep = types_1.OnboardingStep.PAYMENT;
         }
-        else if (req.user.fullName && req.user.phone && req.user.companyName) {
+        else if (user.fullName && user.phone && user.companyName) {
             nextStep = types_1.OnboardingStep.ADDITIONAL_DETAILS;
         }
         else {
             nextStep = types_1.OnboardingStep.BASIC_INFO;
         }
         return res.status(200).json({
-            currentStep: req.user.onboardingStep || types_1.OnboardingStep.NOT_STARTED,
+            currentStep: user.onboardingStep || types_1.OnboardingStep.NOT_STARTED,
             nextStep,
             profile: {
-                // Only send necessary information for onboarding
-                id: req.user.id,
-                fullName: req.user.fullName,
-                email: req.user.email,
-                phone: req.user.phone,
-                companyName: req.user.companyName,
-                industry: req.user.industry,
-                companySize: req.user.companySize,
-                role: req.user.role,
-                goals: req.user.goals,
-                onboardingComplete: req.user.onboardingComplete,
-                subscriptionStatus: req.user.subscriptionStatus
+                id: user.id,
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                companyName: user.companyName,
+                industry: user.industry,
+                companySize: user.companySize,
+                role: user.role,
+                goals: user.goals,
+                onboardingComplete: user.onboardingComplete,
+                subscriptionStatus: user.subscriptionStatus,
+                isEmailVerified: user.isEmailVerified,
+                isAdmin: user.isAdmin
             }
         });
     }
     catch (error) {
         logger_1.logger.error('Get onboarding status error:', error);
-        return res.status(500).json({
-            message: 'Failed to get onboarding status'
-        });
+        return res.status(500).json({ message: 'Failed to get onboarding status' });
     }
 };
 exports.getOnboardingStatus = getOnboardingStatus;
@@ -65,45 +63,43 @@ exports.getOnboardingStatus = getOnboardingStatus;
  * @route POST /api/onboarding/user-info
  */
 const saveUserInfo = async (req, res) => {
+    // DEBUG: Log body at the start of the controller
+    console.log('Body in saveUserInfo Controller:', req.body);
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Authentication required'
-            });
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
-        const userInfo = {
-            fullName: req.body.fullName,
-            email: req.body.email,
-            phone_number: req.body.phone_number, // Keep as is for the payload
-            company_name: req.body.company_name // Keep as is for the payload
-        };
-        // Update profile and set onboarding step
-        const result = await user_1.userService.updateUserProfile(req.user.id, {
-            fullName: userInfo.fullName,
-            email: userInfo.email,
-            phone: userInfo.phone_number, // Convert to camelCase for Prisma
-            companyName: userInfo.company_name, // Convert to camelCase for Prisma
-            phone_number: userInfo.phone_number, // Keep snake_case for Supabase
-            company_name: userInfo.company_name, // Keep snake_case for Supabase
-            onboardingStep: types_1.OnboardingStep.BASIC_INFO,
-            onboarding_step: types_1.OnboardingStep.BASIC_INFO // Use snake_case for Supabase
+        const { fullName, email, phone, companyName } = req.body;
+        if (!fullName || !email) {
+            return res.status(400).json({ message: 'Full name and email are required.' });
+        }
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                fullName: fullName,
+                phone: phone,
+                companyName: companyName,
+                onboardingStep: types_1.OnboardingStep.BASIC_INFO,
+                updatedAt: new Date()
+            }
         });
-        if (!result.success) {
-            return res.status(result.statusCode || 400).json({
-                message: result.error
-            });
-        }
         return res.status(200).json({
             message: 'User information saved successfully',
-            profile: result.data,
+            profile: {
+                id: updatedUser.id,
+                fullName: updatedUser.fullName,
+                email: updatedUser.email,
+                phone: updatedUser.phone,
+                companyName: updatedUser.companyName,
+                onboardingStep: updatedUser.onboardingStep
+            },
             nextStep: types_1.OnboardingStep.ADDITIONAL_DETAILS
         });
     }
     catch (error) {
         logger_1.logger.error('Save user info error:', error);
-        return res.status(500).json({
-            message: 'Failed to save user information'
-        });
+        return res.status(500).json({ message: 'Failed to save user information' });
     }
 };
 exports.saveUserInfo = saveUserInfo;
@@ -113,69 +109,68 @@ exports.saveUserInfo = saveUserInfo;
  */
 const saveAdditionalDetails = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Authentication required'
-            });
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
-        // Check if step 1 was completed
-        if (!req.user.fullName || !req.user.phone || !req.user.companyName) {
+        if (!user.fullName || !user.phone || !user.companyName) {
             return res.status(400).json({
                 message: 'Please complete step 1 (basic info) first',
                 nextStep: types_1.OnboardingStep.BASIC_INFO
             });
         }
-        const additionalDetails = {
-            industry: req.body.industry,
-            company_size: req.body.company_size,
-            role: req.body.role,
-            goals: req.body.goals,
-            referral_source: req.body.referral_source
-        };
-        // Update profile and set onboarding step
-        const result = await user_1.userService.updateUserProfile(req.user.id, {
-            industry: additionalDetails.industry,
-            companySize: additionalDetails.company_size,
-            role: additionalDetails.role,
-            goals: additionalDetails.goals,
-            referralSource: additionalDetails.referral_source,
-            company_size: additionalDetails.company_size, // Keep snake_case for Supabase
-            referral_source: additionalDetails.referral_source, // Keep snake_case for Supabase
-            onboardingStep: types_1.OnboardingStep.ADDITIONAL_DETAILS,
-            onboarding_step: types_1.OnboardingStep.ADDITIONAL_DETAILS // Use snake_case for Supabase
-        });
-        if (!result.success) {
-            return res.status(result.statusCode || 400).json({
-                message: result.error
-            });
+        const { industry, companySize, role, goals, referralSource } = req.body;
+        if (!industry || !companySize || !role || !goals) {
+            return res.status(400).json({ message: 'Industry, company size, role, and goals are required.' });
         }
-        // Create Stripe customer if it doesn't exist
-        if (!req.user.stripeCustomerId) {
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                industry: industry,
+                companySize: companySize,
+                role: role,
+                goals: goals,
+                referralSource: referralSource,
+                onboardingStep: types_1.OnboardingStep.ADDITIONAL_DETAILS,
+                updatedAt: new Date()
+            }
+        });
+        let stripeCustomerId = user.stripeCustomerId;
+        if (!stripeCustomerId) {
             try {
-                const customerResult = await stripe_1.stripeService.createCustomer(req.user.id, req.user.email, req.user.fullName || '');
+                const customerResult = await stripe_1.stripeService.createCustomer(user.id, user.email, user.fullName || '');
                 if (customerResult.success && customerResult.data) {
-                    await user_1.userService.updateUserProfile(req.user.id, {
-                        stripeCustomerId: customerResult.data.id
+                    stripeCustomerId = customerResult.data.id;
+                    await prisma.user.update({
+                        where: { id: user.id },
+                        data: { stripeCustomerId: stripeCustomerId }
                     });
+                }
+                else {
+                    logger_1.logger.error('Failed to create Stripe customer:', customerResult.error);
                 }
             }
             catch (stripeError) {
                 logger_1.logger.error('Create Stripe customer error:', stripeError);
-                // Continue even if Stripe customer creation fails
-                // We'll try again during the payment step
             }
         }
         return res.status(200).json({
             message: 'Additional details saved successfully',
-            profile: result.data,
+            profile: {
+                id: updatedUser.id,
+                industry: updatedUser.industry,
+                companySize: updatedUser.companySize,
+                role: updatedUser.role,
+                goals: updatedUser.goals,
+                onboardingStep: updatedUser.onboardingStep,
+                stripeCustomerId: stripeCustomerId
+            },
             nextStep: types_1.OnboardingStep.PAYMENT
         });
     }
     catch (error) {
         logger_1.logger.error('Save additional details error:', error);
-        return res.status(500).json({
-            message: 'Failed to save additional details'
-        });
+        return res.status(500).json({ message: 'Failed to save additional details' });
     }
 };
 exports.saveAdditionalDetails = saveAdditionalDetails;
@@ -185,125 +180,161 @@ exports.saveAdditionalDetails = saveAdditionalDetails;
  */
 const processPayment = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Authentication required'
-            });
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
-        // Check if previous steps were completed
-        if (!req.user.fullName || !req.user.phone || !req.user.companyName ||
-            !req.user.industry || !req.user.role || !req.user.goals) {
-            return res.status(400).json({
-                message: 'Please complete previous onboarding steps first',
-                nextStep: !req.user.fullName ? types_1.OnboardingStep.BASIC_INFO : types_1.OnboardingStep.ADDITIONAL_DETAILS
-            });
+        const { priceId, planName, successUrl, cancelUrl } = req.body;
+        if (!priceId) {
+            return res.status(400).json({ message: 'Price ID is required for membership selection.' });
         }
-        const { priceId } = req.body;
-        // Create Stripe customer if it doesn't exist
-        if (!req.user.stripeCustomerId) {
-            const customerResult = await stripe_1.stripeService.createCustomer(req.user.id, req.user.email, req.user.fullName || '');
-            if (!customerResult.success) {
-                return res.status(customerResult.statusCode || 500).json({
-                    message: customerResult.error || 'Failed to create customer'
+        logger_1.logger.info(`Processing payment for user ${user.id}, plan: ${planName}, priceId: ${priceId}`);
+        // Ensure user has Stripe customer ID
+        let stripeCustomerId = user.stripeCustomerId;
+        if (!stripeCustomerId) {
+            logger_1.logger.info('Creating Stripe customer for payment...');
+            try {
+                const customerResult = await stripe_1.stripeService.createCustomer(user.id, user.email, user.fullName || '');
+                if (!customerResult.success || !customerResult.data?.id) {
+                    return res.status(customerResult.statusCode || 500).json({
+                        message: customerResult.error || 'Failed to create Stripe customer'
+                    });
+                }
+                stripeCustomerId = customerResult.data.id;
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { stripeCustomerId: stripeCustomerId }
                 });
             }
-            await user_1.userService.updateUserProfile(req.user.id, {
-                stripeCustomerId: customerResult.data?.id,
-                stripe_customer_id: customerResult.data?.id, // Use snake_case for Supabase
-                onboardingStep: types_1.OnboardingStep.PAYMENT,
-                onboarding_step: types_1.OnboardingStep.PAYMENT // Use snake_case for Supabase
+            catch (stripeError) {
+                logger_1.logger.error('Create Stripe customer error:', stripeError);
+                return res.status(500).json({ message: 'Failed to setup payment customer.' });
+            }
+        }
+        // Create Stripe Checkout Session for better UX
+        try {
+            const checkoutSession = await stripe_1.stripeService.createCheckoutSession({
+                customerId: stripeCustomerId,
+                priceId: priceId,
+                planName: planName,
+                successUrl: successUrl || `${process.env.FRONTEND_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+                cancelUrl: cancelUrl || `${process.env.FRONTEND_URL}/membership`,
+                metadata: {
+                    userId: user.id,
+                    planName: planName,
+                    tier: getTierFromPriceId(priceId)
+                }
+            });
+            if (!checkoutSession.success || !checkoutSession.data) {
+                return res.status(checkoutSession.statusCode || 500).json({
+                    message: checkoutSession.error || 'Failed to create checkout session'
+                });
+            }
+            // Update user onboarding step
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    onboardingStep: types_1.OnboardingStep.PAYMENT,
+                    updatedAt: new Date()
+                }
+            });
+            logger_1.logger.info(`Checkout session created: ${checkoutSession.data.id} for user ${user.id}`);
+            return res.status(200).json({
+                success: true,
+                message: 'Checkout session created successfully',
+                checkoutUrl: checkoutSession.data.url,
+                sessionId: checkoutSession.data.id
             });
         }
-        // Convert req.user to UserProfile type, handling null values
-        const userProfile = {
-            id: req.user.id,
-            email: req.user.email,
-            fullName: req.user.fullName || undefined,
-            phone: req.user.phone || undefined,
-            companyName: req.user.companyName || undefined,
-            industry: req.user.industry || undefined,
-            companySize: req.user.companySize || undefined,
-            role: req.user.role || undefined,
-            goals: req.user.goals || undefined,
-            stripeCustomerId: req.user.stripeCustomerId || undefined,
-            stripe_customer_id: req.user.stripeCustomerId || undefined, // Use stripeCustomerId for both
-            subscriptionId: req.user.subscriptionId || undefined,
-            subscription_id: req.user.subscriptionId || undefined // Use subscriptionId for both
-        };
-        // Create subscription checkout session
-        const subscriptionResult = await stripe_1.stripeService.createSubscription(userProfile, priceId);
-        if (!subscriptionResult.success) {
-            return res.status(subscriptionResult.statusCode || 500).json({
-                message: subscriptionResult.error || 'Failed to create subscription'
+        catch (checkoutError) {
+            logger_1.logger.error('Checkout session creation error:', checkoutError);
+            // Fallback to subscription creation for development
+            logger_1.logger.info('Falling back to direct subscription creation...');
+            const subscriptionResult = await stripe_1.stripeService.createSubscription(user, priceId);
+            if (!subscriptionResult.success || !subscriptionResult.data) {
+                return res.status(subscriptionResult.statusCode || 500).json({
+                    message: subscriptionResult.error || 'Failed to create subscription'
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'Payment initiated successfully',
+                clientSecret: subscriptionResult.data.clientSecret,
+                subscriptionId: subscriptionResult.data.subscriptionId,
+                checkoutUrl: `${process.env.FRONTEND_URL}/dashboard?payment_success=true&plan=${planName}`
             });
         }
-        return res.status(200).json({
-            message: 'Payment process initiated',
-            clientSecret: subscriptionResult.data?.clientSecret,
-            subscriptionId: subscriptionResult.data?.subscriptionId,
-            nextStep: types_1.OnboardingStep.COMPLETED
-        });
     }
     catch (error) {
         logger_1.logger.error('Process payment error:', error);
         return res.status(500).json({
+            success: false,
             message: 'Failed to process payment'
         });
     }
 };
 exports.processPayment = processPayment;
 /**
+ * Helper function to get tier from price ID
+ */
+function getTierFromPriceId(priceId) {
+    if (priceId.includes('Vip') || priceId.includes('Monthly')) {
+        return 'vip';
+    }
+    else if (priceId.includes('Elite') || priceId.includes('Annual')) {
+        return 'elite';
+    }
+    else if (priceId.includes('Founding') || priceId.includes('Lifetime')) {
+        return 'founding';
+    }
+    return 'vip'; // Default
+}
+/**
  * Mark onboarding as complete
  * @route POST /api/onboarding/complete
  */
 const completeOnboarding = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Authentication required'
-            });
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
-        // Check if all required steps are completed
-        if (!req.user.fullName || !req.user.phone || !req.user.companyName ||
-            !req.user.industry || !req.user.role || !req.user.goals) {
+        if (!user.fullName || !user.phone || !user.companyName ||
+            !user.industry || !user.role || !user.goals || user.goals.length === 0) {
             return res.status(400).json({
                 message: 'Please complete all onboarding steps first',
-                nextStep: !req.user.fullName
+                nextStep: !user.fullName
                     ? types_1.OnboardingStep.BASIC_INFO
-                    : !req.user.industry
-                        ? types_1.OnboardingStep.ADDITIONAL_DETAILS
-                        : types_1.OnboardingStep.PAYMENT
+                    : types_1.OnboardingStep.ADDITIONAL_DETAILS
             });
         }
-        // Check if subscription is active before completing onboarding
-        if (!req.user.subscriptionId || req.user.subscriptionStatus !== 'active') {
+        if (user.subscriptionStatus !== 'active') {
             return res.status(400).json({
-                message: 'Active subscription required to complete onboarding',
+                message: 'Active subscription required to complete onboarding. Please complete payment.',
                 nextStep: types_1.OnboardingStep.PAYMENT
             });
         }
-        const result = await user_1.userService.updateUserProfile(req.user.id, {
-            onboardingComplete: true,
-            onboarding_complete: true, // Use snake_case for Supabase
-            onboardingStep: types_1.OnboardingStep.COMPLETED,
-            onboarding_step: types_1.OnboardingStep.COMPLETED // Use snake_case for Supabase
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                onboardingComplete: true,
+                onboardingStep: types_1.OnboardingStep.COMPLETED,
+                updatedAt: new Date()
+            }
         });
-        if (!result.success) {
-            return res.status(result.statusCode || 400).json({
-                message: result.error
-            });
-        }
         return res.status(200).json({
             message: 'Onboarding completed successfully',
-            profile: result.data,
+            profile: {
+                id: updatedUser.id,
+                onboardingComplete: updatedUser.onboardingComplete,
+                onboardingStep: updatedUser.onboardingStep
+            },
             nextStep: types_1.OnboardingStep.COMPLETED
         });
     }
     catch (error) {
         logger_1.logger.error('Complete onboarding error:', error);
-        return res.status(500).json({
-            message: 'Failed to complete onboarding'
-        });
+        return res.status(500).json({ message: 'Failed to complete onboarding' });
     }
 };
 exports.completeOnboarding = completeOnboarding;

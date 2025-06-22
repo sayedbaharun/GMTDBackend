@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.stripeService = void 0;
 const stripe_1 = __importDefault(require("stripe"));
 const config_1 = require("../config");
-const user_1 = require("./user");
+const client_1 = require("@prisma/client");
 const logger_1 = require("../utils/logger");
 const types_1 = require("../types");
+const prisma = new client_1.PrismaClient();
 // Initialize Stripe with the secret key
 const stripe = new stripe_1.default(config_1.config.stripe.secretKey, {
     apiVersion: '2025-04-30.basil',
@@ -157,8 +158,17 @@ exports.stripeService = {
                     userId
                 }
             });
-            // Update the user profile with the Stripe customer ID
-            await user_1.userService.updateUserStripeInfo(userId, customer.id, {});
+            // Update the user profile with the Stripe customer ID using Prisma
+            // await userService.updateUserStripeInfo(userId, customer.id, {}); // REMOVED userService call
+            // We don't necessarily need to update here, as the caller (e.g., onboarding controller) will update the user record
+            // Alternatively, we could update here:
+            /*
+            await prisma.user.update({
+              where: { id: userId },
+              data: { stripeCustomerId: customer.id }
+            });
+            */
+            logger_1.logger.info(`Stripe customer created: ${customer.id} for user ${userId}`);
             return {
                 success: true,
                 data: customer
@@ -175,12 +185,12 @@ exports.stripeService = {
     },
     /**
      * Create a subscription for a user
-     * @param user - User profile
+     * @param user - Prisma User object
      * @param priceId - Stripe price ID
      */
     createSubscription: async (user, priceId) => {
         try {
-            let customerId = user.stripe_customer_id || user.stripeCustomerId;
+            let customerId = user.stripeCustomerId;
             // If the user doesn't have a Stripe customer ID, create one
             if (!customerId) {
                 const customerResult = await exports.stripeService.createCustomer(user.id, user.email, user.fullName || user.email);
@@ -192,6 +202,7 @@ exports.stripeService = {
                     };
                 }
                 customerId = customerResult.data.id;
+                // The caller (onboarding controller) should handle updating the user record with the new customerId
             }
             // Create the subscription
             const subscription = await stripe.subscriptions.create({
@@ -202,22 +213,58 @@ exports.stripeService = {
                     },
                 ],
                 payment_behavior: 'default_incomplete',
-                expand: ['latest_invoice.payment_intent'],
+                // Only expand pending_setup_intent and latest_invoice
+                expand: ['pending_setup_intent', 'latest_invoice'],
+                metadata: {
+                    userId: user.id
+                }
             });
-            // Get the client secret for the payment intent
-            const invoice = subscription.latest_invoice;
-            const paymentIntent = invoice.payment_intent;
-            // Update the user profile with the subscription ID
-            await user_1.userService.updateUserStripeInfo(user.id, customerId, {
-                subscription_id: subscription.id,
-                subscription_status: subscription.status,
-                subscription_current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-                subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
-            });
+            let clientSecret = null;
+            // Try to get client_secret from pending_setup_intent
+            if (subscription.pending_setup_intent && typeof subscription.pending_setup_intent === 'object') {
+                clientSecret = subscription.pending_setup_intent.client_secret;
+                if (clientSecret) {
+                    logger_1.logger.info(`Obtained client_secret from pending_setup_intent for sub ${subscription.id}`);
+                }
+                else {
+                    logger_1.logger.warn(`pending_setup_intent object found for sub ${subscription.id}, but it did not contain a client_secret.`);
+                }
+            }
+            else {
+                logger_1.logger.warn(`pending_setup_intent not found or not an object for sub ${subscription.id}. Value: ${JSON.stringify(subscription.pending_setup_intent)}`);
+            }
+            // If client_secret not found in pending_setup_intent, try to get it from the latest invoice's payment intent
+            if (!clientSecret && subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
+                // Use 'any' type to bypass TypeScript limitations with Stripe types
+                const invoice = subscription.latest_invoice;
+                // Check if the invoice has a payment_intent ID (could be string or object depending on expansion)
+                const paymentIntentId = typeof invoice.payment_intent === 'string'
+                    ? invoice.payment_intent
+                    : (invoice.payment_intent?.id || null);
+                if (paymentIntentId) {
+                    // Retrieve the payment intent to get the client secret
+                    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+                    clientSecret = paymentIntent.client_secret;
+                    if (clientSecret) {
+                        logger_1.logger.info(`Obtained client_secret from payment intent (${paymentIntentId}) for sub ${subscription.id}`);
+                    }
+                    else {
+                        logger_1.logger.warn(`Retrieved payment intent (${paymentIntentId}) but it did not contain a client_secret.`);
+                    }
+                }
+                else {
+                    logger_1.logger.warn(`No payment_intent found in latest_invoice for sub ${subscription.id}`);
+                }
+            }
+            if (!clientSecret) {
+                // If neither pending_setup_intent nor invoice's payment_intent provided a client_secret, throw an error
+                logger_1.logger.error(`Failed to obtain client_secret for subscription ${subscription.id}. PendingSetupIntent: ${JSON.stringify(subscription.pending_setup_intent)}`);
+                throw new Error('Could not retrieve a client secret for payment setup from Stripe subscription.');
+            }
             return {
                 success: true,
                 data: {
-                    clientSecret: paymentIntent.client_secret,
+                    clientSecret: clientSecret,
                     subscriptionId: subscription.id
                 }
             };
@@ -238,7 +285,7 @@ exports.stripeService = {
     getSubscriptionStatus: async (user) => {
         try {
             // If the user doesn't have a subscription, return inactive status
-            if (!user.subscription_id) {
+            if (!user.subscriptionId) {
                 return {
                     success: true,
                     data: {
@@ -253,7 +300,7 @@ exports.stripeService = {
                 };
             }
             // Retrieve the subscription from Stripe
-            const subscription = await stripe.subscriptions.retrieve(user.subscription_id, {
+            const subscription = await stripe.subscriptions.retrieve(user.subscriptionId, {
                 expand: ['items.data.price.product']
             });
             // Parse the subscription data
@@ -372,19 +419,23 @@ exports.stripeService = {
         try {
             const customerId = subscription.customer;
             // Find the user with this Stripe customer ID
-            const userResult = await user_1.userService.findUserByStripeCustomerId(customerId);
-            if (!userResult.success || !userResult.data) {
+            const userResult = await prisma.user.findUnique({
+                where: { stripeCustomerId: customerId }
+            });
+            if (!userResult) {
                 logger_1.logger.error(`No user found for Stripe customer ${customerId}`);
                 return;
             }
             // Update the user's subscription data
-            await user_1.userService.updateUserStripeInfo(userResult.data.id, customerId, {
-                subscription_id: subscription.id,
-                subscription_status: subscription.status,
-                subscription_current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-                subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
+            await prisma.user.update({
+                where: { id: userResult.id },
+                data: {
+                    subscriptionId: subscription.id,
+                    subscriptionStatus: subscription.status,
+                    subscriptionCurrentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString()
+                }
             });
-            logger_1.logger.info(`Subscription created for user ${userResult.data.id}`);
+            logger_1.logger.info(`Subscription created for user ${userResult.id}`);
         }
         catch (error) {
             logger_1.logger.error('handleSubscriptionCreated error:', error);
@@ -398,18 +449,22 @@ exports.stripeService = {
         try {
             const customerId = subscription.customer;
             // Find the user with this Stripe customer ID
-            const userResult = await user_1.userService.findUserByStripeCustomerId(customerId);
-            if (!userResult.success || !userResult.data) {
+            const userResult = await prisma.user.findUnique({
+                where: { stripeCustomerId: customerId }
+            });
+            if (!userResult) {
                 logger_1.logger.error(`No user found for Stripe customer ${customerId}`);
                 return;
             }
             // Update the user's subscription data
-            await user_1.userService.updateUserStripeInfo(userResult.data.id, customerId, {
-                subscription_status: subscription.status,
-                subscription_current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-                subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
+            await prisma.user.update({
+                where: { id: userResult.id },
+                data: {
+                    subscriptionStatus: subscription.status,
+                    subscriptionCurrentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString()
+                }
             });
-            logger_1.logger.info(`Subscription updated for user ${userResult.data.id}`);
+            logger_1.logger.info(`Subscription updated for user ${userResult.id}`);
         }
         catch (error) {
             logger_1.logger.error('handleSubscriptionUpdated error:', error);
@@ -423,16 +478,21 @@ exports.stripeService = {
         try {
             const customerId = subscription.customer;
             // Find the user with this Stripe customer ID
-            const userResult = await user_1.userService.findUserByStripeCustomerId(customerId);
-            if (!userResult.success || !userResult.data) {
+            const userResult = await prisma.user.findUnique({
+                where: { stripeCustomerId: customerId }
+            });
+            if (!userResult) {
                 logger_1.logger.error(`No user found for Stripe customer ${customerId}`);
                 return;
             }
             // Update the user's subscription data
-            await user_1.userService.updateUserStripeInfo(userResult.data.id, customerId, {
-                subscription_status: 'canceled'
+            await prisma.user.update({
+                where: { id: userResult.id },
+                data: {
+                    subscriptionStatus: 'canceled'
+                }
             });
-            logger_1.logger.info(`Subscription deleted for user ${userResult.data.id}`);
+            logger_1.logger.info(`Subscription deleted for user ${userResult.id}`);
         }
         catch (error) {
             logger_1.logger.error('handleSubscriptionDeleted error:', error);
@@ -446,16 +506,23 @@ exports.stripeService = {
         try {
             const customerId = invoice.customer;
             // Find the user with this Stripe customer ID
-            const userResult = await user_1.userService.findUserByStripeCustomerId(customerId);
-            if (!userResult.success || !userResult.data) {
+            const userResult = await prisma.user.findUnique({
+                where: { stripeCustomerId: customerId }
+            });
+            if (!userResult) {
                 logger_1.logger.error(`No user found for Stripe customer ${customerId}`);
                 return;
             }
             // Update the user's payment date
-            await user_1.userService.updateUserStripeInfo(userResult.data.id, customerId, {
-                last_payment_date: new Date().toISOString()
+            await prisma.user.update({
+                where: { id: userResult.id },
+                data: {
+                // lastPaymentDate: new Date().toISOString() // REMOVED - Field doesn't exist on User model
+                // Optionally update another relevant field if needed, e.g., extend subscription access?
+                // For now, just logging is fine as per the original comment.
+                }
             });
-            logger_1.logger.info(`Payment succeeded for user ${userResult.data.id}`);
+            logger_1.logger.info(`Payment succeeded for user ${userResult.id}`);
         }
         catch (error) {
             logger_1.logger.error('handleInvoicePaymentSucceeded error:', error);
@@ -469,18 +536,83 @@ exports.stripeService = {
         try {
             const customerId = invoice.customer;
             // Find the user with this Stripe customer ID
-            const userResult = await user_1.userService.findUserByStripeCustomerId(customerId);
-            if (!userResult.success || !userResult.data) {
+            const userResult = await prisma.user.findUnique({
+                where: { stripeCustomerId: customerId }
+            });
+            if (!userResult) {
                 logger_1.logger.error(`No user found for Stripe customer ${customerId}`);
                 return;
             }
             // We don't need to update the subscription status as Stripe will handle that
             // and trigger a subscription.updated event
-            logger_1.logger.info(`Payment failed for user ${userResult.data.id}`);
+            logger_1.logger.info(`Payment failed for user ${userResult.id}`);
         }
         catch (error) {
             logger_1.logger.error('handleInvoicePaymentFailed error:', error);
         }
-    }
+    },
+    /**
+     * Create a Stripe Checkout Session for membership purchases
+     * @param options - Checkout session configuration
+     */
+    createCheckoutSession: async (options) => {
+        try {
+            const { customerId, priceId, planName, successUrl, cancelUrl, metadata = {} } = options;
+            // Determine if this is a subscription or one-time payment
+            const isLifetime = priceId.includes('Founding') || priceId.includes('Lifetime');
+            const sessionConfig = {
+                customer: customerId,
+                line_items: [
+                    {
+                        price: priceId,
+                        quantity: 1,
+                    },
+                ],
+                mode: isLifetime ? 'payment' : 'subscription',
+                success_url: successUrl,
+                cancel_url: cancelUrl,
+                metadata: {
+                    ...metadata,
+                    plan_name: planName,
+                    is_lifetime: isLifetime.toString()
+                },
+                allow_promotion_codes: true,
+                billing_address_collection: 'required',
+            };
+            // Add subscription-specific configurations
+            if (!isLifetime) {
+                sessionConfig.subscription_data = {
+                    metadata: {
+                        ...metadata,
+                        plan_name: planName
+                    }
+                };
+            }
+            // Add payment-specific configurations for lifetime memberships
+            if (isLifetime) {
+                sessionConfig.payment_intent_data = {
+                    metadata: {
+                        ...metadata,
+                        plan_name: planName,
+                        is_lifetime: 'true'
+                    }
+                };
+            }
+            const session = await stripe.checkout.sessions.create(sessionConfig);
+            logger_1.logger.info(`Checkout session created: ${session.id} for customer ${customerId}, plan: ${planName}`);
+            return {
+                success: true,
+                data: session
+            };
+        }
+        catch (error) {
+            logger_1.logger.error('Create checkout session error:', error);
+            return {
+                success: false,
+                error: error.message,
+                statusCode: error.statusCode || 500
+            };
+        }
+    },
 };
 //# sourceMappingURL=stripe.js.map

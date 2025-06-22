@@ -1,158 +1,73 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
-const supabase_1 = require("./supabase");
-const logger_1 = require("../utils/logger");
-/**
- * Service for handling user profile operations
- */
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 exports.userService = {
     /**
-     * Get a user profile by ID
-     * @param userId - User ID
+     * Update user profile
      */
-    getUserProfile: async (userId) => {
+    async updateUserProfile(userId, profileData) {
         try {
-            const { data, error } = await supabase_1.supabaseAdmin
-                .from('profiles')
-                .select('*')
-                .eq('id', userId)
-                .single();
-            if (error) {
-                logger_1.logger.error('Get user profile error:', error);
-                return {
-                    success: false,
-                    error: error.message,
-                    statusCode: 404
-                };
-            }
+            // Filter out undefined and null values
+            const cleanData = Object.entries(profileData).reduce((acc, [key, value]) => {
+                if (value !== undefined && value !== null) {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {});
+            const updatedUser = await prisma.user.update({
+                where: { id: userId },
+                data: {
+                    ...cleanData,
+                    updatedAt: new Date(),
+                },
+            });
             return {
                 success: true,
-                data
+                data: updatedUser,
             };
         }
         catch (error) {
-            logger_1.logger.error('Get user profile service error:', error);
+            console.error('User service updateUserProfile error:', error);
             return {
                 success: false,
-                error: error.message,
-                statusCode: 500
+                error: error.message || 'Failed to update user profile',
+                statusCode: 500,
             };
         }
     },
     /**
-     * Update a user profile
-     * @param userId - User ID
-     * @param profileData - Profile data to update
+     * Get user by ID
      */
-    updateUserProfile: async (userId, profileData) => {
+    async getUserById(userId) {
         try {
-            // Add updated_at timestamp
-            const dataToUpdate = {
-                ...profileData,
-                updated_at: new Date().toISOString()
-            };
-            const { data, error } = await supabase_1.supabaseAdmin
-                .from('profiles')
-                .update(dataToUpdate)
-                .eq('id', userId)
-                .select('*')
-                .single();
-            if (error) {
-                logger_1.logger.error('Update user profile error:', error);
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: {
+                    profile: true,
+                },
+            });
+            if (!user) {
                 return {
                     success: false,
-                    error: error.message,
-                    statusCode: 400
+                    error: 'User not found',
+                    statusCode: 404,
                 };
             }
             return {
                 success: true,
-                data
+                data: user,
             };
         }
         catch (error) {
-            logger_1.logger.error('Update user profile service error:', error);
+            console.error('User service getUserById error:', error);
             return {
                 success: false,
-                error: error.message,
-                statusCode: 500
+                error: error.message || 'Failed to get user',
+                statusCode: 500,
             };
         }
     },
-    /**
-     * Update user profile with Stripe information
-     * @param userId - User ID
-     * @param stripeCustomerId - Stripe customer ID
-     * @param subscriptionData - Subscription data to update
-     */
-    updateUserStripeInfo: async (userId, stripeCustomerId, subscriptionData) => {
-        try {
-            const dataToUpdate = {
-                stripe_customer_id: stripeCustomerId,
-                ...subscriptionData,
-                updated_at: new Date().toISOString()
-            };
-            const { data, error } = await supabase_1.supabaseAdmin
-                .from('profiles')
-                .update(dataToUpdate)
-                .eq('id', userId)
-                .select('*')
-                .single();
-            if (error) {
-                logger_1.logger.error('Update user stripe info error:', error);
-                return {
-                    success: false,
-                    error: error.message,
-                    statusCode: 400
-                };
-            }
-            return {
-                success: true,
-                data
-            };
-        }
-        catch (error) {
-            logger_1.logger.error('Update user stripe info service error:', error);
-            return {
-                success: false,
-                error: error.message,
-                statusCode: 500
-            };
-        }
-    },
-    /**
-     * Find a user by Stripe customer ID
-     * @param stripeCustomerId - Stripe customer ID
-     */
-    findUserByStripeCustomerId: async (stripeCustomerId) => {
-        try {
-            const { data, error } = await supabase_1.supabaseAdmin
-                .from('profiles')
-                .select('*')
-                .eq('stripe_customer_id', stripeCustomerId)
-                .single();
-            if (error) {
-                logger_1.logger.error('Find user by Stripe customer ID error:', error);
-                return {
-                    success: false,
-                    error: error.message,
-                    statusCode: 404
-                };
-            }
-            return {
-                success: true,
-                data
-            };
-        }
-        catch (error) {
-            logger_1.logger.error('Find user by Stripe customer ID service error:', error);
-            return {
-                success: false,
-                error: error.message,
-                statusCode: 500
-            };
-        }
-    }
 };
 //# sourceMappingURL=user.js.map

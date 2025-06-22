@@ -1,0 +1,572 @@
+openapi: 3.0.3
+info:
+  title: GMTD Backend API
+  description: GetMeToDubai luxury travel concierge platform API
+  version: 1.0.0
+  contact:
+    name: GMTD Support
+    email: info@getmetodub.ai
+  license:
+    name: Proprietary
+servers:
+  - url: http://localhost:5000
+    description: Development server
+  - url: https://api.getmetodub.ai
+    description: Production server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Get system health status
+      description: Returns detailed system health information including database, external services, and system metrics
+      security: []
+      responses:
+        '200':
+          description: System health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/health/ready:
+    get:
+      tags:
+        - Health
+      summary: Readiness probe
+      description: Simple readiness check for container orchestration
+      security: []
+      responses:
+        '200':
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ready
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/health/live:
+    get:
+      tags:
+        - Health
+      summary: Liveness probe
+      description: Simple liveness check for container orchestration
+      security: []
+      responses:
+        '200':
+          description: Service is alive
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: alive
+                  uptime:
+                    type: number
+                    example: 3600
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/travel/flights:
+    get:
+      tags:
+        - Travel
+      summary: Search flights
+      description: Search for flights using Amadeus API
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Z]{3}$'
+          description: Origin airport code (3 letters)
+          example: JFK
+        - name: destination
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Z]{3}$'
+          description: Destination airport code (3 letters)
+          example: DXB
+        - name: departureDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Departure date in YYYY-MM-DD format
+          example: '2025-06-01'
+        - name: returnDate
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return date in YYYY-MM-DD format (optional for one-way)
+          example: '2025-06-08'
+        - name: adults
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 9
+            default: 1
+          description: Number of adults
+        - name: travelClass
+          in: query
+          schema:
+            type: string
+            enum: [ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST]
+            default: ECONOMY
+          description: Travel class
+      responses:
+        '200':
+          description: Flight search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSearchResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitResponse'
+
+  /api/travel/hotels:
+    get:
+      tags:
+        - Travel
+      summary: Search hotels
+      description: Search for hotels using Amadeus API
+      parameters:
+        - name: cityCode
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Z]{3}$'
+            default: DXB
+          description: City code (3 letters)
+        - name: checkInDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Check-in date in YYYY-MM-DD format
+          example: '2025-06-01'
+        - name: checkOutDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Check-out date in YYYY-MM-DD format
+          example: '2025-06-03'
+        - name: adults
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 8
+          description: Number of adults
+        - name: children
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 6
+            default: 0
+          description: Number of children
+      responses:
+        '200':
+          description: Hotel search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HotelSearchResponse'
+
+  /api/bookings:
+    get:
+      tags:
+        - Bookings
+      summary: Get user bookings
+      description: Retrieve all bookings for the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User bookings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingsResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/payments/create-payment-intent:
+    post:
+      tags:
+        - Payments
+      summary: Create payment intent
+      description: Create a Stripe payment intent for processing payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentIntentRequest'
+      responses:
+        '200':
+          description: Payment intent created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentIntentResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Stripe not configured or internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        responseTime:
+          type: number
+          description: Response time in milliseconds
+        version:
+          type: string
+        checks:
+          type: object
+          properties:
+            server:
+              type: object
+              properties:
+                status:
+                  type: string
+                uptime:
+                  type: number
+                memory:
+                  type: object
+                nodeVersion:
+                  type: string
+                environment:
+                  type: string
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [ok, error, disabled]
+                responseTime:
+                  type: number
+            stripe:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [ok, error, disabled]
+                responseTime:
+                  type: number
+            system:
+              type: object
+              properties:
+                loadAverage:
+                  type: array
+                  items:
+                    type: number
+                freeMemory:
+                  type: number
+                totalMemory:
+                  type: number
+                cpus:
+                  type: number
+
+    FlightSearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            flights:
+              type: array
+              items:
+                $ref: '#/components/schemas/Flight'
+            searchParams:
+              type: object
+            meta:
+              type: object
+              properties:
+                count:
+                  type: number
+        message:
+          type: string
+
+    Flight:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        oneWay:
+          type: boolean
+        itineraries:
+          type: array
+          items:
+            type: object
+            properties:
+              segments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    departure:
+                      type: object
+                      properties:
+                        iataCode:
+                          type: string
+                        at:
+                          type: string
+                          format: date-time
+                    arrival:
+                      type: object
+                      properties:
+                        iataCode:
+                          type: string
+                        at:
+                          type: string
+                          format: date-time
+                    carrierCode:
+                      type: string
+                    number:
+                      type: string
+        price:
+          type: object
+          properties:
+            total:
+              type: string
+            currency:
+              type: string
+
+    HotelSearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            hotels:
+              type: array
+              items:
+                $ref: '#/components/schemas/Hotel'
+            meta:
+              type: object
+
+    Hotel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rating:
+          type: number
+        contact:
+          type: object
+        address:
+          type: object
+        amenities:
+          type: array
+          items:
+            type: string
+
+    BookingsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+        count:
+          type: number
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        totalAmount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        bookedAt:
+          type: string
+          format: date-time
+        flightBookings:
+          type: array
+          items:
+            type: object
+        hotelBookings:
+          type: array
+          items:
+            type: object
+        conciergeRequests:
+          type: array
+          items:
+            type: object
+
+    PaymentIntentRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          minimum: 0.01
+          maximum: 999999.99
+          description: Amount in dollars
+        currency:
+          type: string
+          default: usd
+          enum: [usd, eur, gbp, aed]
+        description:
+          type: string
+        metadata:
+          type: object
+
+    PaymentIntentResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        clientSecret:
+          type: string
+        paymentIntentId:
+          type: string
+        amount:
+          type: number
+          description: Amount in cents
+        currency:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        error:
+          type: string
+        details:
+          type: object
+
+    RateLimitResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        retryAfter:
+          type: number
+          description: Seconds to wait before retrying
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+              - type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+                        value:
+                          type: string
+
+    RateLimitError:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RateLimitResponse'
+      headers:
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: Request limit per time window
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: Remaining requests in current window
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: Timestamp when the rate limit resets

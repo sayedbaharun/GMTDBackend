@@ -1,190 +1,169 @@
-import { supabaseAdmin } from './supabase';
+import { PrismaClient, User } from '@prisma/client';
 import { stripeService } from './stripe';
 import { logger } from '../utils/logger';
 import { ServiceResponse } from '../types';
 
+const prisma = new PrismaClient();
+
+interface Auth0UserProfile {
+  sub: string; // This is the Auth0 user ID
+  email?: string;
+  name?: string;
+  email_verified?: boolean;
+  // Add other fields from Auth0 token payload as needed
+}
+
 /**
- * Service for handling authentication operations
+ * Service for handling user synchronization with Auth0
  */
 export const authService = {
   /**
-   * Register a new user with Supabase Auth
-   * @param email - User email
-   * @param password - User password
-   * @param fullName - User's full name
+   * Finds an existing user or creates a new one based on Auth0 profile.
+   * Also creates a Stripe customer for new users.
+   * @param auth0Profile - The user profile object from Auth0 (typically from a validated ID token).
    */
-  registerUser: async (
-    email: string, 
-    password: string, 
-    fullName: string
-  ): Promise<ServiceResponse<any>> => {
-    try {
-      // Create the user in Supabase Auth
-      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: true, // Auto-confirm email for simplicity
-        user_metadata: {
-          full_name: fullName
-        }
-      });
-      
-      if (authError) {
-        logger.error('Registration error:', authError);
-        return {
-          success: false,
-          error: authError.message,
-          statusCode: 400
-        };
-      }
-      
-      // The profile is automatically created via the Supabase trigger
-      // Create a Stripe customer for the user
-      if (authData.user) {
-        const { data: profile } = await supabaseAdmin
-          .from('profiles')
-          .select('*')
-          .eq('id', authData.user.id)
-          .single();
-        
-        if (profile) {
-          // Create Stripe customer
-          const stripeResult = await stripeService.createCustomer(
-            profile.id,
-            email,
-            fullName
-          );
-          
-          if (!stripeResult.success) {
-            logger.error('Failed to create Stripe customer', stripeResult.error);
-            // Don't fail registration if Stripe fails, just log it
-          }
-        }
-      }
-      
+  getOrCreateUserFromAuth0: async (
+    auth0Profile: Auth0UserProfile
+  ): Promise<ServiceResponse<User>> => {
+    if (!auth0Profile.sub) {
+      logger.error('Auth0 user ID (sub) is missing from profile.');
       return {
-        success: true,
+        success: false,
+        error: 'Auth0 user ID (sub) is required.',
+        statusCode: 400,
+      };
+    }
+    if (!auth0Profile.email) {
+      logger.warn('Auth0 user email is missing from profile.');
+      // Depending on your policy, you might want to reject this
+      // or proceed with a placeholder/allow update later.
+      // For now, we'll proceed but log a warning.
+    }
+
+    try {
+      let user = await prisma.user.findUnique({
+        where: { auth0Id: auth0Profile.sub },
+      });
+
+      if (user) {
+        // Optionally, update user details if they've changed in Auth0
+        // For example, if email_verified status or name changes.
+        // For now, we'll just return the existing user.
+        logger.info('User found with Auth0 ID: ' + auth0Profile.sub);
+        return { success: true, data: user };
+      }
+
+      // User not found, create a new one
+      logger.info('Creating new user for Auth0 ID: ' + auth0Profile.sub);
+      
+      const newUser = await prisma.user.create({
         data: {
-          id: authData.user?.id,
-          email: authData.user?.email
-        }
-      };
-    } catch (error: any) {
-      logger.error('Registration service error:', error);
-      return {
-        success: false,
-        error: error.message,
-        statusCode: 500
-      };
-    }
-  },
-  
-  /**
-   * Login a user with Supabase Auth
-   * @param email - User email
-   * @param password - User password
-   */
-  loginUser: async (
-    email: string, 
-    password: string
-  ): Promise<ServiceResponse<any>> => {
-    try {
-      const { data, error } = await supabaseAdmin.auth.signInWithPassword({
-        email,
-        password
+          auth0Id: auth0Profile.sub,
+          email: auth0Profile.email || 'user_' + auth0Profile.sub + '@gmtd.example.com', // Use a placeholder if email is missing
+          fullName: auth0Profile.name,
+          isEmailVerified: auth0Profile.email_verified || false,
+          // Initialize other fields as per your User model defaults
+          onboardingStep: 'auth0_signup_complete', 
+        },
       });
-      
-      if (error) {
-        logger.error('Login error:', error);
+
+      // Create a Stripe customer for the new user
+      const stripeResult = await stripeService.createCustomer(
+        newUser.id, // Use our internal DB user ID
+        newUser.email,
+        newUser.fullName ?? undefined // Pass undefined if fullName is null
+      );
+
+      if (!stripeResult.success || !stripeResult.data?.id) {
+        logger.error(
+          'Failed to create Stripe customer for user ' + newUser.id + ': ' + stripeResult.error
+        );
+        // Decide on error handling:
+        // Option 1: Rollback user creation (more complex)
+        // Option 2: Log error and proceed (user exists, but Stripe customer creation failed)
+        // For now, we'll log and proceed, but this should be reviewed.
+        // Consider a background job to retry Stripe customer creation.
+      } else {
+        // Update user with Stripe Customer ID
+        await prisma.user.update({
+          where: { id: newUser.id },
+          data: { stripeCustomerId: stripeResult.data.id },
+        });
+        logger.info('Stripe customer created for user ' + newUser.id + ': ' + stripeResult.data.id);
+      }
+
+      return { success: true, data: newUser };
+    } catch (error: any) {
+      logger.error('Error in getOrCreateUserFromAuth0:', error);
+      if (error.code === 'P2002' && error.meta?.target?.includes('auth0Id')) {
         return {
           success: false,
-          error: error.message,
-          statusCode: 401
+          error: 'A user with this Auth0 ID already exists.',
+          statusCode: 409, // Conflict
         };
       }
-      
-      return {
-        success: true,
-        data: {
-          session: data.session,
-          user: data.user
-        }
-      };
-    } catch (error: any) {
-      logger.error('Login service error:', error);
+      if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+         // This case might happen if an email exists but with a different auth0Id
+         // Or if a previous user creation attempt failed after Prisma write but before commit.
+        logger.error('A user with email ' + auth0Profile.email + ' might already exist with a different Auth0 ID or due to a partial previous transaction.');
+        return {
+          success: false,
+          error: 'A user with this email may already exist or there was an issue creating the user.',
+          statusCode: 409, // Conflict
+        };
+      }
       return {
         success: false,
-        error: error.message,
-        statusCode: 500
+        error: 'Failed to get or create user: ' + error.message,
+        statusCode: 500,
       };
     }
   },
-  
+
   /**
-   * Logout a user with Supabase Auth
-   * @param token - JWT token from the Authorization header
+   * Retrieves a user from the local database by their Auth0 ID.
+   * @param auth0Id - The Auth0 user ID (sub).
    */
-  logoutUser: async (
-    token: string
-  ): Promise<ServiceResponse<null>> => {
-    try {
-      const { error } = await supabaseAdmin.auth.admin.signOut(token);
-      
-      if (error) {
-        logger.error('Logout error:', error);
-        return {
-          success: false,
-          error: error.message,
-          statusCode: 400
-        };
-      }
-      
-      return {
-        success: true,
-        data: null
-      };
-    } catch (error: any) {
-      logger.error('Logout service error:', error);
-      return {
-        success: false,
-        error: error.message,
-        statusCode: 500
-      };
+  getUserByAuth0Id: async (auth0Id: string): Promise<ServiceResponse<User | null>> => {
+    if (!auth0Id) {
+      return { success: false, error: 'Auth0 ID is required.', statusCode: 400 };
     }
-  },
-  
-  /**
-   * Request a password reset for a user
-   * @param email - User email
-   */
-  resetPassword: async (
-    email: string
-  ): Promise<ServiceResponse<null>> => {
     try {
-      const { error } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`
+      const user = await prisma.user.findUnique({
+        where: { auth0Id },
       });
-      
-      if (error) {
-        logger.error('Password reset error:', error);
-        return {
-          success: false,
-          error: error.message,
-          statusCode: 400
-        };
+      if (!user) {
+        return { success: false, error: 'User not found.', statusCode: 404, data: null };
       }
-      
-      return {
-        success: true,
-        data: null
-      };
+      return { success: true, data: user };
     } catch (error: any) {
-      logger.error('Password reset service error:', error);
-      return {
-        success: false,
-        error: error.message,
-        statusCode: 500
-      };
+      logger.error('Error fetching user by Auth0 ID ' + auth0Id + ':', error);
+      return { success: false, error: 'Database error while fetching user.', statusCode: 500 };
+    }
+  },
+  
+  /**
+   * Retrieves a user from the local database by their internal database ID.
+   * @param userId - The internal database user ID.
+   */
+  getUserById: async (userId: string): Promise<ServiceResponse<User | null>> => {
+    if (!userId) {
+      return { success: false, error: 'User ID is required.', statusCode: 400 };
+    }
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+         include: { // Example: include related profile if needed often
+          profile: true,
+        }
+      });
+      if (!user) {
+        return { success: false, error: 'User not found.', statusCode: 404, data: null };
+      }
+      return { success: true, data: user };
+    } catch (error: any) {
+      logger.error('Error fetching user by ID ' + userId + ':', error);
+      return { success: false, error: 'Database error while fetching user.', statusCode: 500 };
     }
   }
 };

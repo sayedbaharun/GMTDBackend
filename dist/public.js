@@ -77,7 +77,7 @@ function renderHtml() {
 </head>
 <body>
   <h1>Express API Backend</h1>
-  <p>This is a demonstration of the Express backend API with TypeScript for Next.js applications. The backend includes Supabase authentication, multi-step onboarding, and Stripe subscription management.</p>
+  <p>This is a demonstration of the Express backend API with TypeScript for Next.js applications. The backend includes Auth0 authentication, Pusher real-time features, multi-step onboarding, and Stripe subscription management.</p>
   
   <h2>Health Check</h2>
   <div class="endpoint">

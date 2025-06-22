@@ -48,6 +48,10 @@ scripts/create-*.js
 # Prisma test project
 prisma-test-project/
 
+# Multi-stage Dockerfile
+Dockerfile.multi-stage
+Dockerfile.cloudrun
+
 # IDE files
 .vscode/
 .idea/

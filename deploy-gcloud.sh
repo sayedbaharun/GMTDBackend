@@ -6,7 +6,7 @@
 set -e  # Exit on error
 
 # Configuration
-PROJECT_ID="getmetodubai"  # Change this to your Google Cloud project ID
+PROJECT_ID="frontend-459111"  # Your GMTD project ID
 REGION="us-central1"       # Change to preferred region (asia-south1 for Mumbai)
 SERVICE_NAME="gmtd-backend"
 DB_INSTANCE_NAME="gmtd-postgres"

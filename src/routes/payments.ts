@@ -5,9 +5,16 @@ import { authenticateMobile, MobileAuthRequest } from '../middleware/mobileAuth'
 
 const router = express.Router();
 const prisma = new PrismaClient();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+
+// Initialize Stripe only if key is provided
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeKey ? new Stripe(stripeKey, {
   apiVersion: '2025-04-30.basil',
-});
+}) : null;
+
+if (!stripe) {
+  console.warn('Stripe not configured - payments route will return errors');
+}
 
 /**
  * POST /api/payments/process - Process payment with booking creation
@@ -21,6 +28,15 @@ router.post('/process', authenticateMobile, async (req: MobileAuthRequest, res):
     } = req.body;
 
     console.log('Processing payment:', { payment_intent_id, booking_id });
+
+    if (!stripe) {
+      res.status(503).json({
+        success: false,
+        error: 'Payment processing unavailable',
+        message: 'Stripe is not configured'
+      });
+      return;
+    }
 
     // Verify payment intent with Stripe
     const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent_id);
@@ -172,7 +188,7 @@ router.post('/create-intent', authenticateMobile, async (req: MobileAuthRequest,
     let stripeCustomerId = user?.stripeCustomerId;
     
     if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
+      const customer = await stripe!.customers.create({
         email: user?.email,
         name: user?.fullName || undefined,
         metadata: { userId }
@@ -186,7 +202,7 @@ router.post('/create-intent', authenticateMobile, async (req: MobileAuthRequest,
       stripeCustomerId = customer.id;
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await stripe!.paymentIntents.create({
       amount: Math.round(booking.totalPrice * 100), // Convert to smallest unit
       currency: booking.currency.toLowerCase(),
       customer: stripeCustomerId,
@@ -265,6 +281,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     return;
   }
 
+  if (!stripe) {
+    res.status(503).json({ error: 'Stripe not configured' });
+    return;
+  }
+
   let event: Stripe.Event;
 
   try {
@@ -319,6 +340,14 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 router.get('/status/:payment_intent_id', async (req, res): Promise<void> => {
   try {
     const { payment_intent_id } = req.params;
+    
+    if (!stripe) {
+      res.status(503).json({
+        success: false,
+        error: 'Payment processing unavailable'
+      });
+      return;
+    }
     
     const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent_id);
     

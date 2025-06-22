@@ -1,0 +1,57 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore, with the addition of
+# "#!include" directives (which insert the entries of the given .gitignore-style
+# file at that point).
+
+.gcloudignore
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Test files
+tests/
+*.test.ts
+*.test.js
+jest.config.js
+coverage/
+
+# Development files
+*.log
+.DS_Store
+*.swp
+*.swo
+
+# Documentation
+*.md
+docs/
+
+# Admin dashboard source (already built)
+admin-dashboard/src/
+admin-dashboard/node_modules/
+
+# Scripts not needed in production
+scripts/test-*.js
+scripts/create-*.js
+
+# Prisma test project
+prisma-test-project/
+
+# IDE files
+.vscode/
+.idea/
+
+# Local SQLite databases
+*.db
+*.sqlite

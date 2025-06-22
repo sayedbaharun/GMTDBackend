@@ -9,9 +9,14 @@ const client_1 = require("@prisma/client");
 const mobileAuth_1 = require("../middleware/mobileAuth");
 const router = express_1.default.Router();
 const prisma = new client_1.PrismaClient();
-const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY || '', {
+// Initialize Stripe only if key is provided
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeKey ? new stripe_1.default(stripeKey, {
     apiVersion: '2025-04-30.basil',
-});
+}) : null;
+if (!stripe) {
+    console.warn('Stripe not configured - payments route will return errors');
+}
 /**
  * POST /api/payments/process - Process payment with booking creation
  */
@@ -20,6 +25,14 @@ router.post('/process', mobileAuth_1.authenticateMobile, async (req, res) => {
         const userId = req.userId;
         const { payment_intent_id, booking_id } = req.body;
         console.log('Processing payment:', { payment_intent_id, booking_id });
+        if (!stripe) {
+            res.status(503).json({
+                success: false,
+                error: 'Payment processing unavailable',
+                message: 'Stripe is not configured'
+            });
+            return;
+        }
         // Verify payment intent with Stripe
         const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent_id);
         if (paymentIntent.status !== 'succeeded') {
@@ -236,6 +249,10 @@ router.post('/webhook', express_1.default.raw({ type: 'application/json' }), asy
         res.status(500).json({ error: 'Webhook secret not configured' });
         return;
     }
+    if (!stripe) {
+        res.status(503).json({ error: 'Stripe not configured' });
+        return;
+    }
     let event;
     try {
         // Verify webhook signature
@@ -282,6 +299,13 @@ router.post('/webhook', express_1.default.raw({ type: 'application/json' }), asy
 router.get('/status/:payment_intent_id', async (req, res) => {
     try {
         const { payment_intent_id } = req.params;
+        if (!stripe) {
+            res.status(503).json({
+                success: false,
+                error: 'Payment processing unavailable'
+            });
+            return;
+        }
         const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent_id);
         res.json({
             success: true,

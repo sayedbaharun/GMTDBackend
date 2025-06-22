@@ -1,4 +1,5 @@
 # Production Dockerfile for GetMeToDubai Backend
+# Optimized for Google Cloud Run
 
 FROM node:18-alpine AS builder
 
@@ -57,12 +58,12 @@ RUN chown -R nodejs:nodejs /app
 
 USER nodejs
 
-# Expose port
-EXPOSE 5000
+# Expose port (Cloud Run uses PORT env variable, defaults to 8080)
+EXPOSE 8080
 
-# Health check
+# Health check (uses PORT env variable)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"
+  CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 8080) + '/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"
 
 # Start the application
 CMD ["node", "dist/index.js"]

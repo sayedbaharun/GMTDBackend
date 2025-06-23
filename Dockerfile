@@ -1,24 +1,35 @@
-FROM node:18-alpine
+FROM node:18-slim
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-
-# Install all dependencies (including dev for building)
-RUN npm ci
-
-# Copy all source files
+# Copy all files
 COPY . .
 
-# Generate Prisma client and build
-RUN npx prisma generate && npm run build
+# Install dependencies
+RUN npm ci --production
 
-# Remove dev dependencies
-RUN npm prune --production
+# Generate Prisma client
+RUN npx prisma generate
 
-# Expose port
+# Build TypeScript
+RUN npm install --save-dev typescript @types/node && \
+    npm run build && \
+    npm uninstall typescript @types/node
+
+# Clean up
+RUN npm cache clean --force
+
+# Use non-root user
+USER node
+
 EXPOSE 8080
 
-# Start app
 CMD ["node", "dist/index.js"]

@@ -1,0 +1,69 @@
+# Multi-stage Dockerfile for Google Cloud Run
+# Stage 1: Build
+FROM node:18-slim AS builder
+
+# Install Python and build tools for native dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install ALL dependencies (including dev)
+RUN npm ci
+
+# Copy source files
+COPY tsconfig.json ./
+COPY src ./src
+
+# Build the application
+RUN npm run build
+
+# Stage 2: Production
+FROM node:18-slim
+
+# Install only what's needed for runtime
+RUN apt-get update && apt-get install -y \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install only production dependencies
+RUN npm ci --production && \
+    npx prisma generate && \
+    npm cache clean --force
+
+# Copy built application from builder
+COPY --from=builder /app/dist ./dist
+
+# Copy other necessary files
+COPY migrations ./migrations
+COPY server.js ./
+
+# Create non-root user
+RUN addgroup --gid 1001 nodejs && \
+    adduser --uid 1001 --gid 1001 --disabled-password --gecos "" nodejs && \
+    chown -R nodejs:nodejs /app
+
+USER nodejs
+
+# Expose port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 8080) + '/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"
+
+# Start application
+CMD ["node", "dist/index.js"]

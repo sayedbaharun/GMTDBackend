@@ -1,0 +1,817 @@
+
+> workspace@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/index.ts
+
+[INFO] 00:54:06 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.8.3)
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T20:54:07.405Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T20:54:07.550Z - Server started on 0.0.0.0:5000
+--> GET /api/health
+[INFO] 01:29:59 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:29:59.521Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:29:59.582Z - Server started on 0.0.0.0:5000
+[INFO] 01:30:30 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:30:31.110Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:30:31.151Z - Server started on 0.0.0.0:5000
+[INFO] 01:31:28 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:31:28.287Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:31:28.327Z - Server started on 0.0.0.0:5000
+[INFO] 01:34:47 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:34:47.945Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:34:47.984Z - Server started on 0.0.0.0:5000
+[INFO] 01:34:53 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:34:54.183Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:34:54.223Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:01 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:01.697Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:01.734Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:08 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:08.805Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:08.844Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:14 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:14.283Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:14.321Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:19 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:20.144Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:20.184Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:26 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:26.764Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:26.803Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:41 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:41.498Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:41.537Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:48 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:48.498Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:48.537Z - Server started on 0.0.0.0:5000
+[INFO] 01:35:57 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:35:57.320Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:35:57.361Z - Server started on 0.0.0.0:5000
+[INFO] 01:36:04 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:36:04.671Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:36:04.711Z - Server started on 0.0.0.0:5000
+[INFO] 01:36:15 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:36:15.491Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:36:15.528Z - Server started on 0.0.0.0:5000
+[INFO] 01:36:21 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:36:22.184Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:36:22.227Z - Server started on 0.0.0.0:5000
+[INFO] 01:36:34 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:36:34.425Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:36:34.465Z - Server started on 0.0.0.0:5000
+[INFO] 01:37:04 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:37:04.439Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:37:04.478Z - Server started on 0.0.0.0:5000
+[INFO] 01:37:12 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:37:12.360Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:37:12.399Z - Server started on 0.0.0.0:5000
+[INFO] 01:37:25 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:37:25.351Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:37:25.389Z - Server started on 0.0.0.0:5000
+[INFO] 01:37:31 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:37:31.961Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:37:31.999Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:10 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:11.108Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:11.151Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:16 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:16.283Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:16.322Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:23 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:23.228Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:23.265Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:29 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:29.559Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:29.597Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:36 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:36.384Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:36.423Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:43 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:44.055Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:44.095Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:51 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:51.437Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:51.476Z - Server started on 0.0.0.0:5000
+[INFO] 01:38:58 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:38:58.767Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:38:58.807Z - Server started on 0.0.0.0:5000
+[INFO] 01:39:06 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:39:07.197Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:39:07.236Z - Server started on 0.0.0.0:5000
+[INFO] 01:39:14 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:39:14.565Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:39:14.604Z - Server started on 0.0.0.0:5000
+[INFO] 01:39:37 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/admin/bookings.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:39:37.583Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:39:37.624Z - Server started on 0.0.0.0:5000
+[INFO] 01:41:19 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:41:20.024Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:41:20.063Z - Server started on 0.0.0.0:5000
+[INFO] 01:41:43 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:41:43.297Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:41:43.335Z - Server started on 0.0.0.0:5000
+[INFO] 01:41:51 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:41:51.530Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:41:51.569Z - Server started on 0.0.0.0:5000
+[INFO] 01:42:00 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:42:00.657Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:42:00.696Z - Server started on 0.0.0.0:5000
+[INFO] 01:43:10 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/middleware/error.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:43:11.186Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:43:11.226Z - Server started on 0.0.0.0:5000
+[INFO] 01:43:19 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/middleware/error.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:43:19.418Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:43:19.456Z - Server started on 0.0.0.0:5000
+[INFO] 01:43:36 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/middleware/error.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:43:36.362Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:43:36.399Z - Server started on 0.0.0.0:5000
+--> GET /api/health
+--> GET /api/bookings/my-bookings
+--> GET /api/travel/flights?origin=JFK&destination=DXB&departureDate=2025-06-01&adults=1&travelClass=ECONOMY
+[WARN] 2025-06-25T21:48:55.643Z - Optional auth: Token validation failed or token not provided (proceeding as anonymous): Unauthorized
+[INFO] 2025-06-25T21:48:55.643Z - Flight search request: {
+  origin: 'JFK',
+  destination: 'DXB',
+  departureDate: '2025-06-01',
+  returnDate: undefined,
+  adults: 1,
+  travelClass: 'ECONOMY'
+}
+[INFO] 2025-06-25T21:48:55.644Z - Searching flights with params: {
+  originLocationCode: 'JFK',
+  destinationLocationCode: 'DXB',
+  departureDate: '2025-06-01',
+  adults: 1,
+  travelClass: 'ECONOMY',
+  currencyCode: 'USD',
+  max: 20
+}
+[ERROR] 2025-06-25T21:48:57.001Z - Error searching flights with Amadeus: ClientError {
+  response: Response {
+    headers: {
+      date: 'Wed, 25 Jun 2025 21:48:57 GMT',
+      'content-type': 'application/vnd.amadeus+json',
+      'content-length': '109',
+      connection: 'keep-alive',
+      'ama-internal-message-version': '14.1',
+      'ama-request-id': '0001NL79QYFLXL',
+      'ama-gateway-request-id': 'rrt-0cf16bbc95aa5fdf4-b-eu-3576304-195329250-2',
+      'access-control-allow-headers': 'origin, x-requested-with, accept, Content-Type, Authorization',
+      'access-control-max-age': '3628800',
+      'access-control-allow-methods': '*',
+      server: 'Amadeus',
+      'access-control-allow-origin': '*'
+    },
+    statusCode: 400,
+    request: Request {
+      host: 'test.api.amadeus.com',
+      port: 443,
+      ssl: true,
+      scheme: 'https',
+      verb: 'GET',
+      path: '/v2/shopping/flight-offers',
+      params: [Object],
+      queryPath: '/v2/shopping/flight-offers?originLocationCode=JFK&destinationLocationCode=DXB&departureDate=2025-06-01&adults=1&travelClass=ECONOMY&currencyCode=USD&max=20',
+      bearerToken: '64csFGEBDalrxuWex0mWvlbyGE8x',
+      clientVersion: '11.0.0',
+      languageVersion: '20.19.2',
+      appId: null,
+      appVersion: null,
+      headers: [Object],
+      ListHTTPOverride: [Array]
+    },
+    body: '{"errors":[{"status":400,"code":425,"title":"INVALID DATE","detail":"Date/Time is in the past","source":{}}]}',
+    result: { errors: [Array] },
+    data: undefined,
+    parsed: true
+  },
+  description: [
+    {
+      status: 400,
+      code: 425,
+      title: 'INVALID DATE',
+      detail: 'Date/Time is in the past',
+      source: {}
+    }
+  ],
+  code: 'ClientError'
+}
+[ERROR] 2025-06-25T21:48:57.001Z - Amadeus flight search failed: [
+  {
+    status: 400,
+    code: 425,
+    title: 'INVALID DATE',
+    detail: 'Date/Time is in the past',
+    source: {}
+  }
+]
+--> GET /api/travel/flights?origin=JFK&destination=DXB&departureDate=2025-07-01&adults=1&travelClass=ECONOMY
+[WARN] 2025-06-25T21:49:12.369Z - Optional auth: Token validation failed or token not provided (proceeding as anonymous): Unauthorized
+[INFO] 2025-06-25T21:49:12.369Z - Flight search request: {
+  origin: 'JFK',
+  destination: 'DXB',
+  departureDate: '2025-07-01',
+  returnDate: undefined,
+  adults: 1,
+  travelClass: 'ECONOMY'
+}
+[INFO] 2025-06-25T21:49:12.369Z - Searching flights with params: {
+  originLocationCode: 'JFK',
+  destinationLocationCode: 'DXB',
+  departureDate: '2025-07-01',
+  adults: 1,
+  travelClass: 'ECONOMY',
+  currencyCode: 'USD',
+  max: 20
+}
+--> GET /api/travel/hotels?cityCode=DXB&checkInDate=2025-07-01&checkOutDate=2025-07-03&adults=2
+[WARN] 2025-06-25T21:49:25.931Z - Optional auth: Token validation failed or token not provided (proceeding as anonymous): Unauthorized
+[INFO] 2025-06-25T21:49:25.931Z - Hotel search request: {
+  cityCode: 'DXB',
+  checkInDate: '2025-07-01',
+  checkOutDate: '2025-07-03',
+  adults: 2,
+  radius: 5,
+  ratings: [ 3, 4, 5 ]
+}
+[INFO] 2025-06-25T21:49:25.931Z - Searching hotels with params: {
+  cityCode: 'DXB',
+  checkInDate: '2025-07-01',
+  checkOutDate: '2025-07-03',
+  adults: 2,
+  radius: 5,
+  ratings: [ 3, 4, 5 ]
+}
+--> GET /api/admin/bookings
+[ERROR] 2025-06-25T21:49:37.155Z - Error: Invalid Compact JWS {
+  stack: 'InvalidTokenError: Invalid Compact JWS\n' +
+    '    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/express-oauth2-jwt-bearer/dist/index.js:300:19\n' +
+    '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/express-oauth2-jwt-bearer/dist/index.js:403:24',
+  path: '/api/admin/bookings',
+  method: 'GET'
+}
+--> POST /api/mobile-auth/register
+--> POST /api/mobile-auth/register
+--> POST /api/mobile-auth/login
+--> POST /api/mobile-auth/login
+--> POST /api/bookings/create
+📋 Creating booking: { userId: '469fa970-4468-4758-b5ae-02a6baf0bcda', type: 'flight' }
+prisma:error 
+Invalid `tx.bookingConfirmation.create()` invocation in
+/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:156:36
+
+  153 });
+  154 
+  155 // Create booking confirmation
+→ 156 await tx.bookingConfirmation.create({
+        data: {
+          bookingId: "ab8f75fd-d190-422c-bc93-ce34435b49f9",
+          confirmationNumber: "GMTDMCCHMAKS",
+          status: "PENDING",
+          userId: "469fa970-4468-4758-b5ae-02a6baf0bcda",
+          ~~~~~~
+      ?   id?: String,
+      ?   amadeusBookingId?: String | Null,
+      ?   supplierConfirmationId?: String | Null,
+      ?   confirmationEmail?: String | Null,
+      ?   confirmationSentAt?: DateTime | Null,
+      ?   vouchers?: NullableJsonNullValueInput | Json,
+      ?   cancellationPolicy?: String | Null,
+      ?   modificationPolicy?: String | Null,
+      ?   createdAt?: DateTime,
+      ?   updatedAt?: DateTime,
+      ?   auditLogs?: BookingAuditLogUncheckedCreateNestedManyWithoutConfirmationInput,
+      ?   transactions?: PaymentTransactionUncheckedCreateNestedManyWithoutConfirmationInput
+        }
+      })
+
+Unknown argument `userId`. Available options are marked with ?.
+[ERROR] 2025-06-25T21:49:45.874Z - RLS Error in BookingConfirmation.create: PrismaClientValidationError: 
+Invalid `tx.bookingConfirmation.create()` invocation in
+/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:156:36
+
+  153 });
+  154 
+  155 // Create booking confirmation
+→ 156 await tx.bookingConfirmation.create({
+        data: {
+          bookingId: "ab8f75fd-d190-422c-bc93-ce34435b49f9",
+          confirmationNumber: "GMTDMCCHMAKS",
+          status: "PENDING",
+          userId: "469fa970-4468-4758-b5ae-02a6baf0bcda",
+          ~~~~~~
+      ?   id?: String,
+      ?   amadeusBookingId?: String | Null,
+      ?   supplierConfirmationId?: String | Null,
+      ?   confirmationEmail?: String | Null,
+      ?   confirmationSentAt?: DateTime | Null,
+      ?   vouchers?: NullableJsonNullValueInput | Json,
+      ?   cancellationPolicy?: String | Null,
+      ?   modificationPolicy?: String | Null,
+      ?   createdAt?: DateTime,
+      ?   updatedAt?: DateTime,
+      ?   auditLogs?: BookingAuditLogUncheckedCreateNestedManyWithoutConfirmationInput,
+      ?   transactions?: PaymentTransactionUncheckedCreateNestedManyWithoutConfirmationInput
+        }
+      })
+
+Unknown argument `userId`. Available options are marked with ?.
+    at wn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:1363)
+    at $n.handleRequestError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6958)
+    at $n.handleAndLogRequestError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6623)
+    at $n.request (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6307)
+    at l (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:9633)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts:110:22
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:156:7
+    at Proxy._transactionWithCallback (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:8000)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:23:21 {
+  clientVersion: '5.22.0'
+}
+❌ Error creating booking: PrismaClientValidationError: 
+Invalid `tx.bookingConfirmation.create()` invocation in
+/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:156:36
+
+  153 });
+  154 
+  155 // Create booking confirmation
+→ 156 await tx.bookingConfirmation.create({
+        data: {
+          bookingId: "ab8f75fd-d190-422c-bc93-ce34435b49f9",
+          confirmationNumber: "GMTDMCCHMAKS",
+          status: "PENDING",
+          userId: "469fa970-4468-4758-b5ae-02a6baf0bcda",
+          ~~~~~~
+      ?   id?: String,
+      ?   amadeusBookingId?: String | Null,
+      ?   supplierConfirmationId?: String | Null,
+      ?   confirmationEmail?: String | Null,
+      ?   confirmationSentAt?: DateTime | Null,
+      ?   vouchers?: NullableJsonNullValueInput | Json,
+      ?   cancellationPolicy?: String | Null,
+      ?   modificationPolicy?: String | Null,
+      ?   createdAt?: DateTime,
+      ?   updatedAt?: DateTime,
+      ?   auditLogs?: BookingAuditLogUncheckedCreateNestedManyWithoutConfirmationInput,
+      ?   transactions?: PaymentTransactionUncheckedCreateNestedManyWithoutConfirmationInput
+        }
+      })
+
+Unknown argument `userId`. Available options are marked with ?.
+    at wn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:1363)
+    at $n.handleRequestError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6958)
+    at $n.handleAndLogRequestError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6623)
+    at $n.request (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:6307)
+    at l (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:9633)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts:110:22
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:156:7
+    at Proxy._transactionWithCallback (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:8000)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:23:21 {
+  clientVersion: '5.22.0'
+}
+[INFO] 01:50:23 Restarting: /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/lib/prisma-with-rls.ts has been modified
+--- Initializing Onboarding Router (testing /user-info with local rules via validate()) ---
+[INFO] 2025-06-25T21:50:23.991Z - Amadeus API service initialized
+[AI Agents] OpenAI initialized successfully
+🔍 Validating environment configuration...
+
+⚠️  Configuration Warnings:
+   • Optional environment variable missing: FRONTEND_URL (some features may be limited)
+✅ Environment validation passed
+📊 Database: Enabled
+🔧 Features: None
+[INFO] 2025-06-25T21:50:24.031Z - Server started on 0.0.0.0:5000
+--> POST /api/mobile-auth/register
+--> POST /api/mobile-auth/register
+--> POST /api/mobile-auth/login
+--> POST /api/mobile-auth/login
+--> POST /api/bookings/create
+📋 Creating booking: { userId: '1c6badbf-3819-4fd6-a486-d8ac80b85531', type: 'flight' }
+✅ Booking created successfully: 50af2318-9b8b-49df-9c68-72c9cee2a5be
+--> POST /api/bookings/create
+📋 Creating booking: { userId: '99cd5731-acca-4b82-8d83-477c5e2e0786', type: 'hotel' }
+[ERROR] 2025-06-25T21:50:32.057Z - RLS Error in BookingHotel.create: PrismaClientValidationError: 
+Invalid `tx.bookingHotel.create()` invocation in
+/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:113:31
+
+  110 });
+  111 
+  112 // Create hotel booking
+→ 113 await tx.bookingHotel.create({
+        data: {
+          bookingId: "aa30e891-f9df-40f6-8b69-6780645bdbe7",
+          hotelId: "861cd1a7-8d6f-43e1-a46d-c21e71406389",
+          roomId: "eb50a55c-d756-4149-a605-1e9e7876bb90",
+          checkInDate: new Date("Invalid Date"),
+                       ~~~~~~~~~~~~~~~~~~~~~~~~
+          checkOutDate: new Date("Invalid Date"),
+          guestCount: 1,
+          specialRequests: undefined
+        }
+      })
+
+Invalid value for argument `checkInDate`: Provided Date object is invalid. Expected Date.
+    at wn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:1363)
+    at e.throwValidationError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:10206)
+    at sa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:7746)
+    at aa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8908)
+    at sa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8439)
+    at aa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8908)
+    at mr (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:6037)
+    at vn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:5902)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:10186
+    at Object.runInChildSpan (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:1509) {
+  clientVersion: '5.22.0'
+}
+❌ Error creating booking: PrismaClientValidationError: 
+Invalid `tx.bookingHotel.create()` invocation in
+/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/src/routes/bookings.ts:113:31
+
+  110 });
+  111 
+  112 // Create hotel booking
+→ 113 await tx.bookingHotel.create({
+        data: {
+          bookingId: "aa30e891-f9df-40f6-8b69-6780645bdbe7",
+          hotelId: "861cd1a7-8d6f-43e1-a46d-c21e71406389",
+          roomId: "eb50a55c-d756-4149-a605-1e9e7876bb90",
+          checkInDate: new Date("Invalid Date"),
+                       ~~~~~~~~~~~~~~~~~~~~~~~~
+          checkOutDate: new Date("Invalid Date"),
+          guestCount: 1,
+          specialRequests: undefined
+        }
+      })
+
+Invalid value for argument `checkInDate`: Provided Date object is invalid. Expected Date.
+    at wn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:1363)
+    at e.throwValidationError (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:10206)
+    at sa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:7746)
+    at aa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8908)
+    at sa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8439)
+    at aa (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:8908)
+    at mr (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:6037)
+    at vn (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:29:5902)
+    at /Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:130:10186
+    at Object.runInChildSpan (/Users/sayedbaharun/Documents/Developer/gmtd_tech/gmtd_web_backend/node_modules/.prisma/client/runtime/library.js:121:1509) {
+  clientVersion: '5.22.0'
+}
+--> GET /api/health

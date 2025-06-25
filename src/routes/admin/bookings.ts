@@ -6,6 +6,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateAdmin, requirePermission } from '../../middleware/adminAuth';
+import { withAdminRLS, RequestWithRLS } from '../../middleware/withRLS';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -14,7 +15,7 @@ const prisma = new PrismaClient();
  * List all bookings with filters
  * GET /api/admin/bookings
  */
-router.get('/', authenticateAdmin, requirePermission('bookings:read'), async (req, res): Promise<void> => {
+router.get('/', authenticateAdmin, requirePermission('bookings:read'), withAdminRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
     const {
       page = 1,
@@ -53,7 +54,7 @@ router.get('/', authenticateAdmin, requirePermission('bookings:read'), async (re
 
     // Get bookings with pagination
     const [bookings, total] = await Promise.all([
-      prisma.booking.findMany({
+      req.prisma.booking.findMany({
         where,
         skip: offset,
         take: Number(limit),
@@ -72,7 +73,7 @@ router.get('/', authenticateAdmin, requirePermission('bookings:read'), async (re
           hotelBookings: true
         }
       }),
-      prisma.booking.count({ where })
+      req.prisma.booking.count({ where })
     ]);
 
     res.json({
@@ -108,7 +109,7 @@ router.get('/', authenticateAdmin, requirePermission('bookings:read'), async (re
     });
 
     // Log activity
-    await logActivity(req.admin!.id, 'view_bookings_list', 'bookings', {
+    await logActivity(req.prisma, req.admin!.id, 'view_bookings_list', 'bookings', {
       filters: { status, paymentStatus, type, search, startDate, endDate }
     });
 
@@ -126,11 +127,11 @@ router.get('/', authenticateAdmin, requirePermission('bookings:read'), async (re
  * Get booking details
  * GET /api/admin/bookings/:id
  */
-router.get('/:id', authenticateAdmin, requirePermission('bookings:read'), async (req, res): Promise<void> => {
+router.get('/:id', authenticateAdmin, requirePermission('bookings:read'), withAdminRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
     const { id } = req.params;
 
-    const booking = await prisma.booking.findUnique({
+    const booking = await req.prisma.booking.findUnique({
       where: { id },
       include: {
         user: true,
@@ -148,7 +149,7 @@ router.get('/:id', authenticateAdmin, requirePermission('bookings:read'), async 
     }
 
     // Log activity
-    await logActivity(req.admin!.id, 'view_booking_details', 'bookings', {
+    await logActivity(req.prisma, req.admin!.id, 'view_booking_details', 'bookings', {
       bookingId: id
     });
 
@@ -171,7 +172,7 @@ router.get('/:id', authenticateAdmin, requirePermission('bookings:read'), async 
  * Update booking status
  * PUT /api/admin/bookings/:id/status
  */
-router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'), async (req, res): Promise<void> => {
+router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'), withAdminRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
     const { id } = req.params;
     const { status, reason, notes } = req.body;
@@ -187,7 +188,7 @@ router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'
     }
 
     // Update booking
-    const booking = await prisma.booking.update({
+    const booking = await req.prisma.booking.update({
       where: { id },
       data: {
         status,
@@ -196,7 +197,7 @@ router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'
     });
 
     // Create activity log using raw SQL
-    await prisma.$executeRaw`
+    await req.prisma.$executeRaw`
       INSERT INTO booking_activities (booking_id, type, description, metadata, created_at)
       VALUES (
         ${id}::uuid,
@@ -214,7 +215,7 @@ router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'
     `;
 
     // Log admin activity
-    await logActivity(req.admin!.id, 'update_booking_status', 'bookings', {
+    await logActivity(req.prisma, req.admin!.id, 'update_booking_status', 'bookings', {
       bookingId: id,
       previousStatus: booking.status,
       newStatus: status,
@@ -241,13 +242,13 @@ router.put('/:id/status', authenticateAdmin, requirePermission('bookings:update'
  * Process refund
  * POST /api/admin/bookings/:id/refund
  */
-router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update'), async (req, res): Promise<void> => {
+router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update'), withAdminRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
     const { id } = req.params;
     const { amount, reason, type = 'full' } = req.body;
 
     // Get booking details
-    const booking = await prisma.booking.findUnique({
+    const booking = await req.prisma.booking.findUnique({
       where: { id },
       // Payment transactions will be fetched separately if needed
     });
@@ -269,7 +270,7 @@ router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update
     }
 
     // Check if there's a successful payment transaction
-    const successfulTransaction = await prisma.$queryRaw<any[]>`
+    const successfulTransaction = await req.prisma.$queryRaw<any[]>`
       SELECT * FROM payment_transactions
       WHERE booking_id = ${id}::uuid
       AND status = 'succeeded'
@@ -313,7 +314,7 @@ router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update
     });
 
     // Create refund transaction using raw SQL
-    await prisma.$executeRaw`
+    await req.prisma.$executeRaw`
       INSERT INTO payment_transactions (
         booking_id, amount, currency, payment_method, status, metadata, created_at
       )
@@ -334,7 +335,7 @@ router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update
     `;
 
     // Create activity log using raw SQL
-    await prisma.$executeRaw`
+    await req.prisma.$executeRaw`
       INSERT INTO booking_activities (booking_id, type, description, metadata, created_at)
       VALUES (
         ${id}::uuid,
@@ -351,7 +352,7 @@ router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update
     `;
 
     // Log admin activity
-    await logActivity(req.admin!.id, 'process_refund', 'bookings', {
+    await logActivity(req.prisma, req.admin!.id, 'process_refund', 'bookings', {
       bookingId: id,
       amount: refundAmount,
       type,
@@ -383,7 +384,7 @@ router.post('/:id/refund', authenticateAdmin, requirePermission('bookings:update
  * Add admin notes to booking
  * POST /api/admin/bookings/:id/notes
  */
-router.post('/:id/notes', authenticateAdmin, requirePermission('bookings:update'), async (req, res): Promise<void> => {
+router.post('/:id/notes', authenticateAdmin, requirePermission('bookings:update'), withAdminRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
     const { id } = req.params;
     const { notes, isInternal = true } = req.body;
@@ -397,7 +398,7 @@ router.post('/:id/notes', authenticateAdmin, requirePermission('bookings:update'
     }
 
     // Create activity log using raw SQL
-    await prisma.$executeRaw`
+    await req.prisma.$executeRaw`
       INSERT INTO booking_activities (booking_id, type, description, metadata, created_at)
       VALUES (
         ${id}::uuid,
@@ -412,7 +413,7 @@ router.post('/:id/notes', authenticateAdmin, requirePermission('bookings:update'
     `;
 
     // Log admin activity
-    await logActivity(req.admin!.id, 'add_booking_note', 'bookings', {
+    await logActivity(req.prisma, req.admin!.id, 'add_booking_note', 'bookings', {
       bookingId: id,
       isInternal
     });
@@ -435,7 +436,7 @@ router.post('/:id/notes', authenticateAdmin, requirePermission('bookings:update'
 /**
  * Helper function to log admin activity
  */
-async function logActivity(adminId: string, action: string, resource: string, details?: any): Promise<void> {
+async function logActivity(prisma: PrismaClient, adminId: string, action: string, resource: string, details?: any): Promise<void> {
   try {
     await prisma.$executeRaw`
       INSERT INTO admin_activity_logs 

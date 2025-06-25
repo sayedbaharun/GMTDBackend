@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
+import { prismaWithRLS, PrismaClientWithRLS } from './prisma-with-rls';
 
-// Prevent multiple instances of Prisma Client in development
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+// For backwards compatibility, export the base Prisma client
+// This will be gradually replaced with RLS-enabled versions
+export const prisma = prismaWithRLS;
 
-export const prisma = global.prisma || new PrismaClient();
+// Export the RLS-enabled client as well
+export const prismaRLS = prismaWithRLS;
 
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
-}
+// Re-export types
+export type { RLSContext } from './prisma-with-rls';

@@ -57,6 +57,8 @@ export const syncUserWithDb = async (
     }
 
     req.user = serviceResponse.data; // Attach Prisma user to req.user
+    // @ts-ignore
+    req.userId = serviceResponse.data.id; // Attach userId for RLS
     next();
   } catch (error: any) {
     logger.error('Error in syncUserWithDb middleware:', error);

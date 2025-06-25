@@ -4,6 +4,7 @@ type Response = express.Response;
 type NextFunction = express.NextFunction;
 import { ApiError } from '../types';
 import { logger } from '../utils/logger';
+import { RLSError } from '../utils/rls-errors';
 
 /**
  * Global error handling middleware
@@ -20,6 +21,17 @@ export const errorHandler = (
     path: req.path,
     method: req.method
   });
+
+  // Handle RLS errors
+  if (err instanceof RLSError) {
+    const statusCode = getStatusCodeForRLSError(err.code);
+    res.status(statusCode).json({
+      error: true,
+      code: err.code,
+      message: err.message
+    });
+    return;
+  }
 
   // Handle API errors (custom errors thrown by our application)
   if (err instanceof ApiError) {
@@ -66,3 +78,21 @@ export const errorHandler = (
       : err.message
   });
 };
+
+/**
+ * Get appropriate HTTP status code for RLS error
+ */
+function getStatusCodeForRLSError(code: string): number {
+  switch (code) {
+    case 'AUTHENTICATION_REQUIRED':
+      return 401;
+    case 'UNAUTHORIZED_ACCESS':
+      return 403;
+    case 'RESOURCE_NOT_FOUND':
+      return 404;
+    case 'INVALID_USER_CONTEXT':
+      return 400;
+    default:
+      return 500;
+  }
+}

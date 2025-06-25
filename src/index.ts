@@ -81,7 +81,9 @@ const corsOptions = {
       ? [
           process.env.CLIENT_URL,
           process.env.FRONTEND_URL,
-          'https://vercel.app',
+          'https://getmetodub.ai',
+          'https://www.getmetodub.ai',
+          'https://*.vercel.app',
           'https://netlify.app'
         ].filter(Boolean)
       : [
@@ -94,7 +96,28 @@ const corsOptions = {
           'http://localhost:19007' // Expo web alternate
         ];
     
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+    
+    // Check exact matches
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    
+    // Check wildcard patterns
+    const wildcardMatch = allowedOrigins.some(allowed => {
+      if (allowed && allowed.includes('*')) {
+        const pattern = allowed.replace(/\*/g, '.*');
+        const regex = new RegExp(`^${pattern}$`);
+        return regex.test(origin);
+      }
+      return false;
+    });
+    
+    if (wildcardMatch) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

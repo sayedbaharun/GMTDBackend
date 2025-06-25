@@ -31,3 +31,4 @@ build/
 replit.nix
 .config/
 .upm/
+.vercel

@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+import { jest, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
 
 // Global test setup
@@ -54,7 +56,14 @@ jest.mock('openai', () => ({
 // Setup test environment
 beforeAll(async () => {
   process.env.NODE_ENV = 'test';
-  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL || 'postgresql://test:test@localhost:5432/gmtd_test';
+  process.env.DATABASE_URL = 'postgresql://postgres:gmtd-secure-password-2025@localhost:5432/gmtd_dubai?host=/cloudsql/frontend-459111:us-central1:gmtd-postgres';
+  global.__PRISMA__ = new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  });
   process.env.AUTH0_DOMAIN = 'test-domain.auth0.com';
   process.env.AUTH0_AUDIENCE = 'test-audience';
   process.env.AUTH0_CLIENT_ID = 'test-client-id';

@@ -1,28 +1,30 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
 import { authenticateMobile, MobileAuthRequest } from '../middleware/mobileAuth';
+import { authenticateAndSyncUser } from '../middleware/auth';
+import { withRLS, RequestWithRLS } from '../middleware/withRLS';
+import { getUserBookings, getBookingById, cancelBooking, getUserBookingStats } from '../controllers/bookingController';
 import { v4 as uuidv4 } from 'uuid';
+import { prisma } from '../lib/prisma';
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 /**
  * Create a new booking
  * POST /api/bookings/create
  */
-router.post('/create', authenticateMobile, async (req: MobileAuthRequest, res) => {
+router.post('/create', authenticateMobile, withRLS, async (req: RequestWithRLS, res) => {
   try {
-    const userId = req.userId!;
+    const userId = req.rlsContext.userId!;
     const { type, details } = req.body;
 
     console.log('📋 Creating booking:', { userId, type });
 
     // Start a transaction to ensure data consistency
-    const booking = await prisma.$transaction(async (tx) => {
+    const booking = await req.prisma.$transaction(async (tx) => {
       // Create the main booking record
       const newBooking = await tx.booking.create({
         data: {
-          userId: userId!,
+          userId: userId,
           status: 'PENDING',
           totalPrice: 0, // Will be calculated
           currency: details.currency || 'AED',
@@ -167,7 +169,7 @@ router.post('/create', authenticateMobile, async (req: MobileAuthRequest, res) =
           entityType: 'BOOKING',
           entityId: newBooking.id,
           newData: updatedBooking,
-          changedBy: userId!,
+          changedBy: userId,
           changedByType: 'USER'
         }
       });
@@ -195,17 +197,18 @@ router.post('/create', authenticateMobile, async (req: MobileAuthRequest, res) =
  * Get user's bookings
  * GET /api/bookings/my-bookings
  */
-router.get('/my-bookings', authenticateMobile, async (req: MobileAuthRequest, res) => {
+router.get('/my-bookings', authenticateMobile, withRLS, async (req: RequestWithRLS, res) => {
   try {
-    const userId = req.userId!;
+    const userId = req.rlsContext.userId!;
     const { status, limit = 10, offset = 0 } = req.query;
 
-    const where: any = { userId };
+    // RLS will automatically filter by userId
+    const where: any = {};
     if (status) {
       where.status = status as string;
     }
 
-    const bookings = await prisma.booking.findMany({
+    const bookings = await req.prisma.booking.findMany({
       where,
       include: {
         flightBookings: {
@@ -224,7 +227,7 @@ router.get('/my-bookings', authenticateMobile, async (req: MobileAuthRequest, re
       skip: Number(offset)
     });
 
-    const total = await prisma.booking.count({ where });
+    const total = await req.prisma.booking.count({ where });
 
     res.json({
       success: true,
@@ -249,15 +252,15 @@ router.get('/my-bookings', authenticateMobile, async (req: MobileAuthRequest, re
  * Get booking details
  * GET /api/bookings/:bookingId
  */
-router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res): Promise<void> => {
+router.get('/:bookingId', authenticateMobile, withRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
-    const userId = req.userId!;
+    const userId = req.rlsContext.userId!;
     const { bookingId } = req.params;
 
-    const booking = await prisma.booking.findFirst({
+    // RLS will ensure user can only access their own booking
+    const booking = await req.prisma.booking.findUnique({
       where: {
-        id: bookingId,
-        userId: userId
+        id: bookingId
       },
       include: {
         flightBookings: {
@@ -304,9 +307,9 @@ router.get('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res
  * Update booking status
  * PUT /api/bookings/:bookingId/status
  */
-router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthRequest, res): Promise<void> => {
+router.put('/:bookingId/status', authenticateMobile, withRLS, async (req: RequestWithRLS, res): Promise<void> => {
   try {
-    const userId = req.userId!;
+    const userId = req.rlsContext.userId!;
     const { bookingId } = req.params;
     const { status, reason } = req.body;
 
@@ -321,12 +324,11 @@ router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthReque
     }
 
     // Update booking
-    const booking = await prisma.$transaction(async (tx) => {
-      // Verify ownership
-      const existingBooking = await tx.booking.findFirst({
+    const booking = await req.prisma.$transaction(async (tx) => {
+      // RLS ensures ownership
+      const existingBooking = await tx.booking.findUnique({
         where: {
-          id: bookingId,
-          userId: userId
+          id: bookingId
         }
       });
 
@@ -402,18 +404,17 @@ router.put('/:bookingId/status', authenticateMobile, async (req: MobileAuthReque
  * Cancel booking
  * DELETE /api/bookings/:bookingId
  */
-router.delete('/:bookingId', authenticateMobile, async (req: MobileAuthRequest, res) => {
+router.delete('/:bookingId', authenticateMobile, withRLS, async (req: RequestWithRLS, res) => {
   try {
-    const userId = req.userId!;
+    const userId = req.rlsContext.userId!;
     const { bookingId } = req.params;
     const { reason } = req.body;
 
-    const booking = await prisma.$transaction(async (tx) => {
-      // Verify ownership and status
-      const existingBooking = await tx.booking.findFirst({
+    const booking = await req.prisma.$transaction(async (tx) => {
+      // RLS ensures ownership
+      const existingBooking = await tx.booking.findUnique({
         where: {
-          id: bookingId,
-          userId: userId
+          id: bookingId
         }
       });
 
